@@ -5,7 +5,7 @@ import { Text, View } from "@/components/Themed";
 
 export default function TabOneScreen() {
   return (
-    <View style={styles.container}>
+    <View className="flex-1 items-center justify-center">
       <Text style={styles.title}>Tab One</Text>
       <View
         style={styles.separator}
