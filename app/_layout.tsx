@@ -19,6 +19,7 @@ import {
 } from "@react-navigation/native";
 
 import { useColorScheme } from "@/components/useColorScheme";
+import { TRPCReactProvider } from "@/trpc/Provider";
 
 import "./global.css";
 
@@ -68,10 +69,12 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-      </Stack>
+      <TRPCReactProvider>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+        </Stack>
+      </TRPCReactProvider>
     </ThemeProvider>
   );
 }

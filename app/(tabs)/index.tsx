@@ -1,12 +1,25 @@
+import { useState } from "react";
 import { StyleSheet } from "react-native";
 
 import EditScreenInfo from "@/components/EditScreenInfo";
 import { Text, View } from "@/components/Themed";
+import { trpc } from "@/lib/utils/trpc";
 
 export default function TabOneScreen() {
+  const { data } = trpc.post.all.useQuery();
+  const [display, setDisplay] = useState(false);
+
   return (
     <View className="flex-1 items-center justify-center">
       <Text style={styles.title}>Tab One</Text>
+      <Text
+        onPress={() => {
+          setDisplay((prev) => !prev);
+        }}
+      >
+        Yolo
+      </Text>
+      {display && <Text>{JSON.stringify(data, null, 2)}</Text>}
       <View
         style={styles.separator}
         lightColor="#eee"
