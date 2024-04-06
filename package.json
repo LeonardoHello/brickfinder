@@ -11,7 +11,8 @@
     "introspect": "drizzle-kit introspect:pg",
     "generate": "drizzle-kit generate:pg",
     "push": "drizzle-kit push:pg",
-    "studio": "npx drizzle-kit studio"
+    "studio": "npx drizzle-kit studio",
+    "vercel-build": "expo export -p web"
   },
   "jest": {
     "preset": "jest-expo"
