@@ -18,10 +18,9 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 
-import { useColorScheme } from "@/components/useColorScheme";
-import { TRPCReactProvider } from "@/trpc/Provider";
-
 import "./global.css";
+import { useColorScheme } from "@/components/useColorScheme";
+import { TRPCReactProvider } from "@/lib/trpc/Provider";
 
 export {
   // Catch any errors thrown by the Layout component.
