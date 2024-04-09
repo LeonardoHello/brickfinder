@@ -20,7 +20,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.vlf.myapp"
     },
     "web": {
       "bundler": "metro",
@@ -32,6 +33,17 @@
         "expo-router",
         {
           "origin": "https://my-app-ten-rouge.vercel.app/"
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "newArchEnabled": true
+          },
+          "android": {
+            "newArchEnabled": true
+          }
         }
       ]
     ],
