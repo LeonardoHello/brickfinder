@@ -1,24 +1,9 @@
-import { Text as NativeText, Platform } from "react-native";
+import { Text as NativeText } from "react-native";
 
-// created tailwind classes with included -ios classes
-const fonts = [
-  "inter-light",
-  "inter-regular",
-  "inter-medium",
-  "inter-semibold",
-  "inter-bold",
-];
+import { cn } from "@/utils/cn";
 
-export function InterText(props: NativeText["props"]) {
-  let { className = "font-inter-regular", ...rest } = props;
-
-  if (Platform.OS === "ios") {
-    fonts.forEach((font) => {
-      if (className && className.includes(font)) {
-        className = className.replace(font, `${font}-ios`);
-      }
-    });
-  }
-
-  return <NativeText {...rest} className={className} />;
+export function Text({ className, ...rest }: NativeText["props"]) {
+  return (
+    <NativeText {...rest} className={cn("font-inter-regular", className)} />
+  );
 }

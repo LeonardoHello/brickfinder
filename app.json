@@ -45,6 +45,22 @@
             "newArchEnabled": true
           }
         }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./src/assets/fonts/Inter-Thin.ttf",
+            "./src/assets/fonts/Inter-ExtraLight.ttf",
+            "./src/assets/fonts/Inter-Light.ttf",
+            "./src/assets/fonts/Inter-Regular.ttf",
+            "./src/assets/fonts/Inter-Medium.ttf",
+            "./src/assets/fonts/Inter-SemiBold.ttf",
+            "./src/assets/fonts/Inter-Bold.ttf",
+            "./src/assets/fonts/Inter-ExtraBold.ttf",
+            "./src/assets/fonts/Inter-Black.ttf"
+          ]
+        }
       ]
     ],
     "experiments": {
