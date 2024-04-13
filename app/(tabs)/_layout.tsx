@@ -4,32 +4,42 @@ import { Link, Tabs } from "expo-router";
 
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
-import useHydration from "@/lib/hooks/useHydration";
-
-// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>["name"];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
-}
+import Colors from "@/lib/constants/Colors";
 
 export default function TabLayout() {
-  const hydrated = useHydration();
-
   return (
     <Tabs
       screenOptions={{
         // Disable the static render of the header on web
         // to prevent a hydration error in React Navigation v6.
-        headerShown: hydrated,
+        headerStyle: {
+          backgroundColor: Colors.header.background,
+        },
+        headerTintColor: Colors.header.tint,
+        tabBarStyle: {
+          backgroundColor: Colors.tabBar.background,
+          borderTopColor: Colors.tabBar.border,
+        },
+        tabBarInactiveTintColor: Colors.tabBar.inactivetTint,
+        tabBarActiveTintColor: Colors.tabBar.activetTint,
+        headerTitleStyle: {
+          fontFamily: "Inter-Bold",
+          fontSize: 28,
+        },
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
-          title: "Tab One",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: "Home",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome
+              name="home"
+              color={color}
+              size={28}
+              style={{ marginBottom: -3 }}
+            />
+          ),
           headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable>
@@ -37,7 +47,11 @@ export default function TabLayout() {
                   <FontAwesome
                     name="info-circle"
                     size={25}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                    style={{
+                      marginRight: 15,
+                      opacity: pressed ? 0.5 : 1,
+                      color: "#f3f4f6",
+                    }}
                   />
                 )}
               </Pressable>
@@ -46,10 +60,17 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="settings"
         options={{
-          title: "Tab Two",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: "Settings",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome
+              name="cog"
+              color={color}
+              size={28}
+              style={{ marginBottom: -3 }}
+            />
+          ),
         }}
       />
     </Tabs>

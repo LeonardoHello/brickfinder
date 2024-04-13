@@ -2,7 +2,7 @@ import { Platform, View } from "react-native";
 
 import { StatusBar } from "expo-status-bar";
 
-import { Text } from "@/components/InterText";
+import { Text } from "@/components/Text";
 
 export default function ModalScreen() {
   return (
