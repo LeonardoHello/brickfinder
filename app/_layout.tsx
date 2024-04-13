@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 
-import "./global.css";
+import "../global.css";
 import { TRPCReactProvider } from "@/trpc/Provider";
 
 export const unstable_settings = {
