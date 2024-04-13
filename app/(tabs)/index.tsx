@@ -2,7 +2,7 @@ import { useState } from "react";
 import { View } from "react-native";
 
 import { Text } from "@/components/InterText";
-import { trpc } from "@/utils/trpc";
+import { trpc } from "@/lib/utils/trpc";
 
 export default function TabOneScreen() {
   const { data } = trpc.post.all.useQuery();

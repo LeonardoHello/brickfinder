@@ -1,6 +1,6 @@
 import { Text as NativeText } from "react-native";
 
-import { cn } from "@/utils/cn";
+import { cn } from "@/lib/utils/cn";
 
 export function Text({ className, ...rest }: NativeText["props"]) {
   return (

@@ -4,13 +4,13 @@
     "slug": "my-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/images/icon.png",
+    "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./src/assets/images/splash.png",
+      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#111827"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
@@ -18,7 +18,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.vlf.myapp"
@@ -26,7 +26,7 @@
     "web": {
       "bundler": "metro",
       "output": "server",
-      "favicon": "./src/assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
       [
@@ -50,15 +50,15 @@
         "expo-font",
         {
           "fonts": [
-            "./src/assets/fonts/Inter-Thin.ttf",
-            "./src/assets/fonts/Inter-ExtraLight.ttf",
-            "./src/assets/fonts/Inter-Light.ttf",
-            "./src/assets/fonts/Inter-Regular.ttf",
-            "./src/assets/fonts/Inter-Medium.ttf",
-            "./src/assets/fonts/Inter-SemiBold.ttf",
-            "./src/assets/fonts/Inter-Bold.ttf",
-            "./src/assets/fonts/Inter-ExtraBold.ttf",
-            "./src/assets/fonts/Inter-Black.ttf"
+            "./assets/fonts/Inter-Thin.ttf",
+            "./assets/fonts/Inter-ExtraLight.ttf",
+            "./assets/fonts/Inter-Light.ttf",
+            "./assets/fonts/Inter-Regular.ttf",
+            "./assets/fonts/Inter-Medium.ttf",
+            "./assets/fonts/Inter-SemiBold.ttf",
+            "./assets/fonts/Inter-Bold.ttf",
+            "./assets/fonts/Inter-ExtraBold.ttf",
+            "./assets/fonts/Inter-Black.ttf"
           ]
         }
       ]

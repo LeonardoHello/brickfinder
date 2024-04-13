@@ -2,7 +2,7 @@ import { ExpoRequest } from "expo-router/server";
 
 import type { inferAsyncReturnType } from "@trpc/server";
 
-import db from "@/db";
+import db from "@/lib/db";
 
 export const createContextInner = () => {
   return { db };

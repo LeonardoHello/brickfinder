@@ -1,7 +1,7 @@
 import { Stack } from "expo-router";
 
 import "./global.css";
-import { TRPCReactProvider } from "@/lib/trpc/Provider";
+import { TRPCReactProvider } from "@/trpc/Provider";
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.

@@ -4,7 +4,7 @@ import { Link, Tabs } from "expo-router";
 
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
-import useHydration from "@/hooks/useHydration";
+import useHydration from "@/lib/hooks/useHydration";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
