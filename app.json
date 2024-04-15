@@ -61,7 +61,8 @@
             "./assets/fonts/Inter-Black.ttf"
           ]
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true
