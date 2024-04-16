@@ -1,15 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Platform } from "react-native";
 
-import { useFonts } from "expo-font";
 import { Slot } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
 import * as SystemUI from "expo-system-ui";
 
 import { ClerkProvider } from "@clerk/clerk-expo";
-import { AntDesign } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Theme, ThemeProvider } from "@react-navigation/native";
 
 import "../global.css";
+import { NAV_THEME } from "@/lib/constants/Colors";
+import { useColorScheme } from "@/lib/hooks/useColorTheme";
 import { TRPCReactProvider } from "@/trpc/Provider";
 
 export {
@@ -17,7 +21,17 @@ export {
   ErrorBoundary,
 } from "expo-router";
 
+// Prevent the splash screen from auto-hiding before getting the color scheme.
 SplashScreen.preventAutoHideAsync();
+
+const LIGHT_THEME: Theme = {
+  dark: false,
+  colors: NAV_THEME.light,
+};
+const DARK_THEME: Theme = {
+  dark: true,
+  colors: NAV_THEME.dark,
+};
 
 const tokenCache = {
   async getToken(key: string) {
@@ -36,25 +50,49 @@ const tokenCache = {
   },
 };
 
-SystemUI.setBackgroundColorAsync("#020617");
-
 export default function RootLayout() {
-  const [fontsLoaded, fontError] = useFonts({
-    ...AntDesign.font,
-  });
-
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
-  useEffect(() => {
-    if (fontError) throw fontError;
-  }, [fontError]);
+  const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
+  const [isColorSchemeLoaded, setIsColorSchemeLoaded] = useState(false);
 
   useEffect(() => {
-    if (fontsLoaded) {
+    (async () => {
+      const theme = await AsyncStorage.getItem("theme");
+      if (Platform.OS === "web") {
+        // Adds the background color to the html element to prevent white background on overscroll.
+        document.documentElement.classList.add("bg-background");
+      }
+      if (!theme) {
+        setIsColorSchemeLoaded(true);
+        return;
+      }
+      const colorTheme = theme === "dark" ? "dark" : "light";
+      if (colorTheme !== colorScheme) {
+        setColorScheme(colorTheme);
+
+        setIsColorSchemeLoaded(true);
+        return;
+      }
+      setIsColorSchemeLoaded(true);
+    })().finally(() => {
       SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
+    });
+  }, []);
 
-  if (!fontsLoaded) {
+  useEffect(() => {
+    switch (colorScheme) {
+      case "dark":
+        SystemUI.setBackgroundColorAsync(DARK_THEME.colors.background);
+        AsyncStorage.setItem("theme", colorScheme);
+        break;
+
+      default:
+        SystemUI.setBackgroundColorAsync(LIGHT_THEME.colors.background);
+        AsyncStorage.setItem("theme", colorScheme);
+        break;
+    }
+  }, [colorScheme]);
+
+  if (!isColorSchemeLoaded) {
     return null;
   }
 
@@ -64,7 +102,10 @@ export default function RootLayout() {
       publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!}
     >
       <TRPCReactProvider>
-        <Slot />
+        <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+          <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+          <Slot />
+        </ThemeProvider>
       </TRPCReactProvider>
     </ClerkProvider>
   );
