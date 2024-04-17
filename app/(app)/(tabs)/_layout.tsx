@@ -4,7 +4,7 @@ import { Link, Tabs } from "expo-router";
 
 import { useAuth } from "@clerk/clerk-expo";
 
-import { Home, LogIn, Search, Settings, User } from "@/components/Icons";
+import { Home, LogIn, LogOut, Search, Settings } from "@/components/Icons";
 import { useClientOnlyValue } from "@/lib/hooks/useClientOnlyValue";
 import { cn } from "@/lib/utils/cn";
 
@@ -24,17 +24,15 @@ export default function TabLayout() {
         headerRight: () => {
           if (isSignedIn) {
             return (
-              <Link href="/(app)/(tabs)/settings" asChild>
-                <Pressable>
-                  {({ pressed }) => (
-                    <User
-                      className={cn("mr-4", {
-                        "opacity-50": pressed,
-                      })}
-                    />
-                  )}
-                </Pressable>
-              </Link>
+              <Pressable>
+                {({ pressed }) => (
+                  <LogOut
+                    className={cn("mr-4", {
+                      "opacity-50": pressed,
+                    })}
+                  />
+                )}
+              </Pressable>
             );
           }
           return (

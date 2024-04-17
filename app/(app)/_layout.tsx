@@ -19,6 +19,7 @@ export default function RootLayout() {
         options={{
           presentation: "modal",
           title: "Sign-In",
+          headerBackVisible: false,
         }}
       />
     </Stack>
