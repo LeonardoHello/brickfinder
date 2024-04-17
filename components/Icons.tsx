@@ -1,6 +1,8 @@
+import { FontAwesome6 } from "@expo/vector-icons";
 import {
   Home,
   LogIn,
+  LogOut,
   LucideIcon,
   Search,
   Settings,
@@ -22,8 +24,15 @@ function interopIcon(icon: LucideIcon) {
 
 interopIcon(Home);
 interopIcon(LogIn);
+interopIcon(LogOut);
 interopIcon(Search);
 interopIcon(Settings);
 interopIcon(User);
+cssInterop(FontAwesome6, {
+  className: {
+    target: "style",
+    nativeStyleToProp: { color: true, opacity: true },
+  },
+});
 
-export { Home, LogIn, Search, Settings, User };
+export { Home, LogIn, LogOut, Search, Settings, User, FontAwesome6 };
