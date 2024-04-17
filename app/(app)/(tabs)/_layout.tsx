@@ -1,12 +1,11 @@
-import { Pressable } from "react-native";
-
 import { Link, Tabs } from "expo-router";
 
 import { useAuth } from "@clerk/clerk-expo";
 
-import { Home, LogIn, LogOut, Search, Settings } from "@/components/Icons";
+import { Home, LogIn, Search, Settings } from "@/components/Icons";
+import { SignOut } from "@/components/SignOutButton";
+import { Button } from "@/components/ui/button";
 import { useClientOnlyValue } from "@/lib/hooks/useClientOnlyValue";
-import { cn } from "@/lib/utils/cn";
 
 export default function TabLayout() {
   const { isSignedIn } = useAuth();
@@ -23,29 +22,13 @@ export default function TabLayout() {
         tabBarItemStyle: { padding: 2 },
         headerRight: () => {
           if (isSignedIn) {
-            return (
-              <Pressable>
-                {({ pressed }) => (
-                  <LogOut
-                    className={cn("mr-4", {
-                      "opacity-50": pressed,
-                    })}
-                  />
-                )}
-              </Pressable>
-            );
+            return <SignOut />;
           }
           return (
             <Link href="/(app)/sign-in" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <LogIn
-                    className={cn("mr-4 text-foreground", {
-                      "opacity-50": pressed,
-                    })}
-                  />
-                )}
-              </Pressable>
+              <Button className="mr-2" size="icon" variant="ghost">
+                <LogIn className="text-foreground" />
+              </Button>
             </Link>
           );
         },

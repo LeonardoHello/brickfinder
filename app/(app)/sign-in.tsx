@@ -1,10 +1,10 @@
 import { useCallback } from "react";
 import { View } from "react-native";
 
-import { Redirect, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
 
-import { useAuth, useOAuth } from "@clerk/clerk-expo";
+import { useOAuth } from "@clerk/clerk-expo";
 
 import { ExternalLink } from "@/components/ExternalLink";
 import { FontAwesome6 } from "@/components/Icons";
@@ -29,12 +29,6 @@ enum Strategy {
 WebBrowser.maybeCompleteAuthSession();
 
 export default function ModalScreen() {
-  const { isSignedIn } = useAuth();
-
-  if (isSignedIn) {
-    <Redirect href={"/(app)/(tabs)"} />;
-  }
-
   // Warm up the android browser to improve UX
   // https://docs.expo.dev/guides/authentication/#improving-user-experience
   useWarmUpBrowser();
@@ -55,8 +49,6 @@ export default function ModalScreen() {
   });
 
   const onSelectAuth = useCallback(async (strategy: Strategy) => {
-    console.log("ejj");
-    return;
     const selectedAuth = {
       [Strategy.Google]: googleOAuth,
       [Strategy.Microsoft]: microsoftOAuth,
@@ -69,7 +61,7 @@ export default function ModalScreen() {
 
       if (createdSessionId) {
         setActive!({ session: createdSessionId });
-        router.replace("../");
+        router.replace("..");
       }
     } catch (err) {
       console.error("OAuth error", err);
@@ -127,7 +119,7 @@ export default function ModalScreen() {
             variant="outline"
             size="lg"
             className="flex-row gap-4"
-            onPressIn={() => {
+            onPress={() => {
               onSelectAuth(Strategy.Linkedin);
             }}
           >
