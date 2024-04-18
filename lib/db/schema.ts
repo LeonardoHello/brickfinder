@@ -8,6 +8,17 @@ import {
 } from "drizzle-orm/pg-core";
 import { createSelectSchema } from "drizzle-zod";
 
+export const users = pgTable(
+  "users",
+  {
+    id: text("id").primaryKey(), // clerk user id
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (t) => ({
+    idIdx: uniqueIndex("user_id_idx").on(t.id),
+  }),
+);
+
 export const posts = pgTable(
   "posts",
   {
@@ -22,6 +33,8 @@ export const posts = pgTable(
   }),
 );
 
-export type User = InferSelectModel<typeof posts>;
+export type User = InferSelectModel<typeof users>;
+export type Post = InferSelectModel<typeof posts>;
 
+export const UserSchema = createSelectSchema(users);
 export const PostSchema = createSelectSchema(posts);
