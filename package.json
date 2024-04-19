@@ -54,8 +54,7 @@
     "react-native-svg": "14.1.0",
     "react-native-web": "~0.19.6",
     "svix": "^1.21.0",
-    "tailwind-merge": "^2.2.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwind-merge": "^2.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
