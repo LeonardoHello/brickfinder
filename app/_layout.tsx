@@ -13,7 +13,8 @@ import { Theme, ThemeProvider } from "@react-navigation/native";
 
 import "../global.css";
 import { NAV_THEME } from "@/lib/constants/Colors";
-import { useColorScheme } from "@/lib/hooks/useColorTheme";
+import { useColorScheme } from "@/lib/hooks/useColorScheme";
+import { setAndroidNavigationBar } from "@/lib/utils/android-navigation-bar";
 import { TRPCReactProvider } from "@/trpc/Provider";
 
 export {
@@ -62,10 +63,15 @@ export default function RootLayout() {
         document.documentElement.classList.add("bg-background");
       }
       if (!theme) {
+        SystemUI.setBackgroundColorAsync(NAV_THEME[colorScheme].background);
+        setAndroidNavigationBar(colorScheme);
+        AsyncStorage.setItem("theme", colorScheme);
         setIsColorSchemeLoaded(true);
         return;
       }
       const colorTheme = theme === "dark" ? "dark" : "light";
+      SystemUI.setBackgroundColorAsync(NAV_THEME[colorTheme].background);
+      setAndroidNavigationBar(colorTheme);
       if (colorTheme !== colorScheme) {
         setColorScheme(colorTheme);
 
@@ -77,20 +83,6 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     });
   }, []);
-
-  useEffect(() => {
-    switch (colorScheme) {
-      case "dark":
-        SystemUI.setBackgroundColorAsync(DARK_THEME.colors.background);
-        AsyncStorage.setItem("theme", colorScheme);
-        break;
-
-      default:
-        SystemUI.setBackgroundColorAsync(LIGHT_THEME.colors.background);
-        AsyncStorage.setItem("theme", colorScheme);
-        break;
-    }
-  }, [colorScheme]);
 
   if (!isColorSchemeLoaded) {
     return null;

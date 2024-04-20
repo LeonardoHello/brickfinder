@@ -3,7 +3,7 @@ import { Stack } from "expo-router";
 import { useAuth } from "@clerk/clerk-expo";
 
 import { NAV_THEME } from "@/lib/constants/Colors";
-import { useColorScheme } from "@/lib/hooks/useColorTheme";
+import { useColorScheme } from "@/lib/hooks/useColorScheme";
 
 export const unstable_settings = {
   initialRouteName: "(tabs)",

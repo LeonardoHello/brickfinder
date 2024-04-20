@@ -4,8 +4,10 @@ import {
   LogIn,
   LogOut,
   LucideIcon,
+  MoonStar,
   Search,
   Settings,
+  Sun,
   User,
 } from "lucide-react-native";
 import { cssInterop } from "nativewind";
@@ -25,8 +27,10 @@ function interopIcon(icon: LucideIcon) {
 interopIcon(Home);
 interopIcon(LogIn);
 interopIcon(LogOut);
+interopIcon(MoonStar);
 interopIcon(Search);
 interopIcon(Settings);
+interopIcon(Sun);
 interopIcon(User);
 cssInterop(FontAwesome6, {
   className: {
@@ -35,4 +39,14 @@ cssInterop(FontAwesome6, {
   },
 });
 
-export { Home, LogIn, LogOut, Search, Settings, User, FontAwesome6 };
+export {
+  FontAwesome6,
+  Home,
+  LogIn,
+  LogOut,
+  MoonStar,
+  Search,
+  Settings,
+  Sun,
+  User,
+};
