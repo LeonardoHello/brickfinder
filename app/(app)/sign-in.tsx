@@ -1,7 +1,6 @@
 import { useCallback } from "react";
 import { View } from "react-native";
 
-import { useRouter } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
 
 import { useOAuth } from "@clerk/clerk-expo";
@@ -33,19 +32,22 @@ export default function ModalScreen() {
   // https://docs.expo.dev/guides/authentication/#improving-user-experience
   useWarmUpBrowser();
 
-  const router = useRouter();
-
+  const redirectUrl = "myapp://sign-in";
   const { startOAuthFlow: googleOAuth } = useOAuth({
     strategy: "oauth_google",
+    redirectUrl,
   });
   const { startOAuthFlow: microsoftOAuth } = useOAuth({
     strategy: "oauth_microsoft",
+    redirectUrl,
   });
   const { startOAuthFlow: facebookOAuth } = useOAuth({
     strategy: "oauth_facebook",
+    redirectUrl,
   });
   const { startOAuthFlow: linkedinOAuth } = useOAuth({
     strategy: "oauth_linkedin",
+    redirectUrl,
   });
 
   const onSelectAuth = useCallback(async (strategy: Strategy) => {
@@ -59,9 +61,8 @@ export default function ModalScreen() {
     try {
       const { createdSessionId, setActive } = await selectedAuth();
 
-      if (createdSessionId) {
-        setActive!({ session: createdSessionId });
-        router.replace("..");
+      if (createdSessionId && setActive) {
+        setActive({ session: createdSessionId });
       }
     } catch (err) {
       console.error("OAuth error", err);
