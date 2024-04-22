@@ -1,15 +1,10 @@
-import { Link, Tabs } from "expo-router";
+import { Tabs } from "expo-router";
 
-import { useAuth } from "@clerk/clerk-expo";
-
-import { Home, LogIn, Search, Settings } from "@/components/Icons";
-import { SignOut } from "@/components/SignOutButton";
-import { Button } from "@/components/ui/button";
+import { Dog, Home, Search } from "@/components/Icons";
+import { UserButton } from "@/components/UserButton";
 import { useClientOnlyValue } from "@/lib/hooks/useClientOnlyValue";
 
 export default function TabLayout() {
-  const { isSignedIn } = useAuth();
-
   return (
     <Tabs
       screenOptions={{
@@ -20,18 +15,7 @@ export default function TabLayout() {
           fontFamily: "Inter-Medium",
         },
         tabBarItemStyle: { padding: 2 },
-        headerRight: () => {
-          if (isSignedIn) {
-            return <SignOut />;
-          }
-          return (
-            <Link href="/(app)/sign-in" asChild>
-              <Button className="mr-2" size="icon" variant="ghost">
-                <LogIn className="text-foreground" />
-              </Button>
-            </Link>
-          );
-        },
+        headerRight: () => <UserButton />,
       }}
     >
       <Tabs.Screen
@@ -49,10 +33,10 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="settings"
+        name="doggo"
         options={{
-          title: "Settings",
-          tabBarIcon: ({ color }) => <Settings color={color} size={28} />,
+          title: "doggo",
+          tabBarIcon: ({ color }) => <Dog color={color} size={28} />,
         }}
       />
     </Tabs>

@@ -12,6 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Theme, ThemeProvider } from "@react-navigation/native";
 
 import "../global.css";
+import { PortalHost } from "@/components/primitives/portal";
 import { NAV_THEME } from "@/lib/constants/Colors";
 import { useColorScheme } from "@/lib/hooks/useColorScheme";
 import { setAndroidNavigationBar } from "@/lib/utils/android-navigation-bar";
@@ -97,6 +98,7 @@ export default function RootLayout() {
         <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
           <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
           <Slot />
+          <PortalHost />
         </ThemeProvider>
       </TRPCReactProvider>
     </ClerkProvider>
