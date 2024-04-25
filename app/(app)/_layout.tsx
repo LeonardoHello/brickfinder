@@ -22,7 +22,8 @@ export default function RootLayout() {
       }}
     >
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="settings" options={{ headerBackVisible: true }} />
+      <Stack.Screen name="settings" />
+      <Stack.Screen name="profile" />
       <Stack.Screen
         name="sign-in"
         redirect={isSignedIn}

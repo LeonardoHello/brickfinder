@@ -4,7 +4,7 @@ import { Link } from "expo-router";
 
 import { useAuth } from "@clerk/clerk-expo";
 
-import { LogOut, MoonStar, Settings, Sun, UserCog } from "@/components/Icons";
+import { LogOut, MoonStar, Settings, Sun, User } from "@/components/Icons";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -40,12 +40,14 @@ export function UserDropdownMenu({ children }: { children: React.ReactNode }) {
       <DropdownMenuContent className="w-64" sideOffset={12} align="end">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <Text>User Profile</Text>
-          <DropdownMenuShortcut>
-            <UserCog className="text-foreground" size={22} />
-          </DropdownMenuShortcut>
-        </DropdownMenuItem>
+        <Link href="/(app)/profile" asChild>
+          <DropdownMenuItem>
+            <Text>Profile</Text>
+            <DropdownMenuShortcut>
+              <User className="text-foreground" size={22} />
+            </DropdownMenuShortcut>
+          </DropdownMenuItem>
+        </Link>
         <DropdownMenuSeparator />
         <DropdownMenuItem onPress={themeToggle}>
           <Text>Theme</Text>
