@@ -19,7 +19,7 @@ export const users = pgTable(
       () => new Date(),
     ),
     firstName: text("first_name").notNull(),
-    lastName: text("last_name").notNull(),
+    lastName: text("last_name"),
     imageUrl: text("image_url").notNull(),
     skills: jsonb("skills")
       .$type<{
