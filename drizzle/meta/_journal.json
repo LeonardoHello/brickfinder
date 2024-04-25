@@ -15,6 +15,13 @@
       "when": 1713436111596,
       "tag": "0001_numerous_molly_hayes",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1714070568526,
+      "tag": "0002_abandoned_earthquake",
+      "breakpoints": true
     }
   ]
 }

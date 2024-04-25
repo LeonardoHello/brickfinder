@@ -18,8 +18,8 @@ export const users = pgTable(
     updatedAt: timestamp("updated_at", { mode: "date" }).$onUpdate(
       () => new Date(),
     ),
-    firstName: text("text").notNull(),
-    lastName: text("text").notNull(),
+    firstName: text("first_name").notNull(),
+    lastName: text("last_name").notNull(),
     imageUrl: text("image_url").notNull(),
     skills: jsonb("skills")
       .$type<{
@@ -27,7 +27,7 @@ export const users = pgTable(
         yearsOfExperience: number;
       }>()
       .array()
-      .default(sql`ARRAY[]::text[]`),
+      .default(sql`ARRAY[]::jsonb[]`),
     cv: text("cv"),
   },
   (t) => ({
