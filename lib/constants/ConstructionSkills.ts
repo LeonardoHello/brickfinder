@@ -1,0 +1,18 @@
+const CONSTRUCTION_SKILLS = [
+  "construction technician",
+  "stonemason",
+  "bricklayer",
+  "roofer",
+  "plasterer",
+  "ceramist",
+  "plumber",
+  "pipefitter",
+  "electrician",
+  "house painter/decorator",
+  "glazier",
+  "carpenter",
+  "flooring installer",
+  "heavy equipment operator",
+  "reinforcing ironworker",
+  "structural ironworker",
+] as const;

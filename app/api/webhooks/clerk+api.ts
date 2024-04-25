@@ -1,11 +1,11 @@
 import type { ExpoRequest } from "expo-router/server";
 
+import type { WebhookEvent } from "@clerk/clerk-sdk-node";
 import { eq } from "drizzle-orm";
 import { Webhook } from "svix";
 
 import db from "@/lib/db";
 import { users } from "@/lib/db/schema";
-import type { WebhookEvent } from "@/lib/types/ClerkWebhookEvent";
 
 export async function POST(request: ExpoRequest) {
   const CLERK_WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
@@ -56,14 +56,22 @@ export async function POST(request: ExpoRequest) {
 
   switch (type) {
     case "user.created":
-      await db.insert(users).values({ id: data.id });
+      await db.insert(users).values({
+        id: data.id,
+        firstName: data.first_name,
+        lastName: data.last_name,
+        imageUrl: data.image_url,
+      });
       break;
 
     case "user.updated":
       break;
 
-    default:
-      await db.delete(users).where(eq(users.id, data.id));
+    case "user.deleted":
+      if (data.id) {
+        await db.delete(users).where(eq(users.id, data.id));
+      }
+      break;
   }
 
   return new Response("", { status: 200 });

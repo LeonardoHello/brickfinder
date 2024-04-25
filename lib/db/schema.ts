@@ -1,5 +1,7 @@
 import { InferSelectModel } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 import {
+  jsonb,
   pgTable,
   text,
   timestamp,
@@ -12,7 +14,21 @@ export const users = pgTable(
   "users",
   {
     id: text("id").primaryKey(), // clerk user id
-    createdAt: timestamp("created_at").notNull().defaultNow(),
+    createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { mode: "date" }).$onUpdate(
+      () => new Date(),
+    ),
+    firstName: text("text").notNull(),
+    lastName: text("text").notNull(),
+    imageUrl: text("image_url").notNull(),
+    skills: jsonb("skills")
+      .$type<{
+        skill: (typeof CONSTRUCTION_SKILLS)[number];
+        yearsOfExperience: number;
+      }>()
+      .array()
+      .default(sql`ARRAY[]::text[]`),
+    cv: text("cv"),
   },
   (t) => ({
     idIdx: uniqueIndex("user_id_idx").on(t.id),
