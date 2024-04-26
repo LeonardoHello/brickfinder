@@ -44,17 +44,6 @@
         }
       ],
       [
-        "expo-build-properties",
-        {
-          "ios": {
-            "newArchEnabled": true
-          },
-          "android": {
-            "newArchEnabled": true
-          }
-        }
-      ],
-      [
         "expo-font",
         {
           "fonts": [
