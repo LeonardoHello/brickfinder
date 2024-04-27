@@ -60,6 +60,7 @@ export async function POST(request: ExpoRequest) {
         id: data.id,
         firstName: data.first_name,
         lastName: data.last_name,
+        email: data.email_addresses[0].email_address,
         imageUrl: data.image_url,
       });
       break;
