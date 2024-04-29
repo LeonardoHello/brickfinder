@@ -1,4 +1,4 @@
-const CONSTRUCTION_SKILLS = [
+export default [
   "construction technician",
   "stonemason",
   "bricklayer",

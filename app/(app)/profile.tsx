@@ -1,11 +1,13 @@
 import { View } from "react-native";
 
-import { Text } from "@/components/ui/text";
+import { useAuth } from "@clerk/clerk-expo";
 
 export default function ProfileScreen() {
-  return (
-    <View className="flex-1 items-center justify-center">
-      <Text className="text-xl">Profile</Text>
-    </View>
-  );
+  const { userId } = useAuth();
+
+  if (!userId) {
+    throw new Error("Cannot access profile page without authentication.");
+  }
+
+  return <View></View>;
 }

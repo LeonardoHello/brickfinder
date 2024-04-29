@@ -1,7 +1,7 @@
 import { InferSelectModel } from "drizzle-orm";
 import { sql } from "drizzle-orm";
 import {
-  jsonb,
+  customType,
   pgTable,
   text,
   timestamp,
@@ -9,6 +9,18 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 import { createSelectSchema } from "drizzle-zod";
+
+import Jobs from "../constants/Jobs";
+
+const customJsonb = <TData>(name: string) =>
+  customType<{ data: TData; driverData: string }>({
+    dataType() {
+      return "jsonb";
+    },
+    toDriver(value: TData): string {
+      return JSON.stringify(value);
+    },
+  })(name);
 
 export const users = pgTable(
   "users",
@@ -18,16 +30,16 @@ export const users = pgTable(
     updatedAt: timestamp("updated_at", { mode: "date" }).$onUpdate(
       () => new Date(),
     ),
-    firstName: text("first_name").notNull(),
+    firstName: text("first_name"),
     lastName: text("last_name"),
     email: text("email").notNull(),
     imageUrl: text("image_url").notNull(),
-    skills: jsonb("skills")
-      .$type<{
-        skill: (typeof CONSTRUCTION_SKILLS)[number];
-        yearsOfExperience: number;
-      }>()
+    skills: customJsonb<{
+      skill: (typeof Jobs)[number];
+      yearsOfExperience: number;
+    }>("skills")
       .array()
+      .notNull()
       .default(sql`ARRAY[]::jsonb[]`),
     cv: text("cv"),
   },

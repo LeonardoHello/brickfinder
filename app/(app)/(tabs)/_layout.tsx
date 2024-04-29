@@ -1,7 +1,5 @@
 import { Tabs } from "expo-router";
 
-import { Dog, Home, Search } from "@/components/Icons";
-import { UserButton } from "@/components/UserButton";
 import { useClientOnlyValue } from "@/lib/hooks/useClientOnlyValue";
 
 export default function TabLayout() {
@@ -15,28 +13,24 @@ export default function TabLayout() {
           fontFamily: "Inter-Medium",
         },
         tabBarItemStyle: { padding: 2 },
-        headerRight: () => <UserButton />,
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({ color }) => <Home color={color} size={28} />,
         }}
       />
       <Tabs.Screen
         name="jobs"
         options={{
           title: "Jobs",
-          tabBarIcon: ({ color }) => <Search color={color} size={28} />,
         }}
       />
       <Tabs.Screen
         name="doggo"
         options={{
           title: "doggo",
-          tabBarIcon: ({ color }) => <Dog color={color} size={28} />,
         }}
       />
     </Tabs>

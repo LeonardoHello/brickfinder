@@ -1,6 +1,5 @@
 import type { ExpoRequest } from "expo-router/server";
 
-import type { WebhookEvent } from "@clerk/clerk-sdk-node";
 import { eq } from "drizzle-orm";
 import { Webhook } from "svix";
 
@@ -36,7 +35,7 @@ export async function POST(request: ExpoRequest) {
   // Create a new Svix instance with your secret.
   const wh = new Webhook(CLERK_WEBHOOK_SECRET);
 
-  let evt: WebhookEvent;
+  let evt: any;
 
   // Verify the payload with the headers
   try {
@@ -44,7 +43,7 @@ export async function POST(request: ExpoRequest) {
       "svix-id": svix_id,
       "svix-timestamp": svix_timestamp,
       "svix-signature": svix_signature,
-    }) as WebhookEvent;
+    }) as any;
   } catch (err) {
     console.error("Error verifying webhook:", err);
     return new Response("Error occured", {

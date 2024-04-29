@@ -1,24 +1,16 @@
 {
   "expo": {
-    "name": "my-app",
-    "slug": "my-app",
+    "name": "brickfinder",
+    "slug": "brickfinder",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
-    "androidStatusBar": {
-      "barStyle": "light-content",
-      "backgroundColor": "#011628"
-    },
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#011628"
-    },
-    "androidNavigationBar": {
-      "barStyle": "light-content",
-      "backgroundColor": "#011628"
+      "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
@@ -29,7 +21,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.vlf.myapp"
+      "package": "com.brickfinder.app"
     },
     "web": {
       "bundler": "metro",
@@ -41,22 +33,6 @@
         "expo-router",
         {
           "origin": "https://my-app-ten-rouge.vercel.app/"
-        }
-      ],
-      [
-        "expo-font",
-        {
-          "fonts": [
-            "./assets/fonts/Inter-Thin.ttf",
-            "./assets/fonts/Inter-ExtraLight.ttf",
-            "./assets/fonts/Inter-Light.ttf",
-            "./assets/fonts/Inter-Regular.ttf",
-            "./assets/fonts/Inter-Medium.ttf",
-            "./assets/fonts/Inter-SemiBold.ttf",
-            "./assets/fonts/Inter-Bold.ttf",
-            "./assets/fonts/Inter-ExtraBold.ttf",
-            "./assets/fonts/Inter-Black.ttf"
-          ]
         }
       ],
       "expo-secure-store"

@@ -6,17 +6,6 @@ import * as WebBrowser from "expo-web-browser";
 
 import { useOAuth } from "@clerk/clerk-expo";
 
-import { ExternalLink } from "@/components/ExternalLink";
-import { FontAwesome6 } from "@/components/Icons";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Text } from "@/components/ui/text";
 import { useWarmUpBrowser } from "@/lib/hooks/useWarmUpBrowser";
 
 enum Strategy {
@@ -76,88 +65,5 @@ export default function ModalScreen() {
     }
   }, []);
 
-  return (
-    <View className="flex-1 items-center justify-center">
-      <Card className="w-full max-w-sm">
-        <CardHeader>
-          <CardTitle>Sign in with</CardTitle>
-        </CardHeader>
-
-        <CardContent className="gap-3">
-          <Button
-            variant="outline"
-            size="lg"
-            className="flex-row gap-4 px-6"
-            onPress={() => {
-              onSelectAuth(Strategy.Google);
-            }}
-          >
-            <FontAwesome6 name="google" className="text-3xl text-foreground" />
-            <Text>Google</Text>
-          </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            className="flex-row gap-4 px-6"
-            onPress={() => {
-              onSelectAuth(Strategy.Microsoft);
-            }}
-          >
-            <FontAwesome6
-              name="microsoft"
-              className="text-3xl text-foreground"
-            />
-            <Text>Microsoft</Text>
-          </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            className="flex-row gap-4 px-6"
-            onPress={() => {
-              onSelectAuth(Strategy.Facebook);
-            }}
-          >
-            <FontAwesome6
-              name="facebook"
-              className="text-3xl text-foreground"
-            />
-            <Text>Facebook</Text>
-          </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            className="flex-row gap-4"
-            onPress={() => {
-              onSelectAuth(Strategy.Linkedin);
-            }}
-          >
-            <FontAwesome6
-              name="linkedin"
-              className="text-3xl text-foreground"
-            />
-            <Text>Linkedin</Text>
-          </Button>
-        </CardContent>
-        <CardFooter>
-          <Text className="text-sm text-muted-foreground">
-            By signing in, you agree to Clerk's{" "}
-            <ExternalLink
-              href="https://clerk.com/legal/terms"
-              className="font-inter-medium text-destructive-foreground"
-            >
-              Terms of Service
-            </ExternalLink>{" "}
-            and{" "}
-            <ExternalLink
-              href="https://clerk.com/legal/privacy"
-              className="font-inter-medium text-destructive-foreground"
-            >
-              Privacy Policy
-            </ExternalLink>
-            .
-          </Text>
-        </CardFooter>
-      </Card>
-    </View>
-  );
+  return <View></View>;
 }
