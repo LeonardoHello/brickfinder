@@ -13,12 +13,11 @@ export default function RootLayout() {
     <Stack
       screenOptions={{
         headerTitleStyle: {
-          fontFamily: "Inter-Medium",
+          fontFamily: "Inter",
         },
       }}
     >
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="settings" />
       <Stack.Screen name="profile" redirect={!isSignedIn} />
       <Stack.Screen
         name="sign-in"

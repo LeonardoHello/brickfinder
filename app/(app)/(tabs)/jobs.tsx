@@ -1,4 +1,6 @@
-import { FlatList, Text, View } from "react-native";
+import { FlatList } from "react-native";
+
+import { SizableText, YStack } from "tamagui";
 
 import { trpc } from "@/lib/utils/trpc";
 
@@ -6,13 +8,12 @@ export default function JobsScreen() {
   const posts = trpc.post.all.useQuery();
 
   return (
-    <View>
-      <Text>Jobs</Text>
+    <YStack>
       <FlatList
         data={posts.data}
-        renderItem={({ item }) => <Text>{item.text}</Text>}
+        renderItem={({ item }) => <SizableText>{item.text}</SizableText>}
         keyExtractor={(item) => item.id}
       />
-    </View>
+    </YStack>
   );
 }
