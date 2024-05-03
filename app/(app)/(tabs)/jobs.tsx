@@ -12,7 +12,7 @@ export default function JobsScreen() {
       flex={1}
       alignItems="center"
       justifyContent="center"
-      backgroundColor={"$background025"}
+      backgroundColor={"$background05"}
     >
       <FlatList
         data={posts.data}

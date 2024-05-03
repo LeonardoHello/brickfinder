@@ -79,7 +79,7 @@ export default function RootLayout() {
           <ThemeProvider
             value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
           >
-            <Theme name={"blue"}>
+            <Theme name={"gray"}>
               <Slot />
             </Theme>
           </ThemeProvider>

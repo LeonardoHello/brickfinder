@@ -6,7 +6,7 @@ export default function HomeScreen() {
       flex={1}
       alignItems="center"
       justifyContent="center"
-      backgroundColor={"$background0"}
+      backgroundColor={"$background05"}
     >
       <H1>Something Something Something</H1>
     </YStack>

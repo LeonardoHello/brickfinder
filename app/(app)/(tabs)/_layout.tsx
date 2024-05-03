@@ -18,7 +18,7 @@ export default function TabLayout() {
         headerTitleStyle: {
           fontFamily: "Inter",
         },
-        headerStyle: { backgroundColor: theme.background0.val },
+        headerStyle: { backgroundColor: theme.background.val },
         headerRight: () => <MenuButton />,
         tabBarStyle: {
           backgroundColor: theme.background.val,
