@@ -1,11 +1,14 @@
 import { Tabs } from "expo-router";
 
 import { Home, Search, Settings } from "@tamagui/lucide-icons";
+import { useTheme } from "tamagui";
 
 import MenuButton from "@/components/MenuButton";
 import { useClientOnlyValue } from "@/lib/hooks/useClientOnlyValue";
 
 export default function TabLayout() {
+  const theme = useTheme();
+
   return (
     <Tabs
       screenOptions={{
@@ -15,9 +18,12 @@ export default function TabLayout() {
         headerTitleStyle: {
           fontFamily: "Inter",
         },
-        headerStyle: { backgroundColor: "black" },
+        headerStyle: { backgroundColor: theme.background0.val },
         headerRight: () => <MenuButton />,
-        tabBarStyle: { backgroundColor: "black" },
+        tabBarStyle: {
+          backgroundColor: theme.background.val,
+          borderTopWidth: 0,
+        },
         tabBarLabelStyle: { fontFamily: "Inter" },
         tabBarItemStyle: { padding: 2 },
       }}

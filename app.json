@@ -10,8 +10,13 @@
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#0F1720"
     },
+    "androidStatusBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#0F1720"
+    },
+    "androidNavigationBar": { "backgroundColor": "#0F1720" },
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
@@ -19,7 +24,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#0F1720"
       },
       "package": "com.brickfinder.app"
     },

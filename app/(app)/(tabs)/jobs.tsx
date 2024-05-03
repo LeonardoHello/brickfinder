@@ -8,7 +8,12 @@ export default function JobsScreen() {
   const posts = trpc.post.all.useQuery();
 
   return (
-    <YStack>
+    <YStack
+      flex={1}
+      alignItems="center"
+      justifyContent="center"
+      backgroundColor={"$background025"}
+    >
       <FlatList
         data={posts.data}
         renderItem={({ item }) => <SizableText>{item.text}</SizableText>}

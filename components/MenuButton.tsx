@@ -11,14 +11,16 @@ export default function MenuButton() {
     return <Spinner padding={"$2"} mr={"$3"} />;
   }
 
+  const button = (
+    <Button mr={"$3"} aspectRatio={"1/1"} size={"$3"} chromeless>
+      <Menu />
+    </Button>
+  );
+
   if (!isSignedIn) {
     return (
       <Popover size="$5" allowFlip>
-        <Popover.Trigger asChild>
-					<Button mr={"$3"} aspectRatio={"1/1"} size={"$3"} chromeless>
-						<Menu />
-					</Button>
-        </Popover.Trigger>
+        <Popover.Trigger asChild>{button}</Popover.Trigger>
         <Adapt when="sm" platform="touch">
           <Popover.Sheet modal dismissOnSnapToBottom>
             <Popover.Sheet.Frame padding="$4">

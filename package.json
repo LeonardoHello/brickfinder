@@ -13,6 +13,7 @@
     "push": "drizzle-kit push:pg",
     "studio": "npx drizzle-kit studio",
     "vercel-build": "expo export -p web",
+    "build": "npx expo prebuild --clean",
     "clean": "rm -rf .expo node_modules"
   },
   "jest": {
@@ -53,7 +54,8 @@
     "react-native-svg": "14.1.0",
     "react-native-web": "~0.19.6",
     "svix": "^1.21.0",
-    "tamagui": "^1.96.0"
+    "tamagui": "^1.96.0",
+    "expo-linear-gradient": "~12.7.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
