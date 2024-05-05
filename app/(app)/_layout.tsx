@@ -1,20 +1,37 @@
+import { useEffect } from "react";
+
 import { Stack } from "expo-router";
+import * as SystemUI from "expo-system-ui";
 
 import { useAuth } from "@clerk/clerk-expo";
+import { useTheme } from "tamagui";
+
+import Logo from "@/components/Logo";
+import Menu from "@/components/Menu";
 
 export const unstable_settings = {
   initialRouteName: "(tabs)",
 };
 
-export default function RootLayout() {
+export default function AppLayout() {
   const { isSignedIn } = useAuth();
+  const { background, background05 } = useTheme();
+
+  const backgroundColor = background.get();
+
+  useEffect(() => {
+    const background05Color = background05.get();
+    SystemUI.setBackgroundColorAsync(background05Color);
+  }, []);
 
   return (
     <Stack
       screenOptions={{
-        headerTitleStyle: {
-          fontFamily: "Inter",
+        headerStyle: {
+          backgroundColor,
         },
+        headerRight: () => <Menu />,
+        headerTitle: () => <Logo />,
       }}
     >
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

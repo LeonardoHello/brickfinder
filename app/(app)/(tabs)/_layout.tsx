@@ -1,13 +1,15 @@
 import { Tabs } from "expo-router";
 
 import { Home, Search, Settings } from "@tamagui/lucide-icons";
-import { useTheme } from "tamagui";
+import { XStack, useTheme } from "tamagui";
 
-import MenuButton from "@/components/MenuButton";
+import Logo from "@/components/Logo";
+import Menu from "@/components/Menu";
 import { useClientOnlyValue } from "@/lib/hooks/useClientOnlyValue";
 
 export default function TabLayout() {
-  const theme = useTheme();
+  const { background } = useTheme();
+  const backgroundColor = background.get();
 
   return (
     <Tabs
@@ -15,16 +17,18 @@ export default function TabLayout() {
         // Disable the static render of the header on web
         // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
-        headerTitleStyle: {
-          fontFamily: "Inter",
-        },
-        headerStyle: { backgroundColor: theme.background.val },
-        headerRight: () => <MenuButton />,
+        headerStyle: { backgroundColor },
+        headerTitle: () => <Logo />,
+        headerRight: () => (
+          <XStack mr={"$3"}>
+            <Menu />
+          </XStack>
+        ),
         tabBarStyle: {
-          backgroundColor: theme.background.val,
+          backgroundColor,
           borderTopWidth: 0,
         },
-        tabBarLabelStyle: { fontFamily: "Inter" },
+        tabBarLabelStyle: { fontFamily: "Silkscreen" },
         tabBarItemStyle: { padding: 2 },
       }}
     >
@@ -38,14 +42,12 @@ export default function TabLayout() {
       <Tabs.Screen
         name="jobs"
         options={{
-          title: "Jobs",
           tabBarIcon: ({ color }) => <Search color={color} />,
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
-          title: "Settings",
           tabBarIcon: ({ color }) => <Settings color={color} />,
         }}
       />

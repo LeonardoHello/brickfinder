@@ -6,7 +6,7 @@ export default function SettingsScreen() {
       flex={1}
       alignItems="center"
       justifyContent="center"
-      backgroundColor={"$background05"}
+      backgroundColor={"$background075"}
     >
       <H1>Oink Oink!</H1>
     </YStack>

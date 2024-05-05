@@ -12,13 +12,15 @@ export default function JobsScreen() {
       flex={1}
       alignItems="center"
       justifyContent="center"
-      backgroundColor={"$background05"}
+      backgroundColor={"$background075"}
     >
-      <FlatList
-        data={posts.data}
-        renderItem={({ item }) => <SizableText>{item.text}</SizableText>}
-        keyExtractor={(item) => item.id}
-      />
+      <YStack>
+        <FlatList
+          data={posts.data}
+          renderItem={({ item }) => <SizableText>{item.text}</SizableText>}
+          keyExtractor={(item) => item.id}
+        />
+      </YStack>
     </YStack>
   );
 }

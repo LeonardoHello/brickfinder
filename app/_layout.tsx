@@ -7,6 +7,7 @@ import { SplashScreen } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 
 import { ClerkProvider } from "@clerk/clerk-expo";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import {
   DarkTheme,
   DefaultTheme,
@@ -49,6 +50,8 @@ export default function RootLayout() {
   const [loaded, error] = useFonts({
     Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
     InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
+    Silkscreen: require("@tamagui/font-silkscreen/files/slkscr.ttf"),
+    ...FontAwesome6.font,
   });
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
