@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useColorScheme } from "react-native";
+import { Platform, useColorScheme } from "react-native";
 
 import { useFonts } from "expo-font";
 import { Slot } from "expo-router";
@@ -15,9 +15,13 @@ import {
 } from "@react-navigation/native";
 import { TamaguiProvider, Theme } from "tamagui";
 
-// import "../tamagui-web.css";
 import { tamaguiConfig } from "../tamagui.config";
 import { TRPCReactProvider } from "@/trpc/Provider";
+
+if (Platform.OS === "web") {
+  // @ts-expect-error
+  import("../tamagui-web.css");
+}
 
 export {
   // Catch any errors thrown by the Layout component.
