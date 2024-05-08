@@ -93,9 +93,7 @@ export default function ModalScreen() {
             }}
           >
             <FontAwesome6 name="facebook" size={36} color={color} />
-            <SizableText fontSize={"$5"} fontFamily={"$silkscreen"}>
-              Facebook
-            </SizableText>
+            <SizableText fontFamily={"$silkscreen"}>Facebook</SizableText>
           </ListItem>
         </YGroup.Item>
         <Separator />
@@ -110,9 +108,7 @@ export default function ModalScreen() {
             }}
           >
             <FontAwesome6 name="google" size={36} color={color} />
-            <SizableText fontSize={"$5"} fontFamily={"$silkscreen"}>
-              Google
-            </SizableText>
+            <SizableText fontFamily={"$silkscreen"}>Google</SizableText>
           </ListItem>
         </YGroup.Item>
         <Separator />
@@ -127,9 +123,7 @@ export default function ModalScreen() {
             }}
           >
             <FontAwesome6 name="microsoft" size={36} color={color} />
-            <SizableText fontSize={"$5"} fontFamily={"$silkscreen"}>
-              Microsoft
-            </SizableText>
+            <SizableText fontFamily={"$silkscreen"}>Microsoft</SizableText>
           </ListItem>
         </YGroup.Item>
         <Separator />
@@ -144,9 +138,7 @@ export default function ModalScreen() {
             }}
           >
             <FontAwesome6 name="linkedin" size={36} color={color} />
-            <SizableText fontSize={"$5"} fontFamily={"$silkscreen"}>
-              Linkedin
-            </SizableText>
+            <SizableText fontFamily={"$silkscreen"}>Linkedin</SizableText>
           </ListItem>
         </YGroup.Item>
       </YGroup>
