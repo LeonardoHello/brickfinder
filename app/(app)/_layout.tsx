@@ -6,7 +6,6 @@ import * as SystemUI from "expo-system-ui";
 import { useAuth } from "@clerk/clerk-expo";
 import { useTheme } from "tamagui";
 
-import Logo from "@/components/Logo";
 import Menu from "@/components/Menu";
 
 export const unstable_settings = {
@@ -30,8 +29,8 @@ export default function AppLayout() {
         headerStyle: {
           backgroundColor,
         },
+        headerTitleStyle: { fontFamily: "Silkscreen" },
         headerRight: () => <Menu />,
-        headerTitle: () => <Logo />,
       }}
     >
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
