@@ -115,7 +115,7 @@ export default function UserProfileForm({
               onChangeText={onChange}
               disabled={disabled}
               value={value}
-              o={disabled ? 0.5 : 1}
+              disabledStyle={{ opacity: 0.5 }}
               h={"$5"}
               bw={0}
             />
@@ -137,7 +137,7 @@ export default function UserProfileForm({
               onChangeText={onChange}
               disabled={disabled}
               value={value}
-              o={disabled ? 0.5 : 1}
+              disabledStyle={{ opacity: 0.5 }}
               h={"$5"}
               bw={0}
             />
@@ -168,7 +168,7 @@ export default function UserProfileForm({
               onChangeText={onChange}
               disabled={disabled}
               value={value}
-              o={disabled ? 0.5 : 1}
+              disabledStyle={{ opacity: 0.5 }}
               h={"$5"}
               bw={0}
             />
