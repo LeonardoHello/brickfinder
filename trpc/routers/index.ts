@@ -2,10 +2,10 @@ import type { inferReactQueryProcedureOptions } from "@trpc/react-query";
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 
 import { router } from "../";
-import { postRouter } from "./post";
+import { userRouter } from "./user";
 
 export const appRouter = router({
-  post: postRouter,
+  user: userRouter,
 });
 
 export type AppRouter = typeof appRouter;
