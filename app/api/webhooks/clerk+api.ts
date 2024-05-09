@@ -65,13 +65,6 @@ export async function POST(request: ExpoRequest) {
       });
       break;
 
-    case "user.updated":
-      await db.update(users).set({
-        firstName: data.first_name ?? "",
-        lastName: data.last_name ?? "",
-      });
-      break;
-
     case "user.deleted":
       if (data.id) {
         await db.delete(users).where(eq(users.id, data.id));
