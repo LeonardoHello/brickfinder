@@ -1,18 +1,9 @@
-import { useEffect, useState } from "react";
-import { Platform } from "react-native";
+import { useState } from "react";
 
-import * as NavigationBar from "expo-navigation-bar";
 import { Link } from "expo-router";
-import * as SystemUI from "expo-system-ui";
 
 import { useAuth } from "@clerk/clerk-expo";
-import {
-  Menu as MenuIcon,
-  Moon,
-  Settings,
-  Sun,
-  UserCog,
-} from "@tamagui/lucide-icons";
+import { Menu as MenuIcon, Settings, UserCog } from "@tamagui/lucide-icons";
 import { Button, Sheet, Spinner, YStack } from "tamagui";
 
 export default function Menu() {
@@ -80,36 +71,20 @@ export default function Menu() {
               </Link>
             )}
             {isSignedIn && (
-              <>
+              <Link href={"/(app)/profile"} asChild>
                 <Button
+                  iconAfter={UserCog}
                   scaleIcon={1.5}
                   gap={"$1.5"}
                   justifyContent="flex-start"
                   borderWidth={0}
                   fontFamily={"$silkscreen"}
                   chromeless
-                  onPress={() => {
-                    signOut();
-                    closeModal();
-                  }}
+                  onPress={closeModal}
                 >
-                  log out
+                  profile
                 </Button>
-                <Link href={"/(app)/profile"} asChild>
-                  <Button
-                    iconAfter={UserCog}
-                    scaleIcon={1.5}
-                    gap={"$1.5"}
-                    justifyContent="flex-start"
-                    borderWidth={0}
-                    fontFamily={"$silkscreen"}
-                    chromeless
-                    onPress={closeModal}
-                  >
-                    profile
-                  </Button>
-                </Link>
-              </>
+              </Link>
             )}
             <Link href={"/(app)/(tabs)/settings"} asChild>
               <Button
@@ -125,6 +100,22 @@ export default function Menu() {
                 settings
               </Button>
             </Link>
+            {isSignedIn && (
+              <Button
+                scaleIcon={1.5}
+                gap={"$1.5"}
+                justifyContent="flex-start"
+                borderWidth={0}
+                fontFamily={"$silkscreen"}
+                chromeless
+                onPress={() => {
+                  signOut();
+                  closeModal();
+                }}
+              >
+                log out
+              </Button>
+            )}
           </YStack>
         </Sheet.Frame>
       </Sheet>
