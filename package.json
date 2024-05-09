@@ -58,7 +58,8 @@
     "react-native-svg": "14.1.0",
     "react-native-web": "~0.19.6",
     "svix": "^1.21.0",
-    "tamagui": "^1.96.0"
+    "tamagui": "^1.96.0",
+    "react-native-reanimated": "~3.6.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
