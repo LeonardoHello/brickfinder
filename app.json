@@ -37,7 +37,7 @@
       [
         "expo-router",
         {
-          "origin": "https://my-app-ten-rouge.vercel.app/"
+          "origin": "https://brickfinder-ten-rouge.vercel.app/"
         }
       ],
       "expo-secure-store"
