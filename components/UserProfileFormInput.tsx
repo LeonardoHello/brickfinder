@@ -18,7 +18,6 @@ export default function UserProfileFormInput({
 }) {
   const {
     field: { onChange, onBlur, value, disabled },
-    fieldState: { error },
   } = useController({ control, name });
 
   return (
@@ -37,8 +36,6 @@ export default function UserProfileFormInput({
         bw={0}
         disabledStyle={{ opacity: 0.5 }}
       />
-
-      {error && <SizableText color={"$red5"}>{error.message}</SizableText>}
     </YStack>
   );
 }
