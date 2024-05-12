@@ -32,7 +32,7 @@ export const users = pgTable(
     ),
     firstName: text("first_name").notNull().default(""),
     lastName: text("last_name").notNull().default(""),
-    email: text("email").notNull(),
+    email: text("email").notNull().unique(),
     imageUrl: text("image_url").notNull(),
     skills: customJsonb<{
       job: (typeof SKILLS)["jobs"][number];
