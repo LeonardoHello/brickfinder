@@ -1,10 +1,8 @@
 {
-  "id": "e86fbfac-0817-451e-bb62-9f0e37d467bb",
-  "prevId": "0b47fb8a-46c3-4f9e-b1a3-c734c9aa1e80",
-  "version": "5",
-  "dialect": "pg",
+  "version": "6",
+  "dialect": "postgresql",
   "tables": {
-    "posts": {
+    "public.posts": {
       "name": "posts",
       "schema": "",
       "columns": {
@@ -55,7 +53,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "users": {
+    "public.users": {
       "name": "users",
       "schema": "",
       "columns": {
@@ -127,8 +125,10 @@
   "enums": {},
   "schemas": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
-  }
+    "tables": {},
+    "columns": {}
+  },
+  "id": "e86fbfac-0817-451e-bb62-9f0e37d467bb",
+  "prevId": "0b47fb8a-46c3-4f9e-b1a3-c734c9aa1e80"
 }
