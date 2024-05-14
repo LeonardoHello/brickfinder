@@ -16,8 +16,12 @@
       "barStyle": "light-content",
       "backgroundColor": "#161616"
     },
-    "androidNavigationBar": { "backgroundColor": "#161616" },
-    "assetBundlePatterns": ["**/*"],
+    "androidNavigationBar": {
+      "backgroundColor": "#161616"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -40,7 +44,8 @@
           "origin": "https://brickfinder-ten-rouge.vercel.app/"
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
