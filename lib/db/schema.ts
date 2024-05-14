@@ -73,6 +73,7 @@ export const companies = pgTable(
       () => new Date(),
     ),
     name: text("name").notNull().unique(),
+    email: text("email").notNull(),
     address: text("address").notNull(),
     about: text("about"),
   },
