@@ -1,5 +1,3 @@
-import type { ExpoRequest } from "expo-router/server";
-
 import type { WebhookEvent } from "@clerk/clerk-sdk-node";
 import { eq } from "drizzle-orm";
 import { Webhook } from "svix";
@@ -7,7 +5,7 @@ import { Webhook } from "svix";
 import db from "@/lib/db";
 import { users } from "@/lib/db/schema";
 
-export async function POST(request: ExpoRequest) {
+export async function POST(request: Request) {
   const CLERK_WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
 
   if (!CLERK_WEBHOOK_SECRET) {
