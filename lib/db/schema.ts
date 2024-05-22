@@ -14,7 +14,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { createSelectSchema } from "drizzle-zod";
 
-import Skills from "../constants/Skills";
+import Jobs from "../constants/Jobs";
 
 const customJsonb = <TData>(name: string) =>
   customType<{ data: TData; driverData: string }>({
@@ -46,8 +46,8 @@ export const users = pgTable(
     email: text("email").notNull().unique(),
     imageUrl: text("image_url").notNull(),
     skills: customJsonb<{
-      job: (typeof Skills)["jobs"][number];
-      yearsOfExperience: (typeof Skills)["yearsOfExperience"][number];
+      job: (typeof Jobs)[number];
+      yearsOfExperience: string;
     }>("skills")
       .array()
       .notNull()
@@ -127,8 +127,8 @@ export const jobs = pgTable(
     type: jobTypeEnum("job_type").notNull(),
     salary: integer("salary").notNull(),
     requirements: customJsonb<{
-      job: (typeof Skills)["jobs"][number];
-      yearsOfExperience: (typeof Skills)["yearsOfExperience"][number];
+      job: (typeof Jobs)[number];
+      yearsOfExperience: string;
     }>("requirements")
       .array()
       .notNull()

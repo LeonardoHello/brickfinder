@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { publicProcedure, router } from "..";
-import SKILLS from "@/lib/constants/Skills";
+import Jobs from "@/lib/constants/Jobs";
 import { UserSchema, users } from "@/lib/db/schema";
 
 const UserUpdateSchema = z.object({
@@ -11,8 +11,12 @@ const UserUpdateSchema = z.object({
   lastName: UserSchema.shape.lastName.trim(),
   skills: z
     .object({
-      job: z.enum(SKILLS["jobs"]),
-      yearsOfExperience: z.enum(SKILLS["yearsOfExperience"]),
+      job: z.enum(Jobs),
+      yearsOfExperience: z
+        .string()
+        .trim()
+        // limits to 1 decimal number but only if provided
+        .transform((shape) => Number(Number(shape).toFixed(1)) + ""),
     })
     .array(),
 });
