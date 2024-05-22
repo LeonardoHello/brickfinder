@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { Button, Form, Label, Spinner, Theme, YStack } from "tamagui";
+import {
+  Button,
+  Form,
+  Label,
+  SizableText,
+  Spinner,
+  Theme,
+  YStack,
+} from "tamagui";
 import { z } from "zod";
 
 import UserProfileFormInput from "./UserProfileFormInput";
-import Ajoj from "./UserProfileFormSelect";
 import UserProfileFormSelect from "./UserProfileFormSelect";
-import SKILLS from "@/lib/constants/Skills";
+import Jobs from "@/lib/constants/Jobs";
 import { UserSchema } from "@/lib/db/schema";
 import { trpc } from "@/lib/utils/trpc";
 import { RouterOutputs } from "@/trpc/routers";
@@ -18,8 +25,8 @@ const FormSchema = z.object({
   email: UserSchema.shape.email.email(),
   skills: z
     .object({
-      job: z.enum(SKILLS.jobs),
-      yearsOfExperience: z.enum(SKILLS.yearsOfExperience),
+      job: z.enum(Jobs),
+      yearsOfExperience: z.string(),
     })
     .array(),
 });
@@ -32,16 +39,6 @@ export default function UserProfileForm({
   currentUser: NonNullable<RouterOutputs["user"]["getById"]>;
 }) {
   const [edit, setEdit] = useState(false);
-
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { isSubmitting, errors },
-  } = useForm({
-    disabled: !edit,
-    defaultValues: rest,
-  });
 
   const utils = trpc.useUtils();
   const updateUser = trpc.user.update.useMutation({
@@ -57,7 +54,6 @@ export default function UserProfileForm({
       });
 
       setEdit(false);
-
       // TODO: toast success message
     },
     onError: async (error) => {
@@ -66,6 +62,19 @@ export default function UserProfileForm({
       // TODO: toast error message
     },
   });
+
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting, errors, disabled },
+  } = useForm({
+    disabled: !edit || updateUser.isLoading,
+    values: rest,
+    defaultValues: rest,
+  });
+
+  const ctrl = useMemo(() => control, []);
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     updateUser.mutate({ ...data, userId: id });
@@ -82,50 +91,57 @@ export default function UserProfileForm({
   return (
     <Form onSubmit={handleSubmit(onSubmit)} gap={"$4"}>
       <UserProfileFormInput
-        control={control}
+        control={ctrl}
         name="firstName"
         label="First name"
       />
+      <UserProfileFormInput control={ctrl} name="lastName" label="Last name" />
       <UserProfileFormInput
-        control={control}
-        name="lastName"
-        label="First name"
-      />
-      <UserProfileFormInput
-        control={control}
+        control={ctrl}
         name="email"
         label="Email address"
         required
       />
+
       <YStack>
         <Label>Skills</Label>
-        <UserProfileFormSelect
-          control={control}
-          edit={edit}
-          isError={!!errors.skills}
-        />
+        <UserProfileFormSelect control={ctrl} disabled={disabled} />
+
+        {errors.skills &&
+          !!errors.skills.filter!((_) => _ !== undefined)[0]?.job && (
+            <SizableText color={"$red5"}>
+              Selected jobs must be unique.
+            </SizableText>
+          )}
+        {errors.skills &&
+          !!errors.skills.filter!((_) => _ !== undefined)[0]
+            ?.yearsOfExperience && (
+            <SizableText color={"$red5"}>
+              Years of experience must be a valid number under 100.
+            </SizableText>
+          )}
       </YStack>
 
-      {!edit && (
-        <Button variant="outlined" onPress={handleEnableEdit}>
-          Edit
-        </Button>
-      )}
-
-      {edit && (
+      {!disabled && (
         <YStack gap={"$2"}>
-          <Form.Trigger asChild disabled={updateUser.isLoading}>
-            <Button
-              icon={isSubmitting || updateUser.isLoading ? Spinner : undefined}
-            >
-              Update
-            </Button>
-          </Form.Trigger>
+          <Theme name={"blue_surface2"}>
+            <Form.Trigger asChild disabled={updateUser.isLoading}>
+              <Button
+                icon={
+                  isSubmitting || updateUser.isLoading ? Spinner : undefined
+                }
+              >
+                Update
+              </Button>
+            </Form.Trigger>
+          </Theme>
           <Theme name={"red"}>
             <Button onPress={handleCancelEdit}>Cancel</Button>
           </Theme>
         </YStack>
       )}
+
+      {disabled && <Button onPress={handleEnableEdit}>Edit</Button>}
     </Form>
   );
 }

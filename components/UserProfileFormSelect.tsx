@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import { Control, Controller, useFieldArray } from "react-hook-form";
 import { FlatList } from "react-native";
 
@@ -8,27 +8,25 @@ import {
   Adapt,
   Button,
   Input,
+  Label,
   Select,
   type SelectProps,
-  type SelectTriggerProps,
+  Separator,
   Sheet,
-  SizableText,
   XStack,
   YStack,
 } from "tamagui";
 import { LinearGradient } from "tamagui/linear-gradient";
 
 import type { FormSchema } from "./UserProfileForm";
-import Skills from "@/lib/constants/Skills";
+import Jobs from "@/lib/constants/Jobs";
 
-export default function UserProfileFormSelect({
+export default memo(function UserProfileFormSelect({
   control,
-  edit,
-  isError,
+  disabled,
 }: {
   control: Control<FormSchema>;
-  edit: boolean;
-  isError: boolean;
+  disabled: boolean;
 }) {
   const { fields, append, remove } = useFieldArray({
     control,
@@ -36,143 +34,170 @@ export default function UserProfileFormSelect({
   });
 
   const addSkill = () => {
+    if (disabled) return;
+
     append({
-      job: Skills["jobs"][fields.length],
-      yearsOfExperience: Skills["yearsOfExperience"][0],
+      job: Jobs[0],
+      yearsOfExperience: "0",
     });
   };
 
-  if (fields.length === 0 && !edit) {
+  if (!fields.length) {
     return (
-      <Input
-        placeholder="No skills selected"
-        disabled
-        editable={false}
-        textAlign="center"
-        bw={0}
-        h={"$5"}
-        opacity={0.5}
-      />
+      <YStack onPress={addSkill} disabled={disabled}>
+        <Input
+          value="No skills selected"
+          disabled={disabled}
+          readOnly
+          textAlign="center"
+          bw={0}
+          h={"$5"}
+          disabledStyle={{ opacity: 0.5 }}
+        />
+      </YStack>
     );
   }
 
   return (
-    <>
-      <YStack gap={"$1.5"}>
-        <XStack gap={"$2"}>
-          <SizableText
-            color={"gray"}
-            size={"$2"}
-            w={edit ? "$18" : "$20"}
-            textTransform="uppercase"
-          >
-            job
-          </SizableText>
-          <SizableText color={"gray"} size={"$2"} textTransform="uppercase">
-            yrs. exp.
-          </SizableText>
-        </XStack>
-        <FlatList
-          data={fields}
-          scrollEnabled={false}
-          renderItem={({ index }) => (
-            <XStack gap={"$2"} mt={index !== 0 ? "$2" : 0} h={"$5"}>
-              <XStack w={edit ? "$18" : "$20"}>
-                <Controller
-                  control={control}
-                  name={`skills.${index}.job`}
-                  rules={{
-                    required: true,
-                    validate: (value, formValues) => {
-                      const sameJobs = formValues.skills.filter(
-                        (skill) => skill.job === value,
-                      );
-
-                      return sameJobs.length < 2;
-                    },
-                  }}
-                  render={({ field }) => (
-                    <SkillSelect
-                      items={Skills["jobs"]}
-                      label="JOBS"
-                      selectProps={{
-                        name: field.name,
-                        value: field.value,
-                        onValueChange: field.onChange,
-                      }}
-                      SelectTriggerProps={{ disabled: field.disabled }}
-                    />
-                  )}
-                />
-              </XStack>
-              <XStack w={"$8"}>
-                <Controller
-                  control={control}
-                  name={`skills.${index}.yearsOfExperience`}
-                  rules={{ required: true }}
-                  render={({ field }) => (
-                    <SkillSelect
-                      items={Skills["yearsOfExperience"]}
-                      label="YEARS OF EXPERIENCE"
-                      selectProps={{
-                        name: field.name,
-                        value: field.value,
-                        onValueChange: field.onChange,
-                      }}
-                      SelectTriggerProps={{ disabled: field.disabled }}
-                    />
-                  )}
-                />
-              </XStack>
-
-              {edit && (
-                <Button
-                  variant="outlined"
-                  icon={X}
-                  h={"full"}
-                  px={0}
-                  w={"$2.5"}
-                  onPress={() => remove(index)}
-                />
-              )}
-            </XStack>
-          )}
-          keyExtractor={(item) => item.id}
-        />
-        {isError && (
-          <SizableText color={"$red5"}>
-            Selected jobs must be unique.
-          </SizableText>
-        )}
-      </YStack>
-
-      {edit && (
-        <Button
-          variant="outlined"
-          mt={fields.length > 0 ? "$2" : 0}
-          onPress={addSkill}
+    <YStack>
+      <XStack>
+        <Label
+          disabled={disabled}
+          flex={1}
+          size={"$2"}
+          color={"gray"}
+          textTransform="uppercase"
         >
+          job
+        </Label>
+        <Label
+          disabled={disabled}
+          size={"$2"}
+          mr={"$9"}
+          color={"gray"}
+          textTransform="uppercase"
+          disabledStyle={{ mr: "$3" }}
+        >
+          yrs. exp.
+        </Label>
+      </XStack>
+
+      <FlatList
+        data={fields}
+        scrollEnabled={false}
+        ItemSeparatorComponent={() => <Separator mt={"$2"} borderWidth={0} />}
+        renderItem={({ index }) => (
+          <ListItem control={control} index={index}>
+            {!disabled && (
+              <Button
+                variant="outlined"
+                icon={X}
+                h={"full"}
+                px={0}
+                w={"$2.5"}
+                onPress={() => remove(index)}
+              />
+            )}
+          </ListItem>
+        )}
+        keyExtractor={(item) => item.id}
+      />
+      {!disabled && (
+        <Button variant="outlined" mt={"$2"} onPress={addSkill}>
           Add skill
         </Button>
       )}
-    </>
+    </YStack>
+  );
+});
+
+function ListItem({
+  children,
+  control,
+  index,
+}: {
+  children: React.ReactNode;
+  control: Control<FormSchema>;
+  index: number;
+}) {
+  return (
+    <XStack gap={"$2"} h={"$5"} flex={1}>
+      <XStack flex={1}>
+        <Controller
+          control={control}
+          name={`skills.${index}.job`}
+          rules={{
+            required: true,
+            validate: (value, formValues) => {
+              const sameJobs = formValues.skills.filter(
+                (skill) => skill.job === value,
+              );
+
+              return sameJobs.length < 2;
+            },
+          }}
+          render={({ field }) => {
+            if (field.disabled) {
+              return (
+                <Input
+                  f={1}
+                  value={field.value}
+                  disabled={field.disabled}
+                  readOnly
+                  h={"full"}
+                  bw={0}
+                  disabledStyle={{ opacity: 0.5 }}
+                />
+              );
+            }
+            return (
+              <SkillSelect
+                selectProps={{
+                  name: field.name,
+                  value: field.value,
+                  onValueChange: field.onChange,
+                }}
+              />
+            );
+          }}
+        />
+      </XStack>
+      <Controller
+        control={control}
+        name={`skills.${index}.yearsOfExperience`}
+        rules={{
+          required: true,
+          validate: (value) => {
+            return (
+              !isNaN(Number(Number(value).toFixed(1))) &&
+              Number(Number(value).toFixed(1)) < 100
+            );
+          },
+        }}
+        render={({ field }) => (
+          <Input
+            value={field.value}
+            onBlur={field.onBlur}
+            onChangeText={field.onChange}
+            disabled={field.disabled}
+            keyboardType="numeric"
+            w={"$7"}
+            h={"full"}
+            bw={0}
+            textAlign="center"
+            disabledStyle={{ opacity: 0.5 }}
+          />
+        )}
+      />
+      {children}
+    </XStack>
   );
 }
 
-function SkillSelect({
-  items,
-  label,
-  selectProps,
-  SelectTriggerProps,
-}: {
-  items: (typeof Skills)["jobs"] | (typeof Skills)["yearsOfExperience"];
-  label: string;
-  selectProps?: SelectProps;
-  SelectTriggerProps?: SelectTriggerProps;
-}) {
+function SkillSelect({ selectProps }: { selectProps?: SelectProps }) {
   return (
     <Select disablePreventBodyScroll {...selectProps}>
-      <Select.Trigger iconAfter={ChevronDown} bw={0} {...SelectTriggerProps}>
+      <Select.Trigger iconAfter={ChevronDown} h={"full"} bw={0}>
         <Select.Value />
       </Select.Trigger>
 
@@ -229,11 +254,11 @@ function SkillSelect({
           minWidth={200}
         >
           <Select.Group>
-            <Select.Label>{label}</Select.Label>
+            <Select.Label>JOBS</Select.Label>
             {/* for longer lists memoizing these is useful */}
             {useMemo(
               () =>
-                items.map((item, i) => {
+                Jobs.map((item, i) => {
                   return (
                     <Select.Item
                       index={i}
@@ -247,7 +272,7 @@ function SkillSelect({
                     </Select.Item>
                   );
                 }),
-              [items],
+              [Jobs],
             )}
           </Select.Group>
         </Select.Viewport>

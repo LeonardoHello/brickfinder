@@ -3,12 +3,23 @@ import { useState } from "react";
 import { Link } from "expo-router";
 
 import { useAuth } from "@clerk/clerk-expo";
-import { Menu as MenuIcon, Settings, UserCog } from "@tamagui/lucide-icons";
-import { Button, Sheet, Spinner, YStack } from "tamagui";
+import {
+  BadgeInfo,
+  Building2,
+  ClipboardCheck,
+  ClipboardList,
+  Menu as MenuIcon,
+  Settings,
+  User as UserIcon,
+} from "@tamagui/lucide-icons";
+import { Button, Separator, Sheet, Spinner, YStack } from "tamagui";
+
+import { User } from "@/lib/db/schema";
+import { trpc } from "@/lib/utils/trpc";
 
 export default function Menu() {
   const [open, setOpen] = useState(false);
-  const { isLoaded, isSignedIn, signOut } = useAuth();
+  const { isLoaded, isSignedIn, signOut, userId } = useAuth();
 
   if (!isLoaded) {
     return (
@@ -25,7 +36,6 @@ export default function Menu() {
   const openModal = () => {
     setOpen(true);
   };
-
   const closeModal = () => {
     setOpen(false);
   };
@@ -70,27 +80,61 @@ export default function Menu() {
                 </Button>
               </Link>
             )}
+
             {isSignedIn && (
-              <Link href={"/(app)/profile"} asChild>
-                <Button
-                  iconAfter={UserCog}
-                  scaleIcon={1.5}
-                  gap={"$1.5"}
-                  justifyContent="flex-start"
-                  borderWidth={0}
-                  fontFamily={"$silkscreen"}
-                  chromeless
-                  onPress={closeModal}
-                >
-                  profile
-                </Button>
-              </Link>
+              <>
+                <Link href={"/(app)/profile"} asChild>
+                  <Button
+                    iconAfter={UserIcon}
+                    scaleIcon={1.5}
+                    justifyContent="flex-start"
+                    borderWidth={0}
+                    fontFamily={"$silkscreen"}
+                    chromeless
+                    onPress={closeModal}
+                  >
+                    profile
+                  </Button>
+                </Link>
+                <Link href={"/(app)/applied-jobs"} asChild>
+                  <Button
+                    iconAfter={ClipboardCheck}
+                    scaleIcon={1.5}
+                    justifyContent="flex-start"
+                    borderWidth={0}
+                    fontFamily={"$silkscreen"}
+                    chromeless
+                    onPress={closeModal}
+                  >
+                    applied jobs
+                  </Button>
+                </Link>
+              </>
             )}
-            <Link href={"/(app)/(tabs)/settings"} asChild>
+
+            {isSignedIn && (
+              <CompanyOwnerButtons userId={userId} closeModal={closeModal} />
+            )}
+
+            <Separator />
+
+            <Link href={"/(app)/about-us"} asChild>
+              <Button
+                iconAfter={BadgeInfo}
+                scaleIcon={1.5}
+                justifyContent="flex-start"
+                borderWidth={0}
+                fontFamily={"$silkscreen"}
+                chromeless
+                onPress={closeModal}
+              >
+                about us
+              </Button>
+            </Link>
+            <Link href={"/(app)/settings"} asChild>
               <Button
                 iconAfter={Settings}
                 scaleIcon={1.5}
-                gap={"$1.5"}
                 justifyContent="flex-start"
                 borderWidth={0}
                 fontFamily={"$silkscreen"}
@@ -100,25 +144,76 @@ export default function Menu() {
                 settings
               </Button>
             </Link>
+
             {isSignedIn && (
-              <Button
-                scaleIcon={1.5}
-                gap={"$1.5"}
-                justifyContent="flex-start"
-                borderWidth={0}
-                fontFamily={"$silkscreen"}
-                chromeless
-                onPress={() => {
-                  signOut();
-                  closeModal();
-                }}
-              >
-                log out
-              </Button>
+              <>
+                <Separator />
+                <Button
+                  scaleIcon={1.5}
+                  justifyContent="flex-start"
+                  borderWidth={0}
+                  fontFamily={"$silkscreen"}
+                  chromeless
+                  onPress={() => {
+                    signOut();
+                    closeModal();
+                  }}
+                >
+                  log out
+                </Button>
+              </>
             )}
           </YStack>
         </Sheet.Frame>
       </Sheet>
+    </>
+  );
+}
+
+function CompanyOwnerButtons({
+  userId,
+  closeModal,
+}: {
+  userId: User["id"];
+  closeModal: () => void;
+}) {
+  const { data: companies } = trpc.company.getByUserId.useQuery(userId, {
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
+
+  if (!companies || companies.length === 0) {
+    return null;
+  }
+
+  return (
+    <>
+      <Link href={"/(app)/your-companies"} asChild>
+        <Button
+          iconAfter={Building2}
+          scaleIcon={1.5}
+          justifyContent="flex-start"
+          borderWidth={0}
+          fontFamily={"$silkscreen"}
+          chromeless
+          onPress={closeModal}
+        >
+          your companies
+        </Button>
+      </Link>
+      <Link href={"/(app)/applicants"} asChild>
+        <Button
+          iconAfter={ClipboardList}
+          scaleIcon={1.5}
+          justifyContent="flex-start"
+          borderWidth={0}
+          fontFamily={"$silkscreen"}
+          chromeless
+          onPress={closeModal}
+        >
+          applicants
+        </Button>
+      </Link>
     </>
   );
 }
