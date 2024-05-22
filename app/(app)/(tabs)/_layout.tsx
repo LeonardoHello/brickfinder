@@ -1,13 +1,13 @@
 import { Tabs } from "expo-router";
 
-import { Home, Search, Settings } from "@tamagui/lucide-icons";
+import { Building2, Hammer } from "@tamagui/lucide-icons";
 import { XStack, useTheme } from "tamagui";
 
 import Logo from "@/components/Logo";
 import Menu from "@/components/Menu";
 import { useClientOnlyValue } from "@/lib/hooks/useClientOnlyValue";
 
-export default function TabLayout() {
+export default function TabsLayout() {
   const { background } = useTheme();
   const backgroundColor = background.get();
 
@@ -35,20 +35,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
-          tabBarIcon: ({ color }) => <Home color={color} />,
+          title: "jobs",
+          tabBarIcon: ({ color }) => <Hammer color={color} />,
         }}
       />
       <Tabs.Screen
-        name="jobs"
+        name="companies"
         options={{
-          tabBarIcon: ({ color }) => <Search color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          tabBarIcon: ({ color }) => <Settings color={color} />,
+          tabBarIcon: ({ color }) => <Building2 color={color} />,
         }}
       />
     </Tabs>

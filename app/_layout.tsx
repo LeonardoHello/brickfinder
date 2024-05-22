@@ -3,8 +3,8 @@ import { Platform, useColorScheme } from "react-native";
 
 import { useFonts } from "expo-font";
 import { Slot } from "expo-router";
-import { SplashScreen } from "expo-router";
 import * as SecureStore from "expo-secure-store";
+import * as SplashScreen from "expo-splash-screen";
 
 import { ClerkProvider } from "@clerk/clerk-expo";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
@@ -51,7 +51,7 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const colorScheme = useColorScheme();
 
-  const [loaded, error] = useFonts({
+  const [fontsLoaded, fontError] = useFonts({
     Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
     InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
     Silkscreen: require("@tamagui/font-silkscreen/files/slkscr.ttf"),
@@ -60,16 +60,16 @@ export default function RootLayout() {
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
-    if (error) throw error;
-  }, [error]);
+    if (fontError) throw fontError;
+  }, [fontError]);
 
   useEffect(() => {
-    if (loaded) {
+    if (fontsLoaded) {
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [fontsLoaded]);
 
-  if (!loaded) {
+  if (!fontsLoaded) {
     return null;
   }
 
