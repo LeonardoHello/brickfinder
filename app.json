@@ -19,9 +19,7 @@
     "androidNavigationBar": {
       "backgroundColor": "#161616"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
