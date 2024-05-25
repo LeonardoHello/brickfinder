@@ -52,6 +52,7 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
 
   const [fontsLoaded, fontError] = useFonts({
+    InterLight: require("@tamagui/font-inter/otf/Inter-Light.otf"),
     Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
     InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
     Silkscreen: require("@tamagui/font-silkscreen/files/slkscr.ttf"),
