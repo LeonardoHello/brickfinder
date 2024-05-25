@@ -50,7 +50,7 @@ export default function UserProfileForm({
           return utils.user.getById.getData();
         }
 
-        return { ...updater, ...newData };
+        return { ...updater, ...newData, updatedAt: new Date() };
       });
 
       setEdit(false);
