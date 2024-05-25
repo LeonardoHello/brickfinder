@@ -96,7 +96,7 @@ export default function Menu() {
                     profile
                   </Button>
                 </Link>
-                <Link href={"/(app)/applied-jobs"} asChild>
+                <Link href={"/(app)/applications"} asChild>
                   <Button
                     iconAfter={ClipboardCheck}
                     scaleIcon={1.5}
@@ -106,7 +106,7 @@ export default function Menu() {
                     chromeless
                     onPress={closeModal}
                   >
-                    applied jobs
+                    applications
                   </Button>
                 </Link>
               </>

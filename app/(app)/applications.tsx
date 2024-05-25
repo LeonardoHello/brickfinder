@@ -1,6 +1,6 @@
 import { H1, YStack } from "tamagui";
 
-export default function AppliedJobsScreen() {
+export default function ApplicationsScreen() {
   return (
     <YStack
       flex={1}

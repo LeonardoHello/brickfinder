@@ -45,7 +45,7 @@ export default function AppLayout() {
       <Stack.Screen name="profile" />
       <Stack.Screen name="settings" />
       <Stack.Screen name="about-us" options={{ title: "about us" }} />
-      <Stack.Screen name="applied-jobs" options={{ title: "applied jobs" }} />
+      <Stack.Screen name="applications" />
       <Stack.Screen
         name="your-companies"
         options={{ title: "your companies" }}
