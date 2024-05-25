@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Platform, useColorScheme } from "react-native";
+import { Platform, View, useColorScheme } from "react-native";
 
 import { useFonts } from "expo-font";
 import { Slot } from "expo-router";
@@ -70,7 +70,7 @@ export default function RootLayout() {
   }, [fontsLoaded]);
 
   if (!fontsLoaded) {
-    return null;
+    return <View />;
   }
 
   return (
