@@ -1,6 +1,6 @@
 import { Tabs } from "expo-router";
 
-import { Building2, Hammer } from "@tamagui/lucide-icons";
+import { ClipboardCheck, Hammer, User } from "@tamagui/lucide-icons";
 import { XStack, useTheme } from "tamagui";
 
 import Logo from "@/components/Logo";
@@ -18,7 +18,13 @@ export default function TabsLayout() {
         // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
         headerStyle: { backgroundColor },
-        headerTitle: () => <Logo />,
+        headerTitle: "",
+        headerTitleStyle: { fontFamily: "Silkscreen" },
+        headerLeft: () => (
+          <XStack ml={"$3"}>
+            <Logo />
+          </XStack>
+        ),
         headerRight: () => (
           <XStack mr={"$3"}>
             <Menu />
@@ -40,9 +46,15 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="companies"
+        name="applications"
         options={{
-          tabBarIcon: ({ color }) => <Building2 color={color} />,
+          tabBarIcon: ({ color }) => <ClipboardCheck color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          tabBarIcon: ({ color }) => <User color={color} />,
         }}
       />
     </Tabs>

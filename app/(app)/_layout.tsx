@@ -25,7 +25,6 @@ export default function AppLayout() {
   }, []);
 
   const { data: companies } = trpc.company.getByUserId.useQuery(userId, {
-    refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
 
@@ -42,20 +41,18 @@ export default function AppLayout() {
       }}
     >
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="profile" />
-      <Stack.Screen name="settings" />
-      <Stack.Screen name="about-us" options={{ title: "about us" }} />
-      <Stack.Screen name="applications" />
       <Stack.Screen
-        name="your-companies"
-        options={{ title: "your companies" }}
+        name="applicants/index"
         redirect={isNotOwner}
+        options={{ title: "applicants" }}
       />
-      <Stack.Screen name="applicants" redirect={isNotOwner} />
+      <Stack.Screen name="company" redirect={isNotOwner} />
+      <Stack.Screen name="about-us" options={{ title: "about us" }} />
+      <Stack.Screen name="settings" />
       <Stack.Screen
         name="sign-in"
         redirect={isSignedIn}
-        options={{ presentation: "modal" }}
+        options={{ title: "sign in", presentation: "modal" }}
       />
     </Stack>
   );

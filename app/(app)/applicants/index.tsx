@@ -8,7 +8,7 @@ export default function ApplicantsScreen() {
       justifyContent="center"
       backgroundColor={"$background075"}
     >
-      <H1>me me me</H1>
+      <H1>pls</H1>
     </YStack>
   );
 }

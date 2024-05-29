@@ -5,12 +5,10 @@ import { Link } from "expo-router";
 import { useAuth } from "@clerk/clerk-expo";
 import {
   BadgeInfo,
-  Building2,
-  ClipboardCheck,
+  Building,
   ClipboardList,
   Menu as MenuIcon,
   Settings,
-  User as UserIcon,
 } from "@tamagui/lucide-icons";
 import { Button, Separator, Sheet, Spinner, YStack } from "tamagui";
 
@@ -68,55 +66,25 @@ export default function Menu() {
         <Sheet.Frame padding="$4">
           <YStack gap={"$2"}>
             {!isSignedIn && (
-              <Link href={"/(app)/sign-in"} asChild>
-                <Button
-                  justifyContent="flex-start"
-                  borderWidth={0}
-                  fontFamily={"$silkscreen"}
-                  chromeless
-                  onPress={closeModal}
-                >
-                  sign in
-                </Button>
-              </Link>
-            )}
-
-            {isSignedIn && (
               <>
-                <Link href={"/(app)/profile"} asChild>
+                <Link href={"/(app)/sign-in"} asChild>
                   <Button
-                    iconAfter={UserIcon}
-                    scaleIcon={1.5}
                     justifyContent="flex-start"
                     borderWidth={0}
                     fontFamily={"$silkscreen"}
                     chromeless
                     onPress={closeModal}
                   >
-                    profile
+                    sign in
                   </Button>
                 </Link>
-                <Link href={"/(app)/applications"} asChild>
-                  <Button
-                    iconAfter={ClipboardCheck}
-                    scaleIcon={1.5}
-                    justifyContent="flex-start"
-                    borderWidth={0}
-                    fontFamily={"$silkscreen"}
-                    chromeless
-                    onPress={closeModal}
-                  >
-                    applications
-                  </Button>
-                </Link>
+                <Separator />
               </>
             )}
 
             {isSignedIn && (
               <CompanyOwnerButtons userId={userId} closeModal={closeModal} />
             )}
-
-            <Separator />
 
             <Link href={"/(app)/about-us"} asChild>
               <Button
@@ -188,9 +156,9 @@ function CompanyOwnerButtons({
 
   return (
     <>
-      <Link href={"/(app)/your-companies"} asChild>
+      <Link href={"/(app)/company"} asChild>
         <Button
-          iconAfter={Building2}
+          iconAfter={Building}
           scaleIcon={1.5}
           justifyContent="flex-start"
           borderWidth={0}
@@ -198,7 +166,7 @@ function CompanyOwnerButtons({
           chromeless
           onPress={closeModal}
         >
-          your companies
+          company
         </Button>
       </Link>
       <Link href={"/(app)/applicants"} asChild>
@@ -214,6 +182,7 @@ function CompanyOwnerButtons({
           applicants
         </Button>
       </Link>
+      <Separator />
     </>
   );
 }

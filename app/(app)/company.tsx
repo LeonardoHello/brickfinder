@@ -1,6 +1,6 @@
 import { H1, YStack } from "tamagui";
 
-export default function YourCompaniesScreen() {
+export default function CompanyScreen() {
   return (
     <YStack
       flex={1}

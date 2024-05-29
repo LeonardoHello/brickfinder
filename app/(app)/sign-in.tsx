@@ -1,6 +1,5 @@
 import { useCallback } from "react";
 
-import { useRouter } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
 
 import { useOAuth } from "@clerk/clerk-expo";
@@ -31,7 +30,6 @@ export default function ModalScreen() {
   // https://docs.expo.dev/guides/authentication/#improving-user-experience
   useWarmUpBrowser();
 
-  const router = useRouter();
   const { gray8 } = useTheme();
   const color = gray8.get();
 
