@@ -1,7 +1,5 @@
 {
-  "id": "22113b1c-c0b5-4e43-9a88-aa275e08aaeb",
-  "prevId": "f07cc545-827c-419e-b01b-331a0d33364d",
-  "version": "6",
+  "version": "7",
   "dialect": "postgresql",
   "tables": {
     "public.companies": {
@@ -49,11 +47,18 @@
       },
       "indexes": {
         "company_id_idx": {
-          "name": "company_id_idx",
           "columns": [
-            "id"
+            {
+              "expression": "id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
           ],
-          "isUnique": true
+          "name": "company_id_idx",
+          "isUnique": true,
+          "method": "btree",
+          "concurrently": false
         }
       },
       "foreignKeys": {},
@@ -61,10 +66,10 @@
       "uniqueConstraints": {
         "companies_name_unique": {
           "name": "companies_name_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "name"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     },
@@ -90,28 +95,28 @@
         "company_owners_owner_id_users_id_fk": {
           "name": "company_owners_owner_id_users_id_fk",
           "tableFrom": "company_owners",
-          "tableTo": "users",
           "columnsFrom": [
             "owner_id"
           ],
+          "tableTo": "users",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "company_owners_company_id_companies_id_fk": {
           "name": "company_owners_company_id_companies_id_fk",
           "tableFrom": "company_owners",
-          "tableTo": "companies",
           "columnsFrom": [
             "company_id"
           ],
+          "tableTo": "companies",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -144,46 +149,60 @@
       },
       "indexes": {
         "job_applicant_applicant_id_idx": {
-          "name": "job_applicant_applicant_id_idx",
           "columns": [
-            "applicant_id"
+            {
+              "expression": "applicant_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
           ],
-          "isUnique": false
+          "name": "job_applicant_applicant_id_idx",
+          "isUnique": false,
+          "method": "btree",
+          "concurrently": false
         },
         "job_applicant_job_id_idx": {
-          "name": "job_applicant_job_id_idx",
           "columns": [
-            "job_id"
+            {
+              "expression": "job_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
           ],
-          "isUnique": false
+          "name": "job_applicant_job_id_idx",
+          "isUnique": false,
+          "method": "btree",
+          "concurrently": false
         }
       },
       "foreignKeys": {
         "job_applicants_applicant_id_users_id_fk": {
           "name": "job_applicants_applicant_id_users_id_fk",
           "tableFrom": "job_applicants",
-          "tableTo": "users",
           "columnsFrom": [
             "applicant_id"
           ],
+          "tableTo": "users",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "job_applicants_job_id_jobs_id_fk": {
           "name": "job_applicants_job_id_jobs_id_fk",
           "tableFrom": "job_applicants",
-          "tableTo": "jobs",
           "columnsFrom": [
             "job_id"
           ],
+          "tableTo": "jobs",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -274,26 +293,33 @@
       },
       "indexes": {
         "job_id_idx": {
-          "name": "job_id_idx",
           "columns": [
-            "id"
+            {
+              "expression": "id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
           ],
-          "isUnique": true
+          "name": "job_id_idx",
+          "isUnique": true,
+          "method": "btree",
+          "concurrently": false
         }
       },
       "foreignKeys": {
         "jobs_company_id_companies_id_fk": {
           "name": "jobs_company_id_companies_id_fk",
           "tableFrom": "jobs",
-          "tableTo": "companies",
           "columnsFrom": [
             "company_id"
           ],
+          "tableTo": "companies",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -364,11 +390,18 @@
       },
       "indexes": {
         "user_id_idx": {
-          "name": "user_id_idx",
           "columns": [
-            "id"
+            {
+              "expression": "id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
           ],
-          "isUnique": true
+          "name": "user_id_idx",
+          "isUnique": true,
+          "method": "btree",
+          "concurrently": false
         }
       },
       "foreignKeys": {},
@@ -376,10 +409,10 @@
       "uniqueConstraints": {
         "users_email_unique": {
           "name": "users_email_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "email"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     }
@@ -398,8 +431,10 @@
   },
   "schemas": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
-  }
+    "tables": {},
+    "columns": {}
+  },
+  "id": "22113b1c-c0b5-4e43-9a88-aa275e08aaeb",
+  "prevId": "f07cc545-827c-419e-b01b-331a0d33364d"
 }
