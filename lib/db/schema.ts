@@ -1,12 +1,11 @@
 import { InferSelectModel, relations } from "drizzle-orm";
 import { sql } from "drizzle-orm";
 import {
+  boolean,
   customType,
-  index,
   integer,
   pgEnum,
   pgTable,
-  primaryKey,
   text,
   timestamp,
   uniqueIndex,
@@ -33,6 +32,8 @@ export const jobTypeEnum = pgEnum("job_type", [
   "Temporary",
 ]);
 
+export const jobPositionEnum = pgEnum("job_position", Jobs);
+
 export const users = pgTable(
   "users",
   {
@@ -52,29 +53,56 @@ export const users = pgTable(
       .array()
       .notNull()
       .default(sql`ARRAY[]::jsonb[]`),
-    cv: text("cv"),
+    resume: text("resume"),
   },
   (t) => ({
     userIdIdx: uniqueIndex("user_id_idx").on(t.id),
   }),
 );
 
-export const usersRelations = relations(users, ({ many }) => ({
-  companyOwners: many(companyOwners),
-  jobApplicants: many(jobApplicants),
+export const usersRelations = relations(users, ({ one, many }) => ({
+  moderator: one(moderators),
+  applications: many(applications),
+}));
+
+export const moderators = pgTable("moderators", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).$onUpdate(
+    () => new Date(),
+  ),
+  admin: boolean("admin").notNull(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id),
+  companyId: uuid("company_id")
+    .notNull()
+    .references(() => companies.id),
+});
+
+export const moderatorsRelations = relations(moderators, ({ one, many }) => ({
+  user: one(users, {
+    fields: [moderators.userId],
+    references: [users.id],
+  }),
+  company: one(companies, {
+    fields: [moderators.companyId],
+    references: [companies.id],
+  }),
+  jobs: many(jobs),
 }));
 
 export const companies = pgTable(
   "companies",
   {
     id: uuid("id").primaryKey().defaultRandom(),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
+    createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { mode: "date" }).$onUpdate(
       () => new Date(),
     ),
     name: text("name").notNull().unique(),
-    email: text("email").notNull(),
     address: text("address").notNull(),
+    email: text("email").notNull(),
     about: text("about"),
   },
   (t) => ({
@@ -83,57 +111,29 @@ export const companies = pgTable(
 );
 
 export const companiesRelations = relations(companies, ({ many }) => ({
-  companyOwners: many(companyOwners),
+  moderators: many(moderators),
   jobs: many(jobs),
-}));
-
-export const companyOwners = pgTable(
-  "company_owners",
-  {
-    ownerId: text("owner_id")
-      .notNull()
-      .references(() => users.id),
-    companyId: uuid("company_id")
-      .notNull()
-      .references(() => companies.id),
-  },
-  (t) => ({
-    pk: primaryKey({ columns: [t.ownerId, t.companyId] }),
-  }),
-);
-
-export const companyOwnersRelations = relations(companyOwners, ({ one }) => ({
-  owner: one(users, {
-    fields: [companyOwners.ownerId],
-    references: [users.id],
-  }),
-  company: one(companies, {
-    fields: [companyOwners.companyId],
-    references: [companies.id],
-  }),
 }));
 
 export const jobs = pgTable(
   "jobs",
   {
     id: uuid("id").primaryKey().defaultRandom(),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
+    createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { mode: "date" }).$onUpdate(
       () => new Date(),
     ),
+    expiresAt: timestamp("created_at", { mode: "date" }),
     title: text("title").notNull(),
-    position: text("position").notNull(),
-    location: text("location").notNull(),
-    type: jobTypeEnum("job_type").notNull(),
-    salary: integer("salary").notNull(),
-    requirements: customJsonb<{
-      job: (typeof Jobs)[number];
-      yearsOfExperience: string;
-    }>("requirements")
-      .array()
-      .notNull()
-      .default(sql`ARRAY[]::jsonb[]`),
     description: text("description"),
+    location: text("location").notNull(),
+    position: jobPositionEnum("position").notNull(),
+    yearsOfExperience: integer("years_of_experience").notNull().default(0),
+    type: jobTypeEnum("type").notNull(),
+    salary: integer("salary").notNull(),
+    moderatorId: uuid("moderator_id")
+      .notNull()
+      .references(() => moderators.id),
     companyId: uuid("company_id")
       .notNull()
       .references(() => companies.id),
@@ -144,17 +144,32 @@ export const jobs = pgTable(
 );
 
 export const jobsRelations = relations(jobs, ({ one, many }) => ({
+  moderator: one(moderators, {
+    fields: [jobs.moderatorId],
+    references: [moderators.id],
+  }),
   company: one(companies, {
     fields: [jobs.companyId],
     references: [companies.id],
   }),
-  jobApplicants: many(jobApplicants),
+  applications: many(applications),
 }));
 
-export const jobApplicants = pgTable(
-  "job_applicants",
+export const applications = pgTable(
+  "applications",
   {
-    applicantId: text("applicant_id")
+    id: uuid("id").primaryKey().defaultRandom(),
+    createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { mode: "date" }).$onUpdate(
+      () => new Date(),
+    ),
+    firstName: text("first_name").notNull(),
+    lastName: text("last_name").notNull(),
+    email: text("email").notNull(),
+    phoneNumber: integer("phone_number"),
+    resume: text("resume").notNull(),
+    coverLetter: text("cover_letter").default(""),
+    userId: text("user_id")
       .notNull()
       .references(() => users.id),
     jobId: uuid("job_id")
@@ -162,33 +177,29 @@ export const jobApplicants = pgTable(
       .references(() => jobs.id),
   },
   (t) => ({
-    pk: primaryKey({ columns: [t.applicantId, t.jobId] }),
-    jobApplicantApplicantIdIdx: index("job_applicant_applicant_id_idx").on(
-      t.applicantId,
-    ),
-    jobApplicantJobIdIdx: index("job_applicant_job_id_idx").on(t.jobId),
+    applicationIdIdx: uniqueIndex("application_id_idx").on(t.id),
   }),
 );
 
-export const jobApplicantsRelations = relations(jobApplicants, ({ one }) => ({
-  applicant: one(users, {
-    fields: [jobApplicants.applicantId],
+export const applicationsRelations = relations(applications, ({ one }) => ({
+  user: one(users, {
+    fields: [applications.userId],
     references: [users.id],
   }),
   job: one(jobs, {
-    fields: [jobApplicants.jobId],
+    fields: [applications.jobId],
     references: [jobs.id],
   }),
 }));
 
 export type User = InferSelectModel<typeof users>;
+export type Moderator = InferSelectModel<typeof moderators>;
 export type Company = InferSelectModel<typeof companies>;
-export type CompanyOwner = InferSelectModel<typeof companyOwners>;
 export type Job = InferSelectModel<typeof jobs>;
-export type JobApplicant = InferSelectModel<typeof jobApplicants>;
+export type Application = InferSelectModel<typeof applications>;
 
 export const UserSchema = createSelectSchema(users);
+export const ModeratorSchema = createSelectSchema(moderators);
 export const CompanySchema = createSelectSchema(companies);
-export const CompanyOwnerSchema = createSelectSchema(companyOwners);
 export const JobSchema = createSelectSchema(jobs);
-export const JobApplicantSchema = createSelectSchema(jobApplicants);
+export const ApplicationSchema = createSelectSchema(applications);

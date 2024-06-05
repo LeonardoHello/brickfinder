@@ -1,61 +1,12 @@
 {
-  "version": "5",
-  "dialect": "pg",
+  "version": "7",
+  "dialect": "postgresql",
   "entries": [
     {
       "idx": 0,
-      "version": "5",
-      "when": 1712371201285,
-      "tag": "0000_productive_sister_grimm",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1713436111596,
-      "tag": "0001_numerous_molly_hayes",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1714070568526,
-      "tag": "0002_abandoned_earthquake",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1714071533629,
-      "tag": "0003_short_grandmaster",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1714225038749,
-      "tag": "0004_left_lightspeed",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "5",
-      "when": 1715048063472,
-      "tag": "0005_windy_norrin_radd",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "6",
-      "when": 1715639607133,
-      "tag": "0006_reflective_deathstrike",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "6",
-      "when": 1715679877163,
-      "tag": "0007_rich_wendell_rand",
+      "version": "7",
+      "when": 1717614901202,
+      "tag": "0000_petite_lucky_pierre",
       "breakpoints": true
     }
   ]
