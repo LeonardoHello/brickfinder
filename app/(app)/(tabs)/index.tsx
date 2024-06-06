@@ -1,25 +1,31 @@
-import { Link, useLocalSearchParams } from "expo-router";
+import { FlatList } from "react-native";
 
-import { ArrowDownWideNarrow, ArrowUpWideNarrow } from "@tamagui/lucide-icons";
-import { Button, XGroup, YStack } from "tamagui";
+import { useLocalSearchParams } from "expo-router";
 
-import JobList from "@/components/JobList";
-import type { SearchParam } from "@/lib/types";
+import { useAuth } from "@clerk/clerk-expo";
+import { Separator, YStack } from "tamagui";
+
+import JobListItem from "@/components/JobListItem";
+import JobListSort from "@/components/JobListSort";
+import ScreenLoader from "@/components/ScreenLoader";
 import { trpc } from "@/lib/utils/trpc";
-
-const pathname = "/(app)/";
 
 export default function JobsScreen() {
   const searchParams = useLocalSearchParams();
+  const { isSignedIn, isLoaded } = useAuth();
 
-  const { data: jobs, isLoading, error } = trpc.job.getAll.useQuery();
+  const { data: jobs, isLoading } = trpc.job.getAll.useQuery(undefined, {
+    select: (data) => {
+      return data;
+    },
+  });
 
-  if (isLoading) {
-    return null;
+  if (isLoading || !isLoaded) {
+    return <ScreenLoader />;
   }
 
-  if (!jobs || error) {
-    throw new Error(error.message);
+  if (!jobs) {
+    throw new Error("Cannot fetch jobs screen data.");
   }
 
   return (
@@ -28,124 +34,19 @@ export default function JobsScreen() {
         sort={searchParams.sort}
         direction={searchParams.direction}
       />
-      {/* <JobListFilter filter={searchParams.filter} /> */}
 
-      <JobList jobs={jobs} />
+      <YStack f={1}>
+        <FlatList
+          data={jobs}
+          ItemSeparatorComponent={() => (
+            <Separator borderWidth={0} my={"$1.5"} />
+          )}
+          renderItem={({ item }) => (
+            <JobListItem item={item} isSignedIn={isSignedIn} />
+          )}
+          keyExtractor={(item) => item.id}
+        />
+      </YStack>
     </YStack>
-  );
-}
-
-function JobListSort({
-  sort,
-  direction,
-}: {
-  sort: SearchParam;
-  direction: SearchParam;
-}) {
-  let dir;
-  let dirIcon;
-  switch (direction) {
-    case "asc":
-      dir = "desc";
-      dirIcon = ArrowUpWideNarrow;
-      break;
-
-    case "desc":
-      dir = "asc";
-      dirIcon = ArrowDownWideNarrow;
-      break;
-
-    default:
-      dir = "desc";
-      break;
-  }
-
-  return (
-    <XGroup justifyContent="center">
-      <XGroup.Item>
-        <Link
-          href={{
-            pathname,
-            params: {
-              sort: "date",
-              direction: sort !== "date" ? "asc" : dir,
-            },
-          }}
-          asChild
-        >
-          <Button
-            icon={sort === "date" ? dirIcon : ArrowUpWideNarrow}
-            size={"$3"}
-            backgroundColor={sort !== "date" ? "$gray2" : undefined}
-          >
-            date
-          </Button>
-        </Link>
-      </XGroup.Item>
-
-      <XGroup.Item>
-        <Link
-          href={{
-            pathname,
-            params: {
-              sort: "salary",
-              direction: sort !== "salary" ? "asc" : dir,
-            },
-          }}
-          asChild
-        >
-          <Button
-            icon={sort === "salary" ? dirIcon : ArrowUpWideNarrow}
-            size={"$3"}
-            backgroundColor={sort !== "salary" ? "$gray2" : undefined}
-          >
-            salary
-          </Button>
-        </Link>
-      </XGroup.Item>
-
-      <XGroup.Item>
-        <Link
-          href={{
-            pathname,
-            params: {
-              sort: "expiration",
-              direction: sort !== "expiration" ? "asc" : dir,
-            },
-          }}
-          asChild
-        >
-          <Button
-            icon={sort === "expiration" ? dirIcon : ArrowUpWideNarrow}
-            size={"$3"}
-            backgroundColor={sort !== "expiration" ? "$gray2" : undefined}
-          >
-            expiration
-          </Button>
-        </Link>
-      </XGroup.Item>
-    </XGroup>
-  );
-}
-
-function JobListFilter({ filter }: { filter: SearchParam }) {
-  return (
-    <XGroup>
-      <XGroup.Item>
-        <Link
-          href={{
-            pathname,
-            params: {
-              filter: "date",
-            },
-          }}
-          asChild
-        >
-          <Button size={"$3"} backgroundColor={"$background"}>
-            filter
-          </Button>
-        </Link>
-      </XGroup.Item>
-    </XGroup>
   );
 }
