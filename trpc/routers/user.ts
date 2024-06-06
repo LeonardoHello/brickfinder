@@ -27,7 +27,7 @@ export const userRouter = router({
     .query(async ({ input, ctx }) => {
       const user = await ctx.db.query.users.findFirst({
         where: (user, { eq }) => eq(user.id, input),
-        columns: { createdAt: false, imageUrl: false, cv: false },
+        columns: { createdAt: false, imageUrl: false, resume: false },
       });
 
       return user ?? null;
