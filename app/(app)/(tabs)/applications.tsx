@@ -1,6 +1,8 @@
 import { H1, YStack } from "tamagui";
 
-export default function ApplicationsScreen() {
+import AuthenticatedScreen from "@/components/AuthenticatedScreen";
+
+export default AuthenticatedScreen(function ApplicationsScreen() {
   return (
     <YStack
       flex={1}
@@ -11,4 +13,4 @@ export default function ApplicationsScreen() {
       <H1>pls</H1>
     </YStack>
   );
-}
+});

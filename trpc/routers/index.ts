@@ -4,10 +4,12 @@ import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import { router } from "../";
 import { companyRouter } from "./company";
 import { jobRouter } from "./jobs";
+import { moderatorRouter } from "./moderator";
 import { userRouter } from "./user";
 
 export const appRouter = router({
   user: userRouter,
+  moderator: moderatorRouter,
   company: companyRouter,
   job: jobRouter,
 });

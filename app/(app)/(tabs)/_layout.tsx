@@ -1,15 +1,23 @@
 import { Tabs } from "expo-router";
 
+import { useAuth } from "@clerk/clerk-expo";
 import { ClipboardCheck, Hammer, User } from "@tamagui/lucide-icons";
 import { XStack, useTheme } from "tamagui";
 
 import Logo from "@/components/Logo";
 import Menu from "@/components/Menu";
+import ScreenLoader from "@/components/ScreenLoader";
 import { useClientOnlyValue } from "@/lib/hooks/useClientOnlyValue";
 
 export default function TabsLayout() {
+  const { isSignedIn, isLoaded } = useAuth();
+
   const { background } = useTheme();
   const backgroundColor = background.get();
+
+  if (!isLoaded) {
+    return <ScreenLoader />;
+  }
 
   return (
     <Tabs
@@ -50,12 +58,14 @@ export default function TabsLayout() {
         options={{
           tabBarIcon: ({ color }) => <ClipboardCheck color={color} />,
         }}
+        redirect={!isSignedIn}
       />
       <Tabs.Screen
         name="profile"
         options={{
           tabBarIcon: ({ color }) => <User color={color} />,
         }}
+        redirect={!isSignedIn}
       />
     </Tabs>
   );

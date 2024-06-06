@@ -16,8 +16,9 @@ import { User } from "@/lib/db/schema";
 import { trpc } from "@/lib/utils/trpc";
 
 export default function Menu() {
+  const { userId, isSignedIn, isLoaded, signOut } = useAuth();
+
   const [open, setOpen] = useState(false);
-  const { isLoaded, isSignedIn, signOut, userId } = useAuth();
 
   if (!isLoaded) {
     return (
@@ -145,12 +146,12 @@ function CompanyOwnerButtons({
   userId: User["id"];
   closeModal: () => void;
 }) {
-  const { data: companies } = trpc.company.getByUserId.useQuery(userId, {
+  const { data: moderator } = trpc.moderator.getById.useQuery(userId, {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
 
-  if (!companies || companies.length === 0) {
+  if (!moderator) {
     return null;
   }
 

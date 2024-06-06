@@ -5,6 +5,7 @@ import { useFonts } from "expo-font";
 import { Slot } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import * as SplashScreen from "expo-splash-screen";
+import * as SystemUI from "expo-system-ui";
 
 import { ClerkProvider } from "@clerk/clerk-expo";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
@@ -47,6 +48,7 @@ const tokenCache = {
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
+SystemUI.setBackgroundColorAsync("hsla(0, 0%, 8.5%, 0.5)");
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
