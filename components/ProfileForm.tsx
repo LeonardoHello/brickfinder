@@ -12,8 +12,8 @@ import {
 } from "tamagui";
 import { z } from "zod";
 
-import UserProfileFormInput from "./UserProfileFormInput";
-import UserProfileFormSelect from "./UserProfileFormSelect";
+import ProfileFormFieldArray from "./ProfileFormFieldArray";
+import ProfileFormInput from "./ProfileFormInput";
 import Jobs from "@/lib/constants/Jobs";
 import { UserSchema } from "@/lib/db/schema";
 import { trpc } from "@/lib/utils/trpc";
@@ -33,7 +33,7 @@ const FormSchema = z.object({
 
 export type FormSchema = typeof FormSchema._type;
 
-export default function UserProfileForm({
+export default function ProfileForm({
   currentUser: { id, updatedAt, ...rest },
 }: {
   currentUser: NonNullable<RouterOutputs["user"]["getById"]>;
@@ -90,13 +90,9 @@ export default function UserProfileForm({
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} gap={"$4"}>
-      <UserProfileFormInput
-        control={ctrl}
-        name="firstName"
-        label="First name"
-      />
-      <UserProfileFormInput control={ctrl} name="lastName" label="Last name" />
-      <UserProfileFormInput
+      <ProfileFormInput control={ctrl} name="firstName" label="First name" />
+      <ProfileFormInput control={ctrl} name="lastName" label="Last name" />
+      <ProfileFormInput
         control={ctrl}
         name="email"
         label="Email address"
@@ -105,7 +101,7 @@ export default function UserProfileForm({
 
       <YStack>
         <Label>Skills</Label>
-        <UserProfileFormSelect control={ctrl} disabled={disabled} />
+        <ProfileFormFieldArray control={ctrl} disabled={disabled} />
 
         {errors.skills &&
           !!errors.skills.filter!((_) => _ !== undefined)[0]?.job && (

@@ -4,7 +4,7 @@ import { Control, Controller } from "react-hook-form";
 import { Asterisk } from "@tamagui/lucide-icons";
 import { Input, Label, YStack } from "tamagui";
 
-import type { FormSchema } from "./UserProfileForm";
+import type { FormSchema } from "./ProfileForm";
 
 export default memo(function UserProfileFormInput({
   control,

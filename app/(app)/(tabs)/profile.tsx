@@ -1,35 +1,33 @@
-import { useAuth } from "@clerk/clerk-expo";
 import { ScrollView, SizableText, YStack, useTheme } from "tamagui";
 import { XStack } from "tamagui";
 
+import AuthenticatedScreen from "@/components/AuthenticatedScreen";
+import ProfileForm from "@/components/ProfileForm";
 import Skeleton from "@/components/Skeleton";
-import UserProfileForm from "@/components/UserProfileForm";
 import { trpc } from "@/lib/utils/trpc";
 
-export default function ProfileScreen() {
-  const { userId, isSignedIn } = useAuth();
-
-  if (!isSignedIn) {
-    throw new Error("Cannot access profile page without authentication.");
-  }
-
+export default AuthenticatedScreen(function ProfileScreen({
+  userId,
+}: {
+  userId: string;
+}) {
   const { data: currentUser, isLoading } = trpc.user.getById.useQuery(userId, {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
 
   if (isLoading) {
-    return <ProfileScreenLoading />;
+    return <ProfileScreenLoader />;
   }
 
   if (!currentUser) {
-    throw new Error("Cannot fetch user information.");
+    throw new Error("Cannot fetch profile screen data.");
   }
 
   return (
     <ScrollView backgroundColor={"$background075"}>
       <YStack flex={1} padding={"$4"} gap={"$2"}>
-        <UserProfileForm currentUser={currentUser} />
+        <ProfileForm currentUser={currentUser} />
         {currentUser.updatedAt && (
           <SizableText color={"$accentColor"}>
             Last updated at: {currentUser.updatedAt.toLocaleString("de-DE")}
@@ -38,9 +36,9 @@ export default function ProfileScreen() {
       </YStack>
     </ScrollView>
   );
-}
+});
 
-function ProfileScreenLoading() {
+function ProfileScreenLoader() {
   const { background } = useTheme();
 
   const backgroundColor = background.get();
