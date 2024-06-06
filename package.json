@@ -20,8 +20,8 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "@clerk/clerk-expo": "^1.1.1",
-    "@clerk/clerk-sdk-node": "^5.0.6",
+    "@clerk/clerk-expo": "^1.2.0",
+    "@clerk/clerk-sdk-node": "^5.0.10",
     "@expo/vector-icons": "^14.0.2",
     "@neondatabase/serverless": "^0.9.0",
     "@react-navigation/native": "^6.1.17",
@@ -64,7 +64,7 @@
     "react-native-svg": "15.2.0",
     "react-native-web": "~0.19.6",
     "superjson": "^2.2.1",
-    "svix": "^1.21.0",
+    "svix": "^1.24.0",
     "tamagui": "^1.100.0"
   },
   "devDependencies": {
