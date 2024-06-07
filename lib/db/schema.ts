@@ -123,7 +123,7 @@ export const jobs = pgTable(
     updatedAt: timestamp("updated_at", { mode: "date" }).$onUpdate(
       () => new Date(),
     ),
-    expiresAt: timestamp("created_at", { mode: "date" }),
+    expiresAt: timestamp("expires_at", { mode: "date" }),
     title: text("title").notNull(),
     description: text("description"),
     location: text("location").notNull(),
