@@ -17,6 +17,7 @@ import {
 import { TamaguiProvider, Theme } from "tamagui";
 
 import { tamaguiConfig } from "../tamagui.config";
+import { tokenCache } from "@/lib/utils/cache";
 import { TRPCReactProvider } from "@/trpc/Provider";
 
 if (Platform.OS === "web") {
@@ -28,23 +29,6 @@ export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from "expo-router";
-
-const tokenCache = {
-  async getToken(key: string) {
-    try {
-      return SecureStore.getItemAsync(key);
-    } catch (err) {
-      return null;
-    }
-  },
-  async saveToken(key: string, value: string) {
-    try {
-      return SecureStore.setItemAsync(key, value);
-    } catch (err) {
-      return;
-    }
-  },
-};
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
