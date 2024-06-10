@@ -3,7 +3,6 @@ import { Platform, useColorScheme } from "react-native";
 
 import { useFonts } from "expo-font";
 import { Slot } from "expo-router";
-import * as SecureStore from "expo-secure-store";
 import * as SplashScreen from "expo-splash-screen";
 import * as SystemUI from "expo-system-ui";
 
