@@ -5,12 +5,12 @@ import { Button, XGroup } from "tamagui";
 
 import { SearchParam } from "@/lib/types";
 
-const pathname = "/(app)/";
-
 export default function JobListSort({
+  pathname,
   sort,
   direction,
 }: {
+  pathname: string;
   sort: SearchParam;
   direction: SearchParam;
 }) {
@@ -33,7 +33,7 @@ export default function JobListSort({
   }
 
   return (
-    <XGroup bordered backgroundColor={"$background"}>
+    <XGroup bordered backgroundColor={"$background"} borderColor={"$gray5"}>
       <XGroup.Item>
         <Link
           href={{

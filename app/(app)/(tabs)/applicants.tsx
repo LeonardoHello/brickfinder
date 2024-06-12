@@ -2,7 +2,7 @@ import { H1, YStack } from "tamagui";
 
 import AuthenticatedHOC from "@/components/AuthenticatedHOC";
 
-export default AuthenticatedHOC(function ApplicationsScreen() {
+export default AuthenticatedHOC(function ApplicantsScreen() {
   return (
     <YStack
       flex={1}

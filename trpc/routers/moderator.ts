@@ -7,6 +7,7 @@ export const moderatorRouter = router({
     .query(async ({ input, ctx }) => {
       const moderator = await ctx.db.query.moderators.findFirst({
         where: (moderator, { eq }) => eq(moderator.userId, input),
+        with: { company: { columns: {}, with: { jobs: true } } },
       });
 
       return moderator ?? null;

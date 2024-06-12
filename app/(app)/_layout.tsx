@@ -51,12 +51,20 @@ export default function AppLayout() {
         redirect={!isSignedIn}
         options={{ headerShown: false }}
       />
-
+      <Stack.Screen
+        name="applicants/[id]"
+        redirect={!isSignedIn}
+        options={{ headerTitle: () => <Spinner /> }}
+      />
+      <Stack.Screen
+        name="applications/[id]"
+        redirect={!isSignedIn}
+        options={{ headerTitle: () => <Spinner /> }}
+      />
       <Stack.Screen
         name="jobs/[id]"
         options={{ headerTitle: () => <Spinner /> }}
       />
-
       <Stack.Screen name="about-us" options={{ title: "about us" }} />
       <Stack.Screen name="settings" />
     </Stack>

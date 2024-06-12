@@ -6,7 +6,7 @@ import ProfileForm from "@/components/ProfileForm";
 import Skeleton from "@/components/Skeleton";
 import { trpc } from "@/lib/utils/trpc";
 
-export default AuthenticatedHOC(function ProfileScreen({
+export default AuthenticatedHOC(function CompanyScreen({
   userId,
 }: {
   userId: string;
