@@ -5,10 +5,10 @@ export default function ScreenLoader() {
     <YStack
       flex={1}
       p={"$3"}
-      backgroundColor={"$background075"}
       gap={"$3"}
       alignItems="center"
       justifyContent="center"
+      backgroundColor={"$background075"}
     >
       <Spinner size="large" />
     </YStack>

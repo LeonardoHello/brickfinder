@@ -1,11 +1,11 @@
-import React, { FC } from "react";
+import type { FC } from "react";
 
 import { useAuth } from "@clerk/clerk-expo";
 
 import ScreenLoader from "./ScreenLoader";
 import { User } from "@/lib/db/schema";
 
-export default function AuthenticatedScreen(
+export default function AuthenticatedHOC(
   WrappedComponent: FC<{ userId: User["id"] }>,
 ) {
   return () => {

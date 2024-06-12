@@ -12,7 +12,7 @@ export default function ApplicationScreen() {
       justifyContent="center"
       backgroundColor={"$background075"}
     >
-      <Stack.Screen options={{ title: id as string }} />
+      <Stack.Screen options={{ headerTitle: undefined, title: id as string }} />
       <H1>We are very interesting</H1>
     </YStack>
   );

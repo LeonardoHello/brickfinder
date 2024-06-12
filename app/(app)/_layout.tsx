@@ -1,8 +1,9 @@
 import { Stack } from "expo-router";
 
 import { useAuth } from "@clerk/clerk-expo";
-import { useTheme } from "tamagui";
+import { Spinner, useTheme } from "tamagui";
 
+import Logo from "@/components/Logo";
 import Menu from "@/components/Menu";
 import ScreenLoader from "@/components/ScreenLoader";
 
@@ -11,33 +12,53 @@ export const unstable_settings = {
 };
 
 export default function AppLayout() {
-  const { isSignedIn, isLoaded } = useAuth();
-
   const { background } = useTheme();
-  const backgroundColor = background.get();
+
+  const { isSignedIn, isLoaded } = useAuth();
 
   if (!isLoaded) {
     return <ScreenLoader />;
   }
 
+  const backgroundColor = background.get();
+
   return (
     <Stack
       screenOptions={{
-        headerStyle: {
-          backgroundColor,
-        },
+        headerStyle: { backgroundColor },
         headerTitleStyle: { fontFamily: "Silkscreen" },
-        headerRight: () => <Menu />,
       }}
     >
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="about-us" options={{ title: "about us" }} />
-      <Stack.Screen name="settings" />
+      <Stack.Screen
+        name="index"
+        redirect={isSignedIn}
+        options={{
+          title: "",
+          headerLeft: () => <Logo isChecked={false} />,
+          headerRight: () => <Menu isSignedIn={false} />,
+        }}
+      />
       <Stack.Screen
         name="sign-in"
         redirect={isSignedIn}
-        options={{ title: "sign in", presentation: "modal" }}
+        options={{
+          title: "sign in",
+          presentation: "modal",
+        }}
       />
+      <Stack.Screen
+        name="(tabs)"
+        redirect={!isSignedIn}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="jobs/[id]"
+        options={{ headerTitle: () => <Spinner /> }}
+      />
+
+      <Stack.Screen name="about-us" options={{ title: "about us" }} />
+      <Stack.Screen name="settings" />
     </Stack>
   );
 }
