@@ -55,6 +55,7 @@ export default AuthenticatedHOC(function TabsLayout({ userId }) {
             <Logo isChecked={checked} />
           </XStack>
         ),
+        tabBarHideOnKeyboard: true,
         headerRight: () => (
           <XStack mr={"$3.5"} gap={"$2"} alignItems="center">
             {moderator && (
