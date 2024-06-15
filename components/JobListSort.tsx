@@ -33,7 +33,7 @@ export default function JobListSort({
   }
 
   return (
-    <XGroup bordered backgroundColor={"$background"} borderColor={"$gray5"}>
+    <XGroup bordered borderColor={"$gray5"}>
       <XGroup.Item>
         <Link
           href={{
