@@ -3,7 +3,7 @@ import { FlatList } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { Link } from "expo-router";
 
-import { ChevronRight } from "@tamagui/lucide-icons";
+import { ChevronRight, Squirrel } from "@tamagui/lucide-icons";
 import { Separator, YStack } from "tamagui";
 import { H4, ListItem, SizableText } from "tamagui";
 
@@ -26,6 +26,28 @@ export default AuthenticatedHOC(function JobsScreen({ userId }) {
 
   if (!moderator) {
     throw new Error("Cannot fetch jobs screen data.");
+  }
+
+  if (moderator.company.jobs.length === 0) {
+    return (
+      <YStack
+        flex={1}
+        backgroundColor={"$background075"}
+        alignItems="center"
+        justifyContent="center"
+      >
+        <YStack pressStyle={{ transform: "scaleX(-1)" }}>
+          <Squirrel color={"$purple10"} size={"$20"} strokeWidth={1} />
+        </YStack>
+        <SizableText
+          color={"$purple10"}
+          size={"$8"}
+          style={{ fontFamily: "InterLight" }}
+        >
+          No jobs created yet.
+        </SizableText>
+      </YStack>
+    );
   }
 
   return (
@@ -68,7 +90,6 @@ function JobListItem({
       asChild
     >
       <ListItem
-        backgroundColor={"$background"}
         bordered
         iconAfter={<ChevronRight size={"$1.5"} />}
         borderRadius={"$4"}

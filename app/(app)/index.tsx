@@ -1,9 +1,9 @@
 import { FlatList } from "react-native";
 
-import { useLocalSearchParams } from "expo-router";
+import { Link, useLocalSearchParams } from "expo-router";
 
-import { ChevronRight, EyeOff } from "@tamagui/lucide-icons";
-import { Separator, Theme, YStack } from "tamagui";
+import { Bird, ChevronRight, EyeOff } from "@tamagui/lucide-icons";
+import { Separator, YStack } from "tamagui";
 import { Avatar, H4, ListItem, SizableText, XStack } from "tamagui";
 
 import JobListSort from "@/components/JobListSort";
@@ -25,8 +25,30 @@ export default function JobsScreen() {
     throw new Error("Cannot fetch jobs screen data.");
   }
 
+  if (jobs.length === 0) {
+    return (
+      <YStack
+        flex={1}
+        backgroundColor={"$background075"}
+        alignItems="center"
+        justifyContent="center"
+      >
+        <YStack pressStyle={{ transform: "scaleX(-1)" }}>
+          <Bird color={"$blue9"} size={"$20"} strokeWidth={1} />
+        </YStack>
+        <SizableText
+          color={"$blue9"}
+          size={"$8"}
+          style={{ fontFamily: "InterLight" }}
+        >
+          No available jobs yet.
+        </SizableText>
+      </YStack>
+    );
+  }
+
   return (
-    <YStack flex={1} p={"$3"} backgroundColor={"$background075"} gap={"$3"}>
+    <YStack flex={1} p={"$3"} gap={"$3"} backgroundColor={"$background075"}>
       <JobListSort
         pathname="/(app)/"
         sort={searchParams.sort}
@@ -52,20 +74,24 @@ function JobListItem({
 }: {
   item: ArrElement<RouterOutputs["job"]["getAll"]>;
 }) {
-  const { title, location } = item;
+  const { id, title, location } = item;
 
   return (
-    <Theme>
+    <Link
+      href={{
+        pathname: "/(app)/jobs/[id]",
+        params: { id },
+      }}
+      asChild
+    >
       <ListItem
         backgroundColor={"$background"}
         icon={
           <Avatar circular size="$4">
-            <EyeOff />
             <Avatar.Image
               accessibilityLabel="Cam"
               src="https://images.unsplash.com/photo-1548142813-c348350df52b?&w=150&h=150&dpr=2&q=80"
               blurRadius={15}
-              opacity={0.6}
             />
             <Avatar.Fallback backgroundColor="$background" />
           </Avatar>
@@ -74,6 +100,8 @@ function JobListItem({
         iconAfter={<ChevronRight size={"$1.5"} />}
         borderRadius={"$4"}
         animation={"100ms"}
+        hoverStyle={{ scale: 0.98 }}
+        pressStyle={{ scale: 0.98 }}
         color={"$white025"}
       >
         <YStack f={1}>
@@ -82,17 +110,17 @@ function JobListItem({
             <SizableText
               size={"$3"}
               fontFamily={"$silkscreen"}
-              color={"$gray10"}
+              color={"darkgray"}
             >
               hidden
             </SizableText>
-            <EyeOff size={"$1"} color={"$gray10"} />
+            <EyeOff size={"$1"} color={"darkgray"} />
           </XStack>
           <SizableText size={"$3"} color={"$gray8"}>
             {location}
           </SizableText>
         </YStack>
       </ListItem>
-    </Theme>
+    </Link>
   );
 }

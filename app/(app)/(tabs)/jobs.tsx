@@ -3,7 +3,7 @@ import { FlatList } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { Link } from "expo-router";
 
-import { ChevronRight } from "@tamagui/lucide-icons";
+import { Bird, ChevronRight } from "@tamagui/lucide-icons";
 import { Separator, YStack } from "tamagui";
 import { Avatar, H4, ListItem, SizableText } from "tamagui";
 
@@ -15,7 +15,7 @@ import { trpc } from "@/lib/utils/trpc";
 import type { RouterOutputs } from "@/trpc/routers";
 
 export default AuthenticatedHOC(function JobsScreen() {
-  const searchParams = useLocalSearchParams();
+  const { sort, direction } = useLocalSearchParams();
 
   const { data: jobs, isLoading } = trpc.job.getAll.useQuery(undefined, {});
 
@@ -27,12 +27,34 @@ export default AuthenticatedHOC(function JobsScreen() {
     throw new Error("Cannot fetch jobs screen data.");
   }
 
+  if (jobs.length === 0) {
+    return (
+      <YStack
+        flex={1}
+        backgroundColor={"$background075"}
+        alignItems="center"
+        justifyContent="center"
+      >
+        <YStack pressStyle={{ transform: "scaleX(-1)" }}>
+          <Bird color={"$blue9"} size={"$20"} strokeWidth={1} />
+        </YStack>
+        <SizableText
+          color={"$blue9"}
+          size={"$8"}
+          style={{ fontFamily: "InterLight" }}
+        >
+          No available jobs yet.
+        </SizableText>
+      </YStack>
+    );
+  }
+
   return (
     <YStack flex={1} p={"$3"} backgroundColor={"$background075"} gap={"$3"}>
       <JobListSort
         pathname="/(app)/(tabs)/jobs"
-        sort={searchParams.sort}
-        direction={searchParams.direction}
+        sort={sort}
+        direction={direction}
       />
 
       <YStack f={1}>
