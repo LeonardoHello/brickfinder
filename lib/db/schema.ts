@@ -125,12 +125,13 @@ export const jobs = pgTable(
     ),
     expiresAt: timestamp("expires_at", { mode: "date" }),
     title: text("title").notNull(),
-    description: text("description"),
-    location: text("location").notNull(),
     position: jobPositionEnum("position").notNull(),
-    yearsOfExperience: integer("years_of_experience").notNull().default(0),
+    location: text("location").notNull(),
     type: jobTypeEnum("type").notNull(),
     salary: integer("salary").notNull(),
+    description: text("description").notNull(),
+    requirements: text("requirements").notNull(),
+    yearsOfExperience: integer("years_of_experience").notNull().default(0),
     moderatorId: uuid("moderator_id")
       .notNull()
       .references(() => moderators.id),
