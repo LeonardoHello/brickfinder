@@ -1,20 +1,29 @@
 import { eq } from "drizzle-orm";
+import isMobilePhone from "validator/lib/isMobilePhone";
+import isNumeric from "validator/lib/isNumeric";
 import { z } from "zod";
 
 import { publicProcedure, router } from "..";
-import Jobs from "@/lib/constants/Jobs";
-import { UserSchema, users } from "@/lib/db/schema";
+import { JobSchema, UserSchema, users } from "@/lib/db/schema";
 
 const UserUpdateSchema = z.object({
   userId: UserSchema.shape.id,
   firstName: UserSchema.shape.firstName.trim(),
   lastName: UserSchema.shape.lastName.trim(),
+  phoneNumber: UserSchema.shape.phoneNumber
+    .trim()
+    .refine((val) => (val.length > 0 ? isMobilePhone(val) : true)),
   skills: z
     .object({
-      job: z.enum(Jobs),
+      job: JobSchema.shape.position,
       yearsOfExperience: z
         .string()
         .trim()
+        .refine((val) => {
+          const num = Number(val);
+
+          return !isNaN(Number(num.toFixed(1))) && Number(num.toFixed(1)) < 100;
+        })
         // limits to 1 decimal number but only if provided
         .transform((shape) => Number(Number(shape).toFixed(1)) + ""),
     })
@@ -56,6 +65,7 @@ export const userRouter = router({
       .returning({
         firstName: users.firstName,
         lastName: users.lastName,
+        phoneNumber: users.phoneNumber,
         skills: users.skills,
       });
   }),

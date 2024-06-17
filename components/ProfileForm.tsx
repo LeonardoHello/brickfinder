@@ -13,19 +13,19 @@ import {
 import { z } from "zod";
 
 import ProfileFormFieldArray from "./ProfileFormFieldArray";
-import ProfileFormInput from "./ProfileFormInput";
-import Jobs from "@/lib/constants/Jobs";
-import { UserSchema } from "@/lib/db/schema";
+import ProfileFormInputs from "./ProfileFormInputs";
+import { JobSchema, UserSchema } from "@/lib/db/schema";
 import { trpc } from "@/lib/utils/trpc";
 import { RouterOutputs } from "@/trpc/routers";
 
 const FormSchema = z.object({
-  firstName: UserSchema.shape.firstName.trim(),
-  lastName: UserSchema.shape.lastName.trim(),
-  email: UserSchema.shape.email.email(),
+  firstName: UserSchema.shape.firstName,
+  lastName: UserSchema.shape.lastName,
+  phoneNumber: UserSchema.shape.phoneNumber,
+  email: UserSchema.shape.email,
   skills: z
     .object({
-      job: z.enum(Jobs),
+      job: JobSchema.shape.position,
       yearsOfExperience: z.string(),
     })
     .array(),
@@ -58,6 +58,7 @@ export default function ProfileForm({
     },
     onError: async (error) => {
       await utils.user.getById.refetch(id, {}, { throwOnError: true });
+      console.log("hehehehe");
 
       // TODO: toast error message
     },
@@ -90,14 +91,7 @@ export default function ProfileForm({
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} gap={"$4"}>
-      <ProfileFormInput control={ctrl} name="firstName" label="First name" />
-      <ProfileFormInput control={ctrl} name="lastName" label="Last name" />
-      <ProfileFormInput
-        control={ctrl}
-        name="email"
-        label="Email address"
-        required
-      />
+      <ProfileFormInputs control={ctrl} />
 
       <YStack>
         <Label>Skills</Label>
