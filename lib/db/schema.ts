@@ -44,6 +44,7 @@ export const users = pgTable(
     ),
     firstName: text("first_name").notNull().default(""),
     lastName: text("last_name").notNull().default(""),
+    phoneNumber: text("phone_number").notNull().default(""),
     email: text("email").notNull().unique(),
     imageUrl: text("image_url").notNull(),
     skills: customJsonb<{
@@ -166,8 +167,8 @@ export const applications = pgTable(
     ),
     firstName: text("first_name").notNull(),
     lastName: text("last_name").notNull(),
+    phoneNumber: text("phone_number").notNull().default(""),
     email: text("email").notNull(),
-    phoneNumber: integer("phone_number"),
     resume: text("resume").notNull(),
     coverLetter: text("cover_letter").default(""),
     userId: text("user_id")
