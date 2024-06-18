@@ -170,7 +170,7 @@ export const applications = pgTable(
     phoneNumber: text("phone_number").notNull().default(""),
     email: text("email").notNull(),
     resume: text("resume").notNull(),
-    coverLetter: text("cover_letter").default(""),
+    coverLetter: text("cover_letter").notNull().default(""),
     userId: text("user_id")
       .notNull()
       .references(() => users.id),
