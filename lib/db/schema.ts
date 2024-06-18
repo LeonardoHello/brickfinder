@@ -54,7 +54,7 @@ export const users = pgTable(
       .array()
       .notNull()
       .default(sql`ARRAY[]::jsonb[]`),
-    resume: text("resume"),
+    resume: text("resume").notNull().default(""),
   },
   (t) => ({
     userIdIdx: uniqueIndex("user_id_idx").on(t.id),
