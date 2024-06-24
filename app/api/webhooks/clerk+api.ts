@@ -2,8 +2,8 @@ import type { WebhookEvent } from "@clerk/clerk-sdk-node";
 import { eq } from "drizzle-orm";
 import { Webhook } from "svix";
 
-import db from "@/lib/db";
-import { users } from "@/lib/db/schema";
+import db from "@/db";
+import { users } from "@/db/schema";
 
 export async function POST(request: Request) {
   const CLERK_WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
@@ -61,12 +61,6 @@ export async function POST(request: Request) {
         email: data.email_addresses[0].email_address,
         imageUrl: data.image_url,
       });
-      break;
-
-    case "user.deleted":
-      if (data.id) {
-        await db.delete(users).where(eq(users.id, data.id));
-      }
       break;
   }
 

@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 
+import * as Linking from "expo-linking";
 import * as WebBrowser from "expo-web-browser";
 
 import { useOAuth } from "@clerk/clerk-expo";
@@ -14,7 +15,7 @@ import {
   useTheme,
 } from "tamagui";
 
-import { useWarmUpBrowser } from "@/lib/hooks/useWarmUpBrowser";
+import { useWarmUpBrowser } from "@/hooks/useWarmUpBrowser";
 
 enum Strategy {
   Google = "oauth_google",
@@ -33,7 +34,7 @@ export default function ModalScreen() {
   const { gray8 } = useTheme();
   const color = gray8.get();
 
-  const redirectUrl = "myapp://sign-in";
+  const redirectUrl = Linking.createURL("/", { scheme: "myapp" });
   const { startOAuthFlow: googleOAuth } = useOAuth({
     strategy: "oauth_google",
     redirectUrl,
@@ -62,8 +63,10 @@ export default function ModalScreen() {
     try {
       const { createdSessionId, setActive } = await selectedAuth();
 
-      if (createdSessionId && setActive) {
-        setActive({ session: createdSessionId });
+      if (createdSessionId) {
+        setActive!({ session: createdSessionId });
+      } else {
+        // Use signIn or signUp for next steps such as MFA
       }
     } catch (err) {
       console.error("OAuth error", err);

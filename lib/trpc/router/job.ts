@@ -1,5 +1,5 @@
-import { publicProcedure, router } from "..";
-import { JobSchema } from "@/lib/db/schema";
+import { publicProcedure, router } from "../init";
+import { JobSchema } from "@/db/schema";
 
 export const jobRouter = router({
   getAll: publicProcedure.query(({ ctx }) => {

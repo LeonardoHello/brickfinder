@@ -13,10 +13,10 @@ export default AuthenticatedHOC(function ApplicationsScreen() {
         justifyContent="center"
       >
         <YStack pressStyle={{ transform: "scaleX(-1)" }}>
-          <Bird color={"$blue9"} size={"$20"} strokeWidth={1} />
+          <Bird color={"$gray6"} size={"$20"} strokeWidth={1} />
         </YStack>
         <SizableText
-          color={"$blue9"}
+          color={"$gray6"}
           size={"$8"}
           style={{ fontFamily: "InterLight" }}
         >

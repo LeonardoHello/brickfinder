@@ -19,9 +19,9 @@ import isMobilePhone from "validator/lib/isMobilePhone";
 import { z } from "zod";
 
 import ProfileFormFieldArray from "./ProfileFormFieldArray";
-import { JobSchema, UserSchema } from "@/lib/db/schema";
-import { trpc } from "@/lib/utils/trpc";
-import { RouterOutputs } from "@/trpc/routers";
+import { JobSchema, UserSchema } from "@/db/schema";
+import { RouterOutputs } from "@/lib/trpc/router";
+import { trpc } from "@/utils/trpc";
 
 const FormSchema = z.object({
   firstName: UserSchema.shape.firstName,

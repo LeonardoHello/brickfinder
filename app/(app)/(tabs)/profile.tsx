@@ -4,7 +4,7 @@ import { XStack } from "tamagui";
 import AuthenticatedHOC from "@/components/AuthenticatedHOC";
 import ProfileForm from "@/components/ProfileForm";
 import Skeleton from "@/components/Skeleton";
-import { trpc } from "@/lib/utils/trpc";
+import { trpc } from "@/utils/trpc";
 
 export default AuthenticatedHOC(function ProfileScreen({
   userId,

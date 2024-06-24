@@ -3,7 +3,7 @@ import { Link } from "expo-router";
 import { ArrowDownWideNarrow, ArrowUpWideNarrow } from "@tamagui/lucide-icons";
 import { Button, XGroup } from "tamagui";
 
-import { SearchParam } from "@/lib/types";
+import { SearchParam } from "@/types";
 
 export default function JobListSort({
   pathname,

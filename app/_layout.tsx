@@ -12,11 +12,14 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
+import { PortalProvider } from "@tamagui/portal";
+import { ToastProvider, ToastViewport } from "@tamagui/toast";
 import { TamaguiProvider, Theme } from "tamagui";
 
 import { tamaguiConfig } from "../tamagui.config";
-import { tokenCache } from "@/lib/utils/cache";
-import { TRPCReactProvider } from "@/trpc/Provider";
+import Toast from "@/components/Toast";
+import { TRPCProvider } from "@/lib/trpc/Provider";
+import { tokenCache } from "@/utils/cache";
 
 if (Platform.OS === "web") {
   // @ts-expect-error
@@ -63,7 +66,7 @@ export default function RootLayout() {
       tokenCache={tokenCache}
       publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!}
     >
-      <TRPCReactProvider>
+      <TRPCProvider>
         <TamaguiProvider
           config={tamaguiConfig}
           defaultTheme={colorScheme as any}
@@ -72,11 +75,17 @@ export default function RootLayout() {
             value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
           >
             <Theme name={"gray"}>
-              <Slot />
+              <ToastProvider native>
+                <PortalProvider shouldAddRootHost>
+                  <Slot />
+                  <ToastViewport alignSelf="center" top={50} />
+                  <Toast />
+                </PortalProvider>
+              </ToastProvider>
             </Theme>
           </ThemeProvider>
         </TamaguiProvider>
-      </TRPCReactProvider>
+      </TRPCProvider>
     </ClerkProvider>
   );
 }

@@ -1,10 +1,9 @@
 import { eq } from "drizzle-orm";
 import isMobilePhone from "validator/lib/isMobilePhone";
-import isNumeric from "validator/lib/isNumeric";
 import { z } from "zod";
 
-import { publicProcedure, router } from "..";
-import { JobSchema, UserSchema, users } from "@/lib/db/schema";
+import { publicProcedure, router } from "../init";
+import { JobSchema, UserSchema, users } from "@/db/schema";
 
 const UserUpdateSchema = z.object({
   userId: UserSchema.shape.id,
@@ -36,7 +35,7 @@ export const userRouter = router({
     .query(async ({ input, ctx }) => {
       const user = await ctx.db.query.users.findFirst({
         where: (user, { eq }) => eq(user.id, input),
-        columns: { createdAt: false, imageUrl: false, resume: false },
+        columns: { createdAt: false, imageUrl: false },
       });
 
       return user ?? null;

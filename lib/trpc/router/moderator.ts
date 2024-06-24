@@ -1,5 +1,5 @@
-import { publicProcedure, router } from "..";
-import { UserSchema } from "@/lib/db/schema";
+import { publicProcedure, router } from "../init";
+import { UserSchema } from "@/db/schema";
 
 export const moderatorRouter = router({
   getById: publicProcedure

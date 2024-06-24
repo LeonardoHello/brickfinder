@@ -17,8 +17,8 @@ import Logo from "@/components/Logo";
 import Menu from "@/components/Menu";
 import ScreenLoader from "@/components/ScreenLoader";
 import { Switch } from "@/components/Switch";
-import { useClientOnlyValue } from "@/lib/hooks/useClientOnlyValue";
-import { trpc } from "@/lib/utils/trpc";
+import { useClientOnlyValue } from "@/hooks/useClientOnlyValue";
+import { trpc } from "@/utils/trpc";
 
 export default AuthenticatedHOC(function TabsLayout({ userId }) {
   const [checked, setChecked] = useState(false);

@@ -10,9 +10,9 @@ import { H4, ListItem, SizableText } from "tamagui";
 import AuthenticatedHOC from "@/components/AuthenticatedHOC";
 import JobListSort from "@/components/JobListSort";
 import ScreenLoader from "@/components/ScreenLoader";
-import type { ArrElement } from "@/lib/types";
-import { trpc } from "@/lib/utils/trpc";
-import type { RouterOutputs } from "@/trpc/routers";
+import { RouterOutputs } from "@/lib/trpc/router";
+import { ArrElement } from "@/types";
+import { trpc } from "@/utils/trpc";
 
 export default AuthenticatedHOC(function JobsScreen({ userId }) {
   const searchParams = useLocalSearchParams();

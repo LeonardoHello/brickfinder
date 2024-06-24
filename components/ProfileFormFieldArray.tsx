@@ -21,7 +21,7 @@ import {
 import { LinearGradient } from "tamagui/linear-gradient";
 
 import type { FormSchema } from "./ProfileForm";
-import Jobs from "@/lib/constants/Jobs";
+import Jobs from "@/constants/Jobs";
 
 export default memo(function ProfileFormFieldArray({
   control,

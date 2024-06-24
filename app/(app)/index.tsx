@@ -8,9 +8,9 @@ import { Avatar, H4, ListItem, SizableText, XStack } from "tamagui";
 
 import JobListSort from "@/components/JobListSort";
 import ScreenLoader from "@/components/ScreenLoader";
-import { ArrElement } from "@/lib/types";
-import { trpc } from "@/lib/utils/trpc";
-import type { RouterOutputs } from "@/trpc/routers";
+import { RouterOutputs } from "@/lib/trpc/router";
+import { ArrElement } from "@/types";
+import { trpc } from "@/utils/trpc";
 
 export default function JobsScreen() {
   const searchParams = useLocalSearchParams();
@@ -34,7 +34,7 @@ export default function JobsScreen() {
         justifyContent="center"
       >
         <YStack pressStyle={{ transform: "scaleX(-1)" }}>
-          <Bird color={"$blue9"} size={"$20"} strokeWidth={1} />
+          <Bird color={"$gray6"} size={"$20"} strokeWidth={1} />
         </YStack>
         <SizableText
           color={"$blue9"}

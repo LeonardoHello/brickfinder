@@ -3,7 +3,7 @@ import type { FC } from "react";
 import { useAuth } from "@clerk/clerk-expo";
 
 import ScreenLoader from "./ScreenLoader";
-import { User } from "@/lib/db/schema";
+import { User } from "@/db/schema";
 
 export default function AuthenticatedHOC(
   WrappedComponent: FC<{ userId: User["id"] }>,
