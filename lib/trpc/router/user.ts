@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import isMobilePhone from "validator/lib/isMobilePhone";
+import { isValidPhoneNumber } from "libphonenumber-js";
 import { z } from "zod";
 
 import { publicProcedure, router } from "../init";
@@ -9,9 +9,12 @@ const UserUpdateSchema = z.object({
   userId: UserSchema.shape.id,
   firstName: UserSchema.shape.firstName.trim(),
   lastName: UserSchema.shape.lastName.trim(),
-  phoneNumber: UserSchema.shape.phoneNumber
-    .trim()
-    .refine((val) => (val.length > 0 ? isMobilePhone(val) : true)),
+  phoneNumber: UserSchema.shape.phoneNumber.trim().refine((val) => {
+    if (val.length === 0) {
+      return true;
+    }
+    return isValidPhoneNumber(val, "HR");
+  }),
   skills: z
     .object({
       job: JobSchema.shape.position,

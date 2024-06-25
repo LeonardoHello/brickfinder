@@ -1,4 +1,4 @@
-import isMobilePhone from "validator/lib/isMobilePhone";
+import { isValidPhoneNumber } from "libphonenumber-js";
 import { z } from "zod";
 
 import { publicProcedure, router } from "../init";
@@ -10,11 +10,14 @@ const ApplicationCreateSchema = z.object({
   firstName: ApplicationSchema.shape.firstName.trim(),
   lastName: ApplicationSchema.shape.lastName.trim(),
   email: ApplicationSchema.shape.lastName.trim().email(),
-  phoneNumber: ApplicationSchema.shape.phoneNumber
-    .trim()
-    .refine((val) => (val.length > 0 ? isMobilePhone(val) : true)),
+  phoneNumber: ApplicationSchema.shape.phoneNumber.trim().refine((val) => {
+    if (val.length === 0) {
+      return true;
+    }
+    return isValidPhoneNumber(val, "HR");
+  }),
   resume: ApplicationSchema.shape.resume,
-  coverLetter: ApplicationSchema.shape.coverLetter.trim(),
+  // coverLetter: ApplicationSchema.shape.coverLetter.trim(),
 });
 
 export const applicationRouter = router({

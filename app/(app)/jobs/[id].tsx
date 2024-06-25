@@ -17,13 +17,14 @@ import {
   YStack,
 } from "tamagui";
 
+import ApplicationDialog from "@/components/ApplicationDialog";
 import ScreenLoader from "@/components/ScreenLoader";
-import { trpc } from "@/lib/utils/trpc";
+import { trpc } from "@/utils/trpc";
 
 export default function JobScreen() {
   const { id } = useLocalSearchParams();
 
-  const { isSignedIn, isLoaded } = useAuth();
+  const { userId, isSignedIn, isLoaded } = useAuth();
 
   const { data: job, isLoading } = trpc.job.getById.useQuery(id as string, {});
 
@@ -90,15 +91,17 @@ export default function JobScreen() {
               </XStack>
             </YStack>
             {isSignedIn && (
-              <Button
-                theme={"blue"}
-                size={"$4.5"}
-                px={"$6"}
-                alignSelf="flex-start"
-                borderRadius="$10"
-              >
-                Apply
-              </Button>
+              <ApplicationDialog userId={userId} job={job}>
+                <Button
+                  theme={"blue"}
+                  size={"$4.5"}
+                  px={"$6"}
+                  alignSelf="flex-start"
+                  borderRadius="$10"
+                >
+                  Apply
+                </Button>
+              </ApplicationDialog>
             )}
           </Card.Header>
           <Separator />

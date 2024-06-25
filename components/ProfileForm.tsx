@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { Asterisk } from "@tamagui/lucide-icons";
+import { isValidPhoneNumber } from "libphonenumber-js";
 import "tamagui";
 import {
   Button,
@@ -14,8 +15,6 @@ import {
   Theme,
   YStack,
 } from "tamagui";
-import isEmail from "validator/lib/isEmail";
-import isMobilePhone from "validator/lib/isMobilePhone";
 import { z } from "zod";
 
 import ProfileFormFieldArray from "./ProfileFormFieldArray";
@@ -137,8 +136,12 @@ export default function ProfileForm({
         control={control}
         name="phoneNumber"
         rules={{
-          validate: (validate) =>
-            validate.length > 0 ? isMobilePhone(validate) : true,
+          validate: (val) => {
+            if (val.length === 0) {
+              return true;
+            }
+            return isValidPhoneNumber(val, "HR");
+          },
         }}
         render={({ field, fieldState: { error } }) => (
           <Fieldset>
@@ -166,7 +169,7 @@ export default function ProfileForm({
         name="email"
         rules={{
           required: true,
-          validate: (validate) => isEmail(validate),
+          validate: (val) => z.string().email().safeParse(val).success,
         }}
         render={({ field, fieldState: { error } }) => (
           <Fieldset>
