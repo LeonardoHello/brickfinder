@@ -3,9 +3,12 @@ import { sql } from "drizzle-orm";
 import {
   boolean,
   customType,
+  foreignKey,
+  index,
   integer,
   pgEnum,
   pgTable,
+  primaryKey,
   text,
   timestamp,
   uniqueIndex,
@@ -54,7 +57,6 @@ export const users = pgTable(
       .array()
       .notNull()
       .default(sql`ARRAY[]::jsonb[]`),
-    resume: text("resume").notNull().default(""),
   },
   (t) => ({
     userIdIdx: uniqueIndex("user_id_idx").on(t.id),
@@ -160,7 +162,12 @@ export const jobsRelations = relations(jobs, ({ one, many }) => ({
 export const applications = pgTable(
   "applications",
   {
-    id: uuid("id").primaryKey().defaultRandom(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    jobId: uuid("job_id")
+      .notNull()
+      .references(() => jobs.id, { onDelete: "cascade" }),
     createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { mode: "date" }).$onUpdate(
       () => new Date(),
@@ -169,17 +176,12 @@ export const applications = pgTable(
     lastName: text("last_name").notNull(),
     phoneNumber: text("phone_number").notNull().default(""),
     email: text("email").notNull(),
-    resume: text("resume").notNull(),
     coverLetter: text("cover_letter").notNull().default(""),
-    userId: text("user_id")
-      .notNull()
-      .references(() => users.id),
-    jobId: uuid("job_id")
-      .notNull()
-      .references(() => jobs.id),
   },
   (t) => ({
-    applicationIdIdx: uniqueIndex("application_id_idx").on(t.id),
+    pk: primaryKey({ columns: [t.userId, t.jobId] }),
+    applicationUserIdIdx: index("application_user_id_idx").on(t.userId),
+    applicationJobIdIdx: index("application_job_id_idx").on(t.jobId),
   }),
 );
 
@@ -192,16 +194,41 @@ export const applicationsRelations = relations(applications, ({ one }) => ({
     fields: [applications.jobId],
     references: [jobs.id],
   }),
+  resume: one(resumes, {
+    fields: [applications.userId, applications.jobId],
+    references: [resumes.userId, resumes.jobId],
+  }),
 }));
+
+export const resumes = pgTable(
+  "resumes",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    name: text("name").notNull(),
+    key: text("key").unique().notNull(),
+    url: text("url").unique().notNull(),
+    userId: text("user_id").notNull(),
+    jobId: uuid("job_id").notNull(),
+  },
+  (t) => ({
+    fk: foreignKey({
+      columns: [t.userId, t.jobId],
+      foreignColumns: [applications.userId, applications.jobId],
+      name: "resumes_application_fk",
+    }),
+  }),
+);
 
 export type User = InferSelectModel<typeof users>;
 export type Moderator = InferSelectModel<typeof moderators>;
 export type Company = InferSelectModel<typeof companies>;
 export type Job = InferSelectModel<typeof jobs>;
 export type Application = InferSelectModel<typeof applications>;
+export type Resume = InferSelectModel<typeof resumes>;
 
 export const UserSchema = createSelectSchema(users);
 export const ModeratorSchema = createSelectSchema(moderators);
 export const CompanySchema = createSelectSchema(companies);
 export const JobSchema = createSelectSchema(jobs);
 export const ApplicationSchema = createSelectSchema(applications);
+export const ResumeSchema = createSelectSchema(resumes);

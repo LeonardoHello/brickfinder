@@ -43,6 +43,13 @@
       "when": 1718728340842,
       "tag": "0005_cheerful_la_nuit",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1719426377770,
+      "tag": "0006_curious_stature",
+      "breakpoints": true
     }
   ]
 }
