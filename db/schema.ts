@@ -215,7 +215,7 @@ export const resumes = pgTable(
       columns: [t.userId, t.jobId],
       foreignColumns: [applications.userId, applications.jobId],
       name: "resumes_application_fk",
-    }),
+    }).onDelete("cascade"),
   }),
 );
 
