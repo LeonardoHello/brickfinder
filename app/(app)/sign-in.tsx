@@ -34,22 +34,17 @@ export default function ModalScreen() {
   const { gray8 } = useTheme();
   const color = gray8.get();
 
-  const redirectUrl = Linking.createURL("/", { scheme: "myapp" });
   const { startOAuthFlow: googleOAuth } = useOAuth({
     strategy: "oauth_google",
-    redirectUrl,
   });
   const { startOAuthFlow: microsoftOAuth } = useOAuth({
     strategy: "oauth_microsoft",
-    redirectUrl,
   });
   const { startOAuthFlow: facebookOAuth } = useOAuth({
     strategy: "oauth_facebook",
-    redirectUrl,
   });
   const { startOAuthFlow: linkedinOAuth } = useOAuth({
     strategy: "oauth_linkedin",
-    redirectUrl,
   });
 
   const onSelectAuth = useCallback(async (strategy: Strategy) => {
@@ -61,7 +56,9 @@ export default function ModalScreen() {
     }[strategy];
 
     try {
-      const { createdSessionId, setActive } = await selectedAuth();
+      const { createdSessionId, setActive } = await selectedAuth({
+        redirectUrl: Linking.createURL("/", { scheme: "myapp" }),
+      });
 
       if (createdSessionId) {
         setActive!({ session: createdSessionId });
