@@ -3,7 +3,7 @@ import { FlatList } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { Link } from "expo-router";
 
-import { Bird, Check, ChevronRight } from "@tamagui/lucide-icons";
+import { Check, ChevronRight, Rat } from "@tamagui/lucide-icons";
 import { Separator, YStack } from "tamagui";
 import { Avatar, H4, ListItem, SizableText } from "tamagui";
 
@@ -34,16 +34,17 @@ export default AuthenticatedHOC(function JobsScreen({ userId }) {
         backgroundColor={"$background075"}
         alignItems="center"
         justifyContent="center"
+        gap={"$4"}
       >
-        <YStack pressStyle={{ transform: "scaleX(-1)" }}>
-          <Bird color={"$gray6"} size={"$20"} strokeWidth={1} />
-        </YStack>
+        <Rat color={"$gray6"} size={"$20"} strokeWidth={1} />
         <SizableText
-          color={"$blue9"}
-          size={"$8"}
-          style={{ fontFamily: "InterLight" }}
+          color={"$gray6"}
+          maxWidth={"75%"}
+          textAlign="center"
+          size={"$6"}
+          fontFamily={"$silkscreen"}
         >
-          No available jobs yet.
+          No open position avaliable at this moment.
         </SizableText>
       </YStack>
     );

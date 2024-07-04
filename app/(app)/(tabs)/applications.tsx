@@ -1,4 +1,4 @@
-import { Bird } from "@tamagui/lucide-icons";
+import { Rat } from "@tamagui/lucide-icons";
 import { H1, SizableText, YStack } from "tamagui";
 
 import AuthenticatedHOC from "@/components/AuthenticatedHOC";
@@ -11,14 +11,16 @@ export default AuthenticatedHOC(function ApplicationsScreen() {
         backgroundColor={"$background075"}
         alignItems="center"
         justifyContent="center"
+        gap={"$4"}
+        pressStyle={{ transform: "scaleX(-1)" }}
       >
-        <YStack pressStyle={{ transform: "scaleX(-1)" }}>
-          <Bird color={"$gray6"} size={"$20"} strokeWidth={1} />
-        </YStack>
+        <Rat color={"$gray6"} size={"$20"} strokeWidth={1} />
         <SizableText
           color={"$gray6"}
-          size={"$8"}
-          style={{ fontFamily: "InterLight" }}
+          maxWidth={"75%"}
+          textAlign="center"
+          size={"$6"}
+          fontFamily={"$silkscreen"}
         >
           No applications sent yet.
         </SizableText>
