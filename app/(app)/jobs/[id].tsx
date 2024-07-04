@@ -61,6 +61,7 @@ export default function JobScreen() {
           <Card.Header padded gap={"$4"}>
             <YStack>
               <H2>{title}</H2>
+
               {isSignedIn && (
                 <Paragraph theme="alt2" fontFamily={"$silkscreen"}>
                   {company.name}
@@ -75,6 +76,7 @@ export default function JobScreen() {
                 </XStack>
               )}
             </YStack>
+
             <YStack gap={"$2.5"}>
               <XStack gap={"$2"} alignItems="center">
                 <Calendar color={"$blue10"} strokeWidth={1.2} />
@@ -85,6 +87,7 @@ export default function JobScreen() {
                   </SizableText>
                 </SizableText>
               </XStack>
+
               <XStack gap={"$2"} alignItems="center">
                 <MapPin color={"$blue10"} strokeWidth={1.2} />
                 <SizableText style={{ fontFamily: "InterLight" }}>
@@ -93,6 +96,7 @@ export default function JobScreen() {
                 </SizableText>
               </XStack>
             </YStack>
+
             {isSignedIn && (
               <ApplicationDialog userId={userId} jobId={id}>
                 <Button
@@ -107,49 +111,64 @@ export default function JobScreen() {
               </ApplicationDialog>
             )}
           </Card.Header>
+
           <Separator />
+
           <Card.Footer padded gap={"$4"} flexDirection="column">
-            <YStack gap={"$1.5"}>
-              <H3>Job description</H3>
-              {isSignedIn && (
-                <Paragraph style={{ fontFamily: "InterLight" }}>
-                  {description}
-                </Paragraph>
+            <YStack gap={"$2"}>
+              {description && (
+                <YStack>
+                  <H3>Job description</H3>
+                  {isSignedIn && (
+                    <Paragraph style={{ fontFamily: "InterLight" }}>
+                      {description}
+                    </Paragraph>
+                  )}
+                  {!isSignedIn && (
+                    <XStack alignItems="center" gap={"$2"}>
+                      <SizableText
+                        color={"darkgray"}
+                        fontFamily={"$silkscreen"}
+                      >
+                        hidden
+                      </SizableText>
+                      <EyeOff size={"$1"} color={"darkgray"} />
+                    </XStack>
+                  )}
+                </YStack>
               )}
-              {!isSignedIn && (
-                <XStack alignItems="center" gap={"$2"}>
-                  <SizableText color={"darkgray"} fontFamily={"$silkscreen"}>
-                    hidden
-                  </SizableText>
-                  <EyeOff size={"$1"} color={"darkgray"} />
-                </XStack>
-              )}
+
               <YStack>
-                <H4 fontSize={"$6"}>Position</H4>
+                <H4>Position</H4>
                 <Paragraph style={{ fontFamily: "InterLight" }}>
                   {position}
                 </Paragraph>
               </YStack>
+
               <YStack>
-                <H4 fontSize={"$6"}>Job type</H4>
+                <H4>Job type</H4>
                 <Paragraph style={{ fontFamily: "InterLight" }}>
                   {type}
                 </Paragraph>
               </YStack>
+
               <YStack>
-                <H4 fontSize={"$6"}>Salary</H4>
+                <H4>Salary</H4>
                 <Paragraph style={{ fontFamily: "InterLight" }}>
                   €{salary}
                 </Paragraph>
               </YStack>
             </YStack>
-            <YStack gap={"$1.5"}>
-              <H3>Requirements</H3>
-              <Paragraph style={{ fontFamily: "InterLight" }}>
-                {requirements}
-              </Paragraph>
+            <YStack gap={"$2"}>
               <YStack>
-                <H4 fontSize={"$6"}>Years of experience</H4>
+                <H3>Requirements</H3>
+                <Paragraph style={{ fontFamily: "InterLight" }}>
+                  {requirements}
+                </Paragraph>
+              </YStack>
+
+              <YStack>
+                <H4>Years of experience</H4>
                 <Paragraph style={{ fontFamily: "InterLight" }}>
                   {yearsOfExperience}
                 </Paragraph>
@@ -162,6 +181,7 @@ export default function JobScreen() {
           <Card elevate size="$4" backgroundColor={"$background075"} bordered>
             <Card.Header padded gap={"$4"}>
               <H2>About the company</H2>
+
               <XStack gap="$3" alignItems="center">
                 <Avatar circular size="$8">
                   <Avatar.Image
@@ -180,14 +200,17 @@ export default function JobScreen() {
                   </SizableText>
                 </YStack>
               </XStack>
+
               <YStack>
-                <H4 fontSize={"$6"}>Address</H4>
+                <H4>Address</H4>
                 <Paragraph style={{ fontFamily: "InterLight" }}>
                   {company.address}
                 </Paragraph>
               </YStack>
             </Card.Header>
+
             <Separator />
+
             <Card.Footer padded gap={"$4"} flexDirection="column">
               <Paragraph style={{ fontFamily: "InterLight" }}>
                 {company.about}
