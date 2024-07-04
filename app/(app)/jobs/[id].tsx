@@ -57,12 +57,10 @@ export default function JobScreen() {
   return (
     <ScrollView backgroundColor={"$background075"}>
       <YStack flex={1} p={"$3"} gap={"$3"}>
-        <Stack.Screen options={{ headerTitle: undefined, title }} />
-
         <Card elevate size="$4" backgroundColor={"$background075"} bordered>
           <Card.Header padded gap={"$4"}>
             <YStack>
-              <H2>{position}</H2>
+              <H2>{title}</H2>
               {isSignedIn && (
                 <Paragraph theme="alt2" fontFamily={"$silkscreen"}>
                   {company.name}
@@ -126,6 +124,12 @@ export default function JobScreen() {
                   <EyeOff size={"$1"} color={"darkgray"} />
                 </XStack>
               )}
+              <YStack>
+                <H4 fontSize={"$6"}>Position</H4>
+                <Paragraph style={{ fontFamily: "InterLight" }}>
+                  {position}
+                </Paragraph>
+              </YStack>
               <YStack>
                 <H4 fontSize={"$6"}>Job type</H4>
                 <Paragraph style={{ fontFamily: "InterLight" }}>
