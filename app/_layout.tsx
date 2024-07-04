@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Platform, useColorScheme } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { useFonts } from "expo-font";
 import { Slot } from "expo-router";
@@ -13,10 +14,11 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { PortalProvider } from "@tamagui/portal";
-import { ToastProvider, ToastViewport } from "@tamagui/toast";
+import { ToastProvider } from "@tamagui/toast";
 import { TamaguiProvider, Theme } from "tamagui";
 
 import { tamaguiConfig } from "../tamagui.config";
+import SafeToastViewport from "@/components/SafeToastViewport";
 import Toast from "@/components/Toast";
 import { TRPCProvider } from "@/lib/trpc/Provider";
 import { tokenCache } from "@/utils/cache";
@@ -67,24 +69,26 @@ export default function RootLayout() {
       publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!}
     >
       <TRPCProvider>
-        <TamaguiProvider
-          config={tamaguiConfig}
-          defaultTheme={colorScheme as any}
-        >
-          <ThemeProvider
-            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        <SafeAreaProvider>
+          <TamaguiProvider
+            config={tamaguiConfig}
+            defaultTheme={colorScheme as any}
           >
-            <Theme name={"gray"}>
-              <ToastProvider native>
-                <PortalProvider shouldAddRootHost>
-                  <Slot />
-                  <ToastViewport alignSelf="center" top={50} />
-                  <Toast />
-                </PortalProvider>
-              </ToastProvider>
-            </Theme>
-          </ThemeProvider>
-        </TamaguiProvider>
+            <ThemeProvider
+              value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+            >
+              <Theme name={"gray"}>
+                <ToastProvider native>
+                  <PortalProvider shouldAddRootHost>
+                    <Slot />
+                    <SafeToastViewport />
+                    <Toast />
+                  </PortalProvider>
+                </ToastProvider>
+              </Theme>
+            </ThemeProvider>
+          </TamaguiProvider>
+        </SafeAreaProvider>
       </TRPCProvider>
     </ClerkProvider>
   );
