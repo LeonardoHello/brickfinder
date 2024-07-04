@@ -3,7 +3,7 @@ import { isValidPhoneNumber } from "libphonenumber-js";
 import { z } from "zod";
 
 import { publicProcedure, router } from "../init";
-import { JobSchema, UserSchema, users } from "@/db/schema";
+import { ApplicationSchema, JobSchema, UserSchema, users } from "@/db/schema";
 
 const UserUpdateSchema = z.object({
   userId: UserSchema.shape.id,
@@ -43,24 +43,31 @@ export const userRouter = router({
 
       return user ?? null;
     }),
-
   getByApplicationId: publicProcedure
-    .input(UserSchema.shape.id)
+    .input(ApplicationSchema.pick({ userId: true, jobId: true }))
     .query(async ({ input, ctx }) => {
       const user = await ctx.db.query.users.findFirst({
-        where: (user, { eq }) => eq(user.id, input),
+        where: (user, { eq }) => eq(user.id, input.userId),
         columns: {
           firstName: true,
           lastName: true,
           email: true,
           phoneNumber: true,
         },
-        with: { resume: { columns: { key: true, name: true, url: true } } },
+        with: {
+          resume: { columns: { key: true, name: true, url: true } },
+          applications: {
+            columns: {
+              userId: true,
+              jobId: true,
+            },
+            where: (application, { eq }) => eq(application.jobId, input.jobId),
+          },
+        },
       });
 
       return user ?? null;
     }),
-
   update: publicProcedure.input(UserUpdateSchema).mutation(({ input, ctx }) => {
     const { userId, ...rest } = input;
 

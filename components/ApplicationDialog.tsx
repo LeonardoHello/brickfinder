@@ -1,3 +1,7 @@
+import { useState } from "react";
+
+import { Link } from "expo-router";
+
 import { Adapt, Dialog, ScrollView, Sheet } from "tamagui";
 
 import ApplicationForm from "./ApplicationForm";
@@ -13,16 +17,12 @@ export default function ApplicationDialog({
   userId: Application["userId"];
   jobId: Application["jobId"];
 }) {
+  const [open, setOpen] = useState(false);
+
   const { data: user, isLoading: isLoadingUser } =
-    trpc.user.getByApplicationId.useQuery(userId);
+    trpc.user.getByApplicationId.useQuery({ userId, jobId });
 
-  const { data: application, isLoading: isLoadingApplication } =
-    trpc.application.getById.useQuery({
-      userId,
-      jobId,
-    });
-
-  if (isLoadingUser || isLoadingApplication) {
+  if (isLoadingUser) {
     return children;
   }
 
@@ -32,9 +32,26 @@ export default function ApplicationDialog({
     );
   }
 
+  const closeDialog = () => {
+    setOpen(false);
+  };
+
+  const {
+    applications: [application],
+    ...rest
+  } = user;
+
   return (
-    <Dialog modal>
-      <Dialog.Trigger asChild>{children}</Dialog.Trigger>
+    <Dialog modal open={open} onOpenChange={setOpen}>
+      {application && (
+        <Link
+          href={{ pathname: "/(app)/applications/[id]", params: { id: jobId } }}
+          asChild
+        >
+          {children}
+        </Link>
+      )}
+      {!application && <Dialog.Trigger asChild>{children}</Dialog.Trigger>}
 
       <Adapt when="sm" platform="touch">
         <Sheet animation="medium" zIndex={200000} modal dismissOnSnapToBottom>
@@ -82,9 +99,10 @@ export default function ApplicationDialog({
             </Dialog.Description>
 
             <ApplicationForm
-              defaultValues={application ? application : user}
               userId={userId}
               jobId={jobId}
+              defaultValues={rest}
+              closeDialog={closeDialog}
             />
           </ScrollView>
         </Dialog.Content>

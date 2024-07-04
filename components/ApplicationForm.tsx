@@ -1,5 +1,7 @@
 import { Controller, useForm } from "react-hook-form";
 
+import { useRouter } from "expo-router";
+
 import { Asterisk } from "@tamagui/lucide-icons";
 import { useToastController } from "@tamagui/toast";
 import { isValidPhoneNumber } from "libphonenumber-js";
@@ -45,17 +47,48 @@ export default function ApplicationForm({
   userId,
   jobId,
   defaultValues,
+  closeDialog,
 }: {
   userId: Application["userId"];
   jobId: Application["jobId"];
-  defaultValues: NonNullable<RouterOutputs["user"]["getByApplicationId"]>;
+  defaultValues: Omit<
+    NonNullable<RouterOutputs["user"]["getByApplicationId"]>,
+    "applications"
+  >;
+  closeDialog: () => void;
 }) {
+  const router = useRouter();
+
   const toast = useToastController();
+  const utils = trpc.useUtils();
 
   const submitApplication = trpc.application.submit.useMutation({
     onSuccess: () => {
-      toast.show("Successfully submited!", {
-        native: true,
+      utils.user.getByApplicationId.setData({ userId, jobId }, (updater) => {
+        if (!updater) {
+          return utils.user.getByApplicationId.getData();
+        }
+
+        return { ...updater, applications: [{ userId, jobId }] };
+      });
+
+      utils.job.getAllByUserId.setData(userId, (updater) => {
+        if (!updater) {
+          return utils.job.getAllByUserId.getData(userId);
+        }
+
+        return updater.map((data) => {
+          if (data.id !== jobId) return data;
+
+          return { ...data, applications: [{ userId, jobId }] };
+        });
+      });
+
+      closeDialog();
+
+      router.push({
+        pathname: "/(app)/applications/[id]",
+        params: { id: jobId },
       });
     },
     onError: () => {
