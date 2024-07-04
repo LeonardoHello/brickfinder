@@ -11,6 +11,7 @@ import {
   primaryKey,
   text,
   timestamp,
+  unique,
   uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
@@ -64,9 +65,23 @@ export const users = pgTable(
 );
 
 export const usersRelations = relations(users, ({ one, many }) => ({
+  resume: one(userResumes, {
+    fields: [users.id],
+    references: [userResumes.userId],
+  }),
   moderator: one(moderators),
   applications: many(applications),
 }));
+
+export const userResumes = pgTable("user_resumes", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull(),
+  key: text("key").unique().notNull(),
+  url: text("url").unique().notNull(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+});
 
 export const moderators = pgTable("moderators", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -176,7 +191,6 @@ export const applications = pgTable(
     lastName: text("last_name").notNull(),
     phoneNumber: text("phone_number").notNull().default(""),
     email: text("email").notNull(),
-    coverLetter: text("cover_letter").notNull().default(""),
   },
   (t) => ({
     pk: primaryKey({ columns: [t.userId, t.jobId] }),
@@ -194,14 +208,14 @@ export const applicationsRelations = relations(applications, ({ one }) => ({
     fields: [applications.jobId],
     references: [jobs.id],
   }),
-  resume: one(resumes, {
+  resume: one(applicationResumes, {
     fields: [applications.userId, applications.jobId],
-    references: [resumes.userId, resumes.jobId],
+    references: [applicationResumes.userId, applicationResumes.jobId],
   }),
 }));
 
-export const resumes = pgTable(
-  "resumes",
+export const applicationResumes = pgTable(
+  "application_resumes",
   {
     id: uuid("id").primaryKey().defaultRandom(),
     name: text("name").notNull(),
@@ -214,21 +228,24 @@ export const resumes = pgTable(
     fk: foreignKey({
       columns: [t.userId, t.jobId],
       foreignColumns: [applications.userId, applications.jobId],
-      name: "resumes_application_fk",
+      name: "application_resumes_fk",
     }).onDelete("cascade"),
+    unq: unique().on(t.userId, t.jobId),
   }),
 );
 
 export type User = InferSelectModel<typeof users>;
+export type UserResume = InferSelectModel<typeof userResumes>;
 export type Moderator = InferSelectModel<typeof moderators>;
 export type Company = InferSelectModel<typeof companies>;
 export type Job = InferSelectModel<typeof jobs>;
 export type Application = InferSelectModel<typeof applications>;
-export type Resume = InferSelectModel<typeof resumes>;
+export type ApplicationResume = InferSelectModel<typeof applicationResumes>;
 
 export const UserSchema = createSelectSchema(users);
+export const UserResumeSchema = createSelectSchema(userResumes);
 export const ModeratorSchema = createSelectSchema(moderators);
 export const CompanySchema = createSelectSchema(companies);
 export const JobSchema = createSelectSchema(jobs);
 export const ApplicationSchema = createSelectSchema(applications);
-export const ResumeSchema = createSelectSchema(resumes);
+export const ApplicationResumeSchema = createSelectSchema(applicationResumes);
