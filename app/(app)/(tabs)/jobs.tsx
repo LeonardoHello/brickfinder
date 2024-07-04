@@ -3,7 +3,7 @@ import { FlatList } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { Link } from "expo-router";
 
-import { Bird, ChevronRight } from "@tamagui/lucide-icons";
+import { Bird, Check, ChevronRight } from "@tamagui/lucide-icons";
 import { Separator, YStack } from "tamagui";
 import { Avatar, H4, ListItem, SizableText } from "tamagui";
 
@@ -14,10 +14,10 @@ import { RouterOutputs } from "@/lib/trpc/router";
 import { ArrElement } from "@/types";
 import { trpc } from "@/utils/trpc";
 
-export default AuthenticatedHOC(function JobsScreen() {
+export default AuthenticatedHOC(function JobsScreen({ userId }) {
   const { sort, direction } = useLocalSearchParams();
 
-  const { data: jobs, isLoading } = trpc.job.getAll.useQuery(undefined, {});
+  const { data: jobs, isLoading } = trpc.job.getAllByUserId.useQuery(userId);
 
   if (isLoading) {
     return <ScreenLoader />;
@@ -74,9 +74,15 @@ export default AuthenticatedHOC(function JobsScreen() {
 function JobListItem({
   item,
 }: {
-  item: ArrElement<RouterOutputs["job"]["getAll"]>;
+  item: ArrElement<RouterOutputs["job"]["getAllByUserId"]>;
 }) {
-  const { id, title, company, location } = item;
+  const {
+    id,
+    title,
+    company,
+    location,
+    applications: [application],
+  } = item;
 
   return (
     <Link
@@ -98,7 +104,9 @@ function JobListItem({
           </Avatar>
         }
         bordered
-        iconAfter={<ChevronRight size={"$1.5"} />}
+        iconAfter={
+          application ? <Check size={"$1.5"} /> : <ChevronRight size={"$1.5"} />
+        }
         borderRadius={"$4"}
         animation={"100ms"}
         hoverStyle={{ scale: 0.98 }}

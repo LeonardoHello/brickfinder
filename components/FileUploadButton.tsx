@@ -1,19 +1,19 @@
 import { useState } from "react";
-import { Alert } from "react-native";
-
-import { openSettings } from "expo-linking";
 
 import { useToastController } from "@tamagui/toast";
-import { Button, Progress, SizableText, Spinner } from "tamagui";
+import { Button, Progress } from "tamagui";
+import { UploadedFileData } from "uploadthing/types";
 
 import { useDocumentUploader } from "@/utils/uploadthing";
 
+type Resume = Pick<UploadedFileData, "key" | "name" | "url">;
+
 export default function FileUploadButton({
-  onchange,
   disabled,
+  setResume,
 }: {
-  onchange: (...event: any[]) => void;
   disabled: boolean | undefined;
+  setResume: (value: Resume) => void;
 }) {
   const toast = useToastController();
 
@@ -28,9 +28,14 @@ export default function FileUploadButton({
       setProgress(p);
     },
     onClientUploadComplete: (res) => {
-      onchange(res[0].name);
+      const file = res[0];
+      setResume(file);
     },
-    onUploadError: (error) => Alert.alert("Upload Error", error.message),
+    onUploadError: (error) => {
+      toast.show("Upload Error", {
+        native: true,
+      });
+    },
   });
 
   if (isUploading) {
@@ -46,9 +51,8 @@ export default function FileUploadButton({
       variant="outlined"
       disabled={disabled}
       disabledStyle={{ opacity: 0.5 }}
-      f={1}
       h={50}
-      onPress={async () => {
+      onPress={() => {
         openDocumentPicker({
           // onInsufficientPermissions: () => {
           //   Alert.alert(

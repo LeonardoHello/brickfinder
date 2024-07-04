@@ -38,7 +38,7 @@ const FormSchema = z.object({
 export type FormSchema = typeof FormSchema._type;
 
 export default function ProfileForm({
-  currentUser: { id, updatedAt, resume, ...rest },
+  currentUser: { id, updatedAt, ...rest },
 }: {
   currentUser: NonNullable<RouterOutputs["user"]["getById"]>;
 }) {

@@ -19,21 +19,26 @@ import {
 
 import ApplicationDialog from "@/components/ApplicationDialog";
 import ScreenLoader from "@/components/ScreenLoader";
+import { Job } from "@/db/schema";
 import { trpc } from "@/utils/trpc";
 
 export default function JobScreen() {
-  const { id } = useLocalSearchParams();
+  const { id } = useLocalSearchParams<{ id: Job["id"] }>();
+
+  if (!id) {
+    throw new Error("id parameter not provided.");
+  }
 
   const { userId, isSignedIn, isLoaded } = useAuth();
 
-  const { data: job, isLoading } = trpc.job.getById.useQuery(id as string, {});
+  const { data: job, isLoading } = trpc.job.getById.useQuery(id);
 
   if (isLoading || !isLoaded) {
     return <ScreenLoader />;
   }
 
   if (!job) {
-    throw new Error("Couldn't fetch job information.");
+    throw new Error("There was a problem with fetching job information.");
   }
 
   const {
@@ -91,7 +96,7 @@ export default function JobScreen() {
               </XStack>
             </YStack>
             {isSignedIn && (
-              <ApplicationDialog userId={userId} job={job}>
+              <ApplicationDialog userId={userId} jobId={id}>
                 <Button
                   theme={"blue"}
                   size={"$4.5"}

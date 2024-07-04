@@ -44,6 +44,23 @@ export const userRouter = router({
       return user ?? null;
     }),
 
+  getByApplicationId: publicProcedure
+    .input(UserSchema.shape.id)
+    .query(async ({ input, ctx }) => {
+      const user = await ctx.db.query.users.findFirst({
+        where: (user, { eq }) => eq(user.id, input),
+        columns: {
+          firstName: true,
+          lastName: true,
+          email: true,
+          phoneNumber: true,
+        },
+        with: { resume: { columns: { key: true, name: true, url: true } } },
+      });
+
+      return user ?? null;
+    }),
+
   update: publicProcedure.input(UserUpdateSchema).mutation(({ input, ctx }) => {
     const { userId, ...rest } = input;
 

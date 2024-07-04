@@ -1,40 +1,46 @@
-import { X } from "@tamagui/lucide-icons";
-import { ToastViewport } from "@tamagui/toast";
-import { Adapt, Button, Dialog, Sheet, Unspaced } from "tamagui";
+import { Adapt, Dialog, ScrollView, Sheet } from "tamagui";
 
 import ApplicationForm from "./ApplicationForm";
-import type { User } from "@/db/schema";
-import { RouterOutputs } from "@/lib/trpc/router";
+import { Application } from "@/db/schema";
 import { trpc } from "@/utils/trpc";
 
 export default function ApplicationDialog({
   children,
   userId,
-  job,
+  jobId,
 }: {
   children: React.ReactNode;
-  userId: User["id"];
-  job: NonNullable<RouterOutputs["job"]["getById"]>;
+  userId: Application["userId"];
+  jobId: Application["jobId"];
 }) {
-  const { data: user, isLoading } = trpc.user.getById.useQuery(userId);
+  const { data: user, isLoading: isLoadingUser } =
+    trpc.user.getByApplicationId.useQuery(userId);
 
-  if (isLoading) {
+  const { data: application, isLoading: isLoadingApplication } =
+    trpc.application.getById.useQuery({
+      userId,
+      jobId,
+    });
+
+  if (isLoadingUser || isLoadingApplication) {
     return children;
   }
 
   if (!user) {
-    throw new Error("There was a problem with fetching user data.");
+    throw new Error(
+      "There was a problem with fetching data for submiting application.",
+    );
   }
 
   return (
     <Dialog modal>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
+
       <Adapt when="sm" platform="touch">
         <Sheet animation="medium" zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Frame padding="$4" gap={"$4"}>
+          <Sheet.Frame padding="$4">
             <Adapt.Contents />
           </Sheet.Frame>
-
           <Sheet.Overlay
             animation="lazy"
             enterStyle={{ opacity: 0 }}
@@ -42,6 +48,7 @@ export default function ApplicationDialog({
           />
         </Sheet>
       </Adapt>
+
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
@@ -50,6 +57,7 @@ export default function ApplicationDialog({
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
+
         <Dialog.Content
           bordered
           elevate
@@ -65,24 +73,20 @@ export default function ApplicationDialog({
           ]}
           enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
           exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
-          gap={"$4"}
         >
-          <Dialog.Title>Contact information</Dialog.Title>
+          <ScrollView space="$4">
+            <Dialog.Title>Contact infromation</Dialog.Title>
+            <Dialog.Description>
+              This form allows employers to review your details and potentially
+              connect with you for further discussions.
+            </Dialog.Description>
 
-          <ApplicationForm currentUser={user} jobId={job.id} />
-
-          <Unspaced>
-            <Dialog.Close asChild>
-              <Button
-                position="absolute"
-                top="$3"
-                right="$3"
-                size="$2"
-                circular
-                icon={X}
-              />
-            </Dialog.Close>
-          </Unspaced>
+            <ApplicationForm
+              defaultValues={application ? application : user}
+              userId={userId}
+              jobId={jobId}
+            />
+          </ScrollView>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
