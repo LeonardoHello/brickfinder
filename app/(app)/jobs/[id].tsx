@@ -1,4 +1,4 @@
-import { Stack, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 
 import { useAuth } from "@clerk/clerk-expo";
 import { Calendar, EyeOff, MapPin } from "@tamagui/lucide-icons";
@@ -15,10 +15,11 @@ import {
   SizableText,
   XStack,
   YStack,
+  useTheme,
 } from "tamagui";
 
 import ApplicationDialog from "@/components/ApplicationDialog";
-import ScreenLoader from "@/components/ScreenLoader";
+import Skeleton from "@/components/Skeleton";
 import { Job } from "@/db/schema";
 import { trpc } from "@/utils/trpc";
 
@@ -33,8 +34,8 @@ export default function JobScreen() {
 
   const { data: job, isLoading } = trpc.job.getById.useQuery(id);
 
-  if (isLoading || !isLoaded) {
-    return <ScreenLoader />;
+  if (!isLoaded || isLoading) {
+    return <SkeletonLoader />;
   }
 
   if (!job) {
@@ -220,5 +221,134 @@ export default function JobScreen() {
         )}
       </YStack>
     </ScrollView>
+  );
+}
+
+function SkeletonLoader() {
+  const { background } = useTheme();
+
+  const backgroundColor = background.get();
+  return (
+    <YStack flex={1} p={"$3"} backgroundColor={"$background075"}>
+      <Card elevate size="$4" backgroundColor={"$background075"} bordered>
+        <Card.Header padded gap={"$4"}>
+          <YStack gap={"$2.5"}>
+            <Skeleton
+              backgroundColor={backgroundColor}
+              borderRadius={2}
+              height={40}
+              width={220}
+            />
+            <Skeleton
+              backgroundColor={backgroundColor}
+              borderRadius={5}
+              height={20}
+              width={200}
+            />
+          </YStack>
+
+          <YStack gap={"$2.5"}>
+            <Skeleton
+              backgroundColor={backgroundColor}
+              borderRadius={2}
+              height={20}
+              width={300}
+            />
+            <Skeleton
+              backgroundColor={backgroundColor}
+              borderRadius={5}
+              height={20}
+              width={300}
+            />
+          </YStack>
+
+          <Skeleton
+            backgroundColor={backgroundColor}
+            borderRadius={200}
+            height={50}
+            width={100}
+          />
+        </Card.Header>
+
+        <Separator />
+
+        <Card.Footer padded gap={"$4"} flexDirection="column">
+          <YStack gap={"$2.5"}>
+            <Skeleton
+              backgroundColor={backgroundColor}
+              borderRadius={2}
+              height={30}
+              width={200}
+            />
+            <Skeleton
+              backgroundColor={backgroundColor}
+              borderRadius={5}
+              height={75}
+              width={350}
+            />
+          </YStack>
+
+          <YStack gap={"$2.5"}>
+            <Skeleton
+              backgroundColor={backgroundColor}
+              borderRadius={2}
+              height={20}
+              width={150}
+            />
+            <Skeleton
+              backgroundColor={backgroundColor}
+              borderRadius={5}
+              height={15}
+              width={125}
+            />
+          </YStack>
+
+          <YStack gap={"$2.5"}>
+            <Skeleton
+              backgroundColor={backgroundColor}
+              borderRadius={2}
+              height={20}
+              width={150}
+            />
+            <Skeleton
+              backgroundColor={backgroundColor}
+              borderRadius={5}
+              height={15}
+              width={125}
+            />
+          </YStack>
+
+          <YStack gap={"$2.5"}>
+            <Skeleton
+              backgroundColor={backgroundColor}
+              borderRadius={2}
+              height={30}
+              width={200}
+            />
+            <Skeleton
+              backgroundColor={backgroundColor}
+              borderRadius={5}
+              height={75}
+              width={350}
+            />
+          </YStack>
+
+          <YStack gap={"$2.5"}>
+            <Skeleton
+              backgroundColor={backgroundColor}
+              borderRadius={2}
+              height={20}
+              width={150}
+            />
+            <Skeleton
+              backgroundColor={backgroundColor}
+              borderRadius={5}
+              height={15}
+              width={125}
+            />
+          </YStack>
+        </Card.Footer>
+      </Card>
+    </YStack>
   );
 }
