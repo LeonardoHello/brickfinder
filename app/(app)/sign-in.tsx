@@ -57,7 +57,7 @@ export default function ModalScreen() {
 
     try {
       const { createdSessionId, setActive } = await selectedAuth({
-        redirectUrl: Linking.createURL("/", { scheme: "myapp" }),
+        redirectUrl: Linking.createURL("/sign-in", { scheme: "myapp" }),
       });
 
       if (createdSessionId) {
