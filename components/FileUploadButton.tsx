@@ -9,32 +9,36 @@ import { useDocumentUploader } from "@/utils/uploadthing";
 type Resume = Pick<UploadedFileData, "key" | "name" | "url">;
 
 export default function FileUploadButton({
-  disabled,
   setResume,
+  setIsUploading,
+  disabled,
 }: {
-  disabled: boolean | undefined;
   setResume: (value: Resume) => void;
+  setIsUploading: (value: boolean) => void;
+  disabled: boolean;
 }) {
   const toast = useToastController();
 
   const [progress, setProgress] = useState(0);
 
   const { openDocumentPicker, isUploading } = useDocumentUploader("document", {
-    /**
-     * Any props here are forwarded to the underlying `useUploadThing` hook.
-     * Refer to the React API reference for more info.
-     */
+    onBeforeUploadBegin: (files) => {
+      setIsUploading(true);
+      return files;
+    },
     onUploadProgress: (p) => {
       setProgress(p);
     },
     onClientUploadComplete: (res) => {
       const file = res[0];
       setResume(file);
+      setIsUploading(false);
     },
     onUploadError: (error) => {
       toast.show("Upload Error", {
         native: true,
       });
+      setIsUploading(false);
     },
   });
 

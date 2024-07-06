@@ -18,7 +18,7 @@ import {
   useTheme,
 } from "tamagui";
 
-import ApplicationDialog from "@/components/ApplicationDialog";
+import ApplicationSubmitDialog from "@/components/ApplicationSubmitDialog";
 import Skeleton from "@/components/Skeleton";
 import { Job } from "@/db/schema";
 import { trpc } from "@/utils/trpc";
@@ -99,7 +99,7 @@ export default function JobScreen() {
             </YStack>
 
             {isSignedIn && (
-              <ApplicationDialog userId={userId} jobId={id}>
+              <ApplicationSubmitDialog userId={userId} jobId={id}>
                 <Button
                   theme={"blue"}
                   size={"$4.5"}
@@ -109,7 +109,7 @@ export default function JobScreen() {
                 >
                   Apply
                 </Button>
-              </ApplicationDialog>
+              </ApplicationSubmitDialog>
             )}
           </Card.Header>
 
@@ -225,9 +225,9 @@ export default function JobScreen() {
 }
 
 function SkeletonLoader() {
-  const { background } = useTheme();
+  const { gray2 } = useTheme();
 
-  const backgroundColor = background.get();
+  const backgroundColor = gray2.get();
   return (
     <YStack flex={1} p={"$3"} backgroundColor={"$background075"}>
       <Card elevate size="$4" backgroundColor={"$background075"} bordered>

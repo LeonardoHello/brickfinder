@@ -44,10 +44,10 @@ export const userRouter = router({
       return user ?? null;
     }),
   getByApplicationId: publicProcedure
-    .input(ApplicationSchema.pick({ userId: true, jobId: true }))
+    .input(ApplicationSchema.shape.userId)
     .query(async ({ input, ctx }) => {
       const user = await ctx.db.query.users.findFirst({
-        where: (user, { eq }) => eq(user.id, input.userId),
+        where: (user, { eq }) => eq(user.id, input),
         columns: {
           firstName: true,
           lastName: true,
@@ -56,13 +56,6 @@ export const userRouter = router({
         },
         with: {
           resume: { columns: { key: true, name: true, url: true } },
-          applications: {
-            columns: {
-              userId: true,
-              jobId: true,
-            },
-            where: (application, { eq }) => eq(application.jobId, input.jobId),
-          },
         },
       });
 

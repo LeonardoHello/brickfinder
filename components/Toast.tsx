@@ -7,10 +7,11 @@ export default function Toast() {
 
   return (
     <ToastComponent
+      theme={"blue"}
       key={currentToast.id}
       duration={currentToast.duration}
-      enterStyle={{ opacity: 0, scale: 0.5, y: -25 }}
-      exitStyle={{ opacity: 0, scale: 1, y: -20 }}
+      enterStyle={{ opacity: 0, scale: 0.5, y: 25 }}
+      exitStyle={{ opacity: 0, scale: 1, y: 20 }}
       y={0}
       opacity={1}
       scale={1}

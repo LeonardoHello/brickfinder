@@ -63,6 +63,12 @@ export const applicationRouter = router({
           .onConflictDoUpdate({
             target: [applications.userId, applications.jobId],
             set: rest,
+          })
+          .returning({
+            firstName: applications.firstName,
+            lastName: applications.lastName,
+            email: applications.email,
+            phoneNumber: applications.phoneNumber,
           }),
         ctx.db
           .insert(applicationResumes)
@@ -70,6 +76,11 @@ export const applicationRouter = router({
           .onConflictDoUpdate({
             target: [applicationResumes.userId, applicationResumes.jobId],
             set: resume,
+          })
+          .returning({
+            key: applicationResumes.key,
+            name: applicationResumes.name,
+            url: applicationResumes.url,
           }),
       ]);
     }),

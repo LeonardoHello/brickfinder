@@ -1,6 +1,5 @@
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-
-import { useRouter } from "expo-router";
 
 import { Asterisk } from "@tamagui/lucide-icons";
 import { useToastController } from "@tamagui/toast";
@@ -43,7 +42,7 @@ const FormSchema = z.object({
 
 export type FormSchema = typeof FormSchema._type;
 
-export default function ApplicationForm({
+export default function ApplicationSubmitForm({
   userId,
   jobId,
   defaultValues,
@@ -51,25 +50,24 @@ export default function ApplicationForm({
 }: {
   userId: Application["userId"];
   jobId: Application["jobId"];
-  defaultValues: Omit<
-    NonNullable<RouterOutputs["user"]["getByApplicationId"]>,
-    "applications"
-  >;
+  defaultValues: NonNullable<RouterOutputs["application"]["getById"]>;
   closeDialog: () => void;
 }) {
-  const router = useRouter();
+  const [isUploading, setIsUploading] = useState(false);
 
   const toast = useToastController();
   const utils = trpc.useUtils();
 
   const submitApplication = trpc.application.submit.useMutation({
-    onSuccess: () => {
-      utils.user.getByApplicationId.setData({ userId, jobId }, (updater) => {
+    onSuccess: (data) => {
+      const [[application], [resume]] = data;
+
+      utils.application.getById.setData({ userId, jobId }, (updater) => {
         if (!updater) {
           return utils.user.getByApplicationId.getData();
         }
 
-        return { ...updater, applications: [{ userId, jobId }] };
+        return { ...application, resume };
       });
 
       utils.job.getAllByUserId.setData(userId, (updater) => {
@@ -86,9 +84,9 @@ export default function ApplicationForm({
 
       closeDialog();
 
-      router.push({
-        pathname: "/(app)/applications/[id]",
-        params: { id: jobId },
+      toast.show("Success!", {
+        message: "Application successfully submitted!",
+        native: false,
       });
     },
     onError: () => {
@@ -108,7 +106,7 @@ export default function ApplicationForm({
     control,
     handleSubmit,
     setValue,
-    formState: { disabled, isSubmitSuccessful, isSubmitting },
+    formState: { disabled, isSubmitting },
   } = useForm({
     values,
     defaultValues: values,
@@ -129,6 +127,8 @@ export default function ApplicationForm({
     setValue("resume.name", resume.name);
     setValue("resume.url", resume.url);
   };
+
+  const isMutating = submitApplication.isLoading || isSubmitting;
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} gap={"$4"}>
@@ -274,8 +274,9 @@ export default function ApplicationForm({
 
             <YStack flexGrow={1} flexShrink={1}>
               <FileUploadButton
-                disabled={field.disabled}
                 setResume={setResume}
+                setIsUploading={setIsUploading}
+                disabled={disabled}
               />
               {field.value && <SizableText>{field.value}</SizableText>}
 
@@ -286,9 +287,12 @@ export default function ApplicationForm({
           </Fieldset>
         )}
       />
-      <Form.Trigger asChild disabled={disabled || isSubmitting}>
-        <Button icon={isSubmitting || disabled ? Spinner : undefined}>
-          {isSubmitSuccessful ? "Submited" : "Submit"}
+      <Form.Trigger asChild disabled={disabled || isSubmitting || isUploading}>
+        <Button
+          iconAfter={isMutating ? Spinner : undefined}
+          disabledStyle={{ opacity: 0.5 }}
+        >
+          {isMutating ? "Submitting" : "Submit"}
         </Button>
       </Form.Trigger>
     </Form>

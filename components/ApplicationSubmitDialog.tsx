@@ -1,14 +1,12 @@
 import { useState } from "react";
 
-import { Link } from "expo-router";
-
 import { Adapt, Dialog, ScrollView, Sheet } from "tamagui";
 
-import ApplicationForm from "./ApplicationForm";
+import ApplicationSubmitForm from "./ApplicationSubmitForm";
 import { Application } from "@/db/schema";
 import { trpc } from "@/utils/trpc";
 
-export default function ApplicationDialog({
+export default function ApplicationSubmitDialog({
   children,
   userId,
   jobId,
@@ -20,9 +18,11 @@ export default function ApplicationDialog({
   const [open, setOpen] = useState(false);
 
   const { data: user, isLoading: isLoadingUser } =
-    trpc.user.getByApplicationId.useQuery({ userId, jobId });
+    trpc.user.getByApplicationId.useQuery(userId);
+  const { data: application, isLoading: isLoadingApplication } =
+    trpc.application.getById.useQuery({ userId, jobId });
 
-  if (isLoadingUser) {
+  if (isLoadingUser || isLoadingApplication) {
     return children;
   }
 
@@ -36,22 +36,9 @@ export default function ApplicationDialog({
     setOpen(false);
   };
 
-  const {
-    applications: [application],
-    ...rest
-  } = user;
-
   return (
     <Dialog modal open={open} onOpenChange={setOpen}>
-      {application && (
-        <Link
-          href={{ pathname: "/(app)/applications/[id]", params: { id: jobId } }}
-          asChild
-        >
-          {children}
-        </Link>
-      )}
-      {!application && <Dialog.Trigger asChild>{children}</Dialog.Trigger>}
+      <Dialog.Trigger asChild>{children}</Dialog.Trigger>
 
       <Adapt when="sm" platform="touch">
         <Sheet animation="medium" zIndex={200000} modal dismissOnSnapToBottom>
@@ -98,10 +85,10 @@ export default function ApplicationDialog({
               connect with you for further discussions.
             </Dialog.Description>
 
-            <ApplicationForm
+            <ApplicationSubmitForm
               userId={userId}
               jobId={jobId}
-              defaultValues={rest}
+              defaultValues={application ? application : user}
               closeDialog={closeDialog}
             />
           </ScrollView>
