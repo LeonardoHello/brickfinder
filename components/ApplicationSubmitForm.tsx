@@ -64,6 +64,10 @@ export default function ApplicationSubmitForm({
 
       utils.application.getById.setData({ userId, jobId }, (updater) => {
         if (!updater) {
+          if (updater === null) {
+            return { ...application, resume };
+          }
+
           return utils.user.getByApplicationId.getData();
         }
 
@@ -280,7 +284,7 @@ export default function ApplicationSubmitForm({
               />
               {field.value && <SizableText>{field.value}</SizableText>}
 
-              {!field.value && error && (
+              {!field.value && !isUploading && error && (
                 <SizableText color={"$red5"}>Required.</SizableText>
               )}
             </YStack>
