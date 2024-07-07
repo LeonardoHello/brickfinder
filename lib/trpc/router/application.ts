@@ -28,6 +28,20 @@ const ApplicationSubmitSchema = z.object({
 });
 
 export const applicationRouter = router({
+  getAllByUserId: publicProcedure
+    .input(ApplicationSchema.shape.userId)
+    .query(({ input, ctx }) => {
+      return ctx.db.query.applications.findMany({
+        where: (application, { eq }) => eq(application.userId, input),
+        columns: { jobId: true, createdAt: true },
+        with: {
+          job: {
+            columns: { title: true, location: true },
+            with: { company: { columns: { name: true } } },
+          },
+        },
+      });
+    }),
   getById: publicProcedure
     .input(ApplicationSchema.pick({ userId: true, jobId: true }))
     .query(async ({ input, ctx }) => {
