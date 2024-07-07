@@ -82,8 +82,15 @@ function JobListItem({
     title,
     company,
     location,
+    expiresAt,
     applications: [application],
   } = item;
+
+  const expirationDate = expiresAt.getTime();
+  const currentDate = new Date().getTime();
+
+  const daysDifference =
+    Math.abs(expirationDate - currentDate) / (1000 * 60 * 60 * 24);
 
   return (
     <Link
@@ -95,18 +102,22 @@ function JobListItem({
     >
       <ListItem
         backgroundColor={"$background"}
-        icon={
-          <Avatar circular size="$4">
-            <Avatar.Image
-              accessibilityLabel="Cam"
-              src="https://images.unsplash.com/photo-1548142813-c348350df52b?&w=150&h=150&dpr=2&q=80"
-            />
-            <Avatar.Fallback backgroundColor="$background" />
-          </Avatar>
-        }
+        // icon={
+        //   <Avatar circular size="$4">
+        //     <Avatar.Image
+        //       accessibilityLabel="Cam"
+        //       src="https://images.unsplash.com/photo-1548142813-c348350df52b?&w=150&h=150&dpr=2&q=80"
+        //     />
+        //     <Avatar.Fallback backgroundColor="$background" />
+        //   </Avatar>
+        // }
         bordered
         iconAfter={
-          application ? <Check size={"$1.5"} /> : <ChevronRight size={"$1.5"} />
+          application ? (
+            <Check size={"$1.5"} color={"greenyellow"} opacity={0.8} />
+          ) : (
+            <ChevronRight size={"$1.5"} />
+          )
         }
         borderRadius={"$4"}
         animation={"100ms"}
@@ -126,6 +137,21 @@ function JobListItem({
           <SizableText size={"$3"} color={"$gray8"}>
             {location}
           </SizableText>
+          {expiresAt && (
+            <SizableText
+              size={"$3"}
+              color={daysDifference <= 7 ? "$red8" : "darkgray"}
+            >
+              Apply until{" "}
+              <SizableText
+                size={"$3"}
+                fontWeight={700}
+                color={daysDifference <= 7 ? "$red8" : "darkgray"}
+              >
+                {expiresAt.toLocaleDateString("hr")}
+              </SizableText>
+            </SizableText>
+          )}
         </YStack>
       </ListItem>
     </Link>

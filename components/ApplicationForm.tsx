@@ -42,7 +42,7 @@ const FormSchema = z.object({
 
 export type FormSchema = typeof FormSchema._type;
 
-export default function ApplicationSubmitForm({
+export default function ApplicationForm({
   userId,
   jobId,
   defaultValues,

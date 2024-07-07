@@ -2,11 +2,11 @@ import { useState } from "react";
 
 import { Adapt, Dialog, ScrollView, Sheet } from "tamagui";
 
-import ApplicationSubmitForm from "./ApplicationSubmitForm";
+import ApplicationForm from "./ApplicationForm";
 import { Application } from "@/db/schema";
 import { trpc } from "@/utils/trpc";
 
-export default function ApplicationSubmitDialog({
+export default function ApplicationDialog({
   children,
   userId,
   jobId,
@@ -85,7 +85,7 @@ export default function ApplicationSubmitDialog({
               connect with you for further discussions.
             </Dialog.Description>
 
-            <ApplicationSubmitForm
+            <ApplicationForm
               userId={userId}
               jobId={jobId}
               defaultValues={application ? application : user}

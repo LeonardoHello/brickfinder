@@ -18,7 +18,7 @@ import {
   useTheme,
 } from "tamagui";
 
-import ApplicationSubmitDialog from "@/components/ApplicationSubmitDialog";
+import ApplicationDialog from "@/components/ApplicationDialog";
 import Skeleton from "@/components/Skeleton";
 import { Job } from "@/db/schema";
 import { trpc } from "@/utils/trpc";
@@ -99,7 +99,7 @@ export default function JobScreen() {
             </YStack>
 
             {isSignedIn && (
-              <ApplicationSubmitDialog userId={userId} jobId={id}>
+              <ApplicationDialog userId={userId} jobId={id}>
                 <Button
                   theme={"blue"}
                   size={"$4.5"}
@@ -109,7 +109,7 @@ export default function JobScreen() {
                 >
                   Apply
                 </Button>
-              </ApplicationSubmitDialog>
+              </ApplicationDialog>
             )}
           </Card.Header>
 
