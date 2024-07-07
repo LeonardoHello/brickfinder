@@ -137,21 +137,19 @@ function JobListItem({
           <SizableText size={"$3"} color={"$gray8"}>
             {location}
           </SizableText>
-          {expiresAt && (
+          <SizableText
+            size={"$3"}
+            color={daysDifference <= 7 ? "$red8" : "darkgray"}
+          >
+            Apply until{" "}
             <SizableText
               size={"$3"}
+              fontWeight={700}
               color={daysDifference <= 7 ? "$red8" : "darkgray"}
             >
-              Apply until{" "}
-              <SizableText
-                size={"$3"}
-                fontWeight={700}
-                color={daysDifference <= 7 ? "$red8" : "darkgray"}
-              >
-                {expiresAt.toLocaleDateString("hr")}
-              </SizableText>
+              {expiresAt.toLocaleDateString("hr")}
             </SizableText>
-          )}
+          </SizableText>
         </YStack>
       </ListItem>
     </Link>
