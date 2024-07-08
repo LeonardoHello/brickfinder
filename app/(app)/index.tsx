@@ -13,7 +13,10 @@ import { ArrElement } from "@/types";
 import { trpc } from "@/utils/trpc";
 
 export default function JobsScreen() {
-  const searchParams = useLocalSearchParams();
+  const { sortBy, direction } = useLocalSearchParams<{
+    sortBy: "date" | "salary" | "expiration";
+    direction: "asc" | "desc";
+  }>();
 
   const { data: jobs, isLoading } = trpc.job.getAll.useQuery(undefined, {});
 
@@ -47,17 +50,38 @@ export default function JobsScreen() {
     );
   }
 
+  const sortJobs = () => {
+    if (sortBy === "date") {
+      const sortedJobs = jobs.sort(
+        (a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
+      );
+
+      if (direction === "desc") return sortedJobs.reverse();
+      return sortedJobs;
+    } else if (sortBy === "salary") {
+      const sortedJobs = jobs.sort((a, b) => a.salary - b.salary);
+
+      if (direction === "desc") return sortedJobs.reverse();
+      return sortedJobs;
+    } else if (sortBy === "expiration") {
+      const sortedJobs = jobs.sort(
+        (a, b) => a.expiresAt.getTime() - b.expiresAt.getTime(),
+      );
+
+      if (direction === "desc") return sortedJobs.reverse();
+      return sortedJobs;
+    }
+
+    return jobs;
+  };
+
   return (
     <YStack flex={1} p={"$3"} gap={"$3"} backgroundColor={"$background075"}>
-      <JobListSort
-        pathname="/(app)/"
-        sort={searchParams.sort}
-        direction={searchParams.direction}
-      />
+      <JobListSort pathname="/(app)/" sortBy={sortBy} direction={direction} />
 
       <YStack f={1}>
         <FlatList
-          data={jobs}
+          data={sortJobs()}
           ItemSeparatorComponent={() => (
             <Separator borderWidth={0} my={"$1.5"} />
           )}
