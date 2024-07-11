@@ -52,7 +52,7 @@ export default AuthenticatedHOC(function TabsLayout({ userId }) {
         headerTitleStyle: { fontFamily: "Silkscreen" },
         headerLeft: () => (
           <XStack ml={"$3.5"}>
-            <Logo isChecked={checked} />
+            <Logo isSignedIn isChecked={checked} />
           </XStack>
         ),
         tabBarHideOnKeyboard: true,

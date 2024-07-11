@@ -43,7 +43,7 @@ export default function AppLayout() {
         redirect={isSignedIn}
         options={{
           title: "",
-          headerLeft: () => <Logo isChecked={false} />,
+          headerLeft: () => <Logo />,
           headerRight: () => <Menu isSignedIn={false} />,
         }}
       />
