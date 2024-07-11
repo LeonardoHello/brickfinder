@@ -118,7 +118,8 @@ function JobListItem({
   const expirationDate = expiresAt.getTime();
   const currentDate = new Date().getTime();
 
-  const expiresSoon = expirationDate - currentDate / (1000 * 60 * 60 * 24) <= 7;
+  const expiresSoon =
+    (expirationDate - currentDate) / (1000 * 60 * 60 * 24) <= 7;
 
   return (
     <Link
