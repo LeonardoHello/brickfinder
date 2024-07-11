@@ -4,15 +4,30 @@ import { ApplicationSchema, JobSchema } from "@/db/schema";
 export const jobRouter = router({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.db.query.jobs.findMany({
-      with: { company: true },
+      columns: {
+        id: true,
+        createdAt: true,
+        expiresAt: true,
+        location: true,
+        title: true,
+        salary: true,
+      },
     });
   }),
   getAllByUserId: publicProcedure
     .input(ApplicationSchema.shape.userId)
     .query(({ input, ctx }) => {
       return ctx.db.query.jobs.findMany({
+        columns: {
+          id: true,
+          createdAt: true,
+          expiresAt: true,
+          location: true,
+          title: true,
+          salary: true,
+        },
         with: {
-          company: true,
+          company: { columns: { name: true } },
           applications: {
             columns: {
               userId: true,

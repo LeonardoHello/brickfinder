@@ -54,28 +54,29 @@ export default AuthenticatedHOC(function JobsScreen({ userId }) {
   }
 
   const sortJobs = () => {
-    if (sortBy === "date") {
-      const sortedJobs = jobs.sort(
-        (a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
-      );
+    switch (sortBy) {
+      case "salary":
+        const sortedBySalary = jobs.sort((a, b) => a.salary - b.salary);
 
-      if (direction === "desc") return sortedJobs.reverse();
-      return sortedJobs;
-    } else if (sortBy === "salary") {
-      const sortedJobs = jobs.sort((a, b) => a.salary - b.salary);
+        if (direction === "desc") return sortedBySalary.reverse();
+        return sortedBySalary;
 
-      if (direction === "desc") return sortedJobs.reverse();
-      return sortedJobs;
-    } else if (sortBy === "expiration") {
-      const sortedJobs = jobs.sort(
-        (a, b) => a.expiresAt.getTime() - b.expiresAt.getTime(),
-      );
+      case "expiration":
+        const sortedByExpiration = jobs.sort(
+          (a, b) => b.expiresAt.getTime() - a.expiresAt.getTime(),
+        );
 
-      if (direction === "desc") return sortedJobs.reverse();
-      return sortedJobs;
+        if (direction === "desc") return sortedByExpiration.reverse();
+        return sortedByExpiration;
+
+      default:
+        const sortedByDate = jobs.sort(
+          (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+        );
+
+        if (direction === "desc") return sortedByDate.reverse();
+        return sortedByDate;
     }
-
-    return jobs;
   };
 
   return (
@@ -107,17 +108,17 @@ function JobListItem({
 }) {
   const {
     id,
-    title,
-    company,
-    location,
     expiresAt,
+    title,
+    location,
+    company,
     applications: [application],
   } = item;
 
   const expirationDate = expiresAt.getTime();
   const currentDate = new Date().getTime();
 
-  const daysDifference = expirationDate - currentDate / (1000 * 60 * 60 * 24);
+  const expiresSoon = expirationDate - currentDate / (1000 * 60 * 60 * 24) <= 7;
 
   return (
     <Link
@@ -164,15 +165,12 @@ function JobListItem({
           <SizableText size={"$3"} color={"$gray8"}>
             {location}
           </SizableText>
-          <SizableText
-            size={"$3"}
-            color={daysDifference <= 7 ? "$red8" : "darkgray"}
-          >
+          <SizableText size={"$3"} color={expiresSoon ? "$red8" : "darkgray"}>
             Apply until{" "}
             <SizableText
               size={"$3"}
               fontWeight={700}
-              color={daysDifference <= 7 ? "$red8" : "darkgray"}
+              color={expiresSoon ? "$red8" : "darkgray"}
             >
               {expiresAt.toLocaleDateString("hr")}
             </SizableText>

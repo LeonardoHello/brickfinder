@@ -18,7 +18,7 @@ export default function JobsScreen() {
     direction: "asc" | "desc";
   }>();
 
-  const { data: jobs, isLoading } = trpc.job.getAll.useQuery(undefined, {});
+  const { data: jobs, isLoading } = trpc.job.getAll.useQuery();
 
   if (isLoading) {
     return <ScreenLoader />;
@@ -51,28 +51,29 @@ export default function JobsScreen() {
   }
 
   const sortJobs = () => {
-    if (sortBy === "date") {
-      const sortedJobs = jobs.sort(
-        (a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
-      );
+    switch (sortBy) {
+      case "salary":
+        const sortedBySalary = jobs.sort((a, b) => a.salary - b.salary);
 
-      if (direction === "desc") return sortedJobs.reverse();
-      return sortedJobs;
-    } else if (sortBy === "salary") {
-      const sortedJobs = jobs.sort((a, b) => a.salary - b.salary);
+        if (direction === "desc") return sortedBySalary.reverse();
+        return sortedBySalary;
 
-      if (direction === "desc") return sortedJobs.reverse();
-      return sortedJobs;
-    } else if (sortBy === "expiration") {
-      const sortedJobs = jobs.sort(
-        (a, b) => a.expiresAt.getTime() - b.expiresAt.getTime(),
-      );
+      case "expiration":
+        const sortedByExpiration = jobs.sort(
+          (a, b) => b.expiresAt.getTime() - a.expiresAt.getTime(),
+        );
 
-      if (direction === "desc") return sortedJobs.reverse();
-      return sortedJobs;
+        if (direction === "desc") return sortedByExpiration.reverse();
+        return sortedByExpiration;
+
+      default:
+        const sortedByDate = jobs.sort(
+          (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+        );
+
+        if (direction === "desc") return sortedByDate.reverse();
+        return sortedByDate;
     }
-
-    return jobs;
   };
 
   return (
@@ -98,7 +99,12 @@ function JobListItem({
 }: {
   item: ArrElement<RouterOutputs["job"]["getAll"]>;
 }) {
-  const { id, title, location } = item;
+  const { id, expiresAt, title, location } = item;
+
+  const expirationDate = expiresAt.getTime();
+  const currentDate = new Date().getTime();
+
+  const expiresSoon = expirationDate - currentDate / (1000 * 60 * 60 * 24) <= 7;
 
   return (
     <Link
@@ -110,16 +116,16 @@ function JobListItem({
     >
       <ListItem
         backgroundColor={"$background"}
-        icon={
-          <Avatar circular size="$4">
-            <Avatar.Image
-              accessibilityLabel="Cam"
-              src="https://images.unsplash.com/photo-1548142813-c348350df52b?&w=150&h=150&dpr=2&q=80"
-              blurRadius={15}
-            />
-            <Avatar.Fallback backgroundColor="$background" />
-          </Avatar>
-        }
+        // icon={
+        //   <Avatar circular size="$4">
+        //     <Avatar.Image
+        //       accessibilityLabel="Cam"
+        //       src="https://images.unsplash.com/photo-1548142813-c348350df52b?&w=150&h=150&dpr=2&q=80"
+        //       blurRadius={15}
+        //     />
+        //     <Avatar.Fallback backgroundColor="$background" />
+        //   </Avatar>
+        // }
         bordered
         iconAfter={<ChevronRight size={"$1.5"} />}
         borderRadius={"$4"}
@@ -142,6 +148,16 @@ function JobListItem({
           </XStack>
           <SizableText size={"$3"} color={"$gray8"}>
             {location}
+          </SizableText>
+          <SizableText size={"$3"} color={expiresSoon ? "$red8" : "darkgray"}>
+            Apply until{" "}
+            <SizableText
+              size={"$3"}
+              fontWeight={700}
+              color={expiresSoon ? "$red8" : "darkgray"}
+            >
+              {expiresAt.toLocaleDateString("hr")}
+            </SizableText>
           </SizableText>
         </YStack>
       </ListItem>

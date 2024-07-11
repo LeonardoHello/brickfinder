@@ -9,7 +9,7 @@ import { Button, XGroup } from "tamagui";
 
 export default function JobListSort({
   pathname,
-  sortBy,
+  sortBy = "date",
   direction = "asc",
 }: {
   pathname: string;
@@ -21,7 +21,7 @@ export default function JobListSort({
     desc: { nextDirection: "asc", icon: ArrowDownWideNarrow },
   }[direction];
 
-  const defaultSortingOption = { nextDirection: "asc", icon: ArrowUpDown };
+  const initialSortingOption = { nextDirection: "asc", icon: ArrowUpDown };
 
   return (
     <XGroup bordered borderColor={"$gray5"}>
@@ -34,7 +34,7 @@ export default function JobListSort({
               direction:
                 sortBy === "date"
                   ? sortingOption.nextDirection
-                  : defaultSortingOption.nextDirection,
+                  : initialSortingOption.nextDirection,
             },
           }}
           asChild
@@ -42,7 +42,7 @@ export default function JobListSort({
           <Button
             flex={1}
             icon={
-              sortBy === "date" ? sortingOption.icon : defaultSortingOption.icon
+              sortBy === "date" ? sortingOption.icon : initialSortingOption.icon
             }
             size={"$3"}
             bw={0}
@@ -62,7 +62,7 @@ export default function JobListSort({
               direction:
                 sortBy === "salary"
                   ? sortingOption.nextDirection
-                  : defaultSortingOption.nextDirection,
+                  : initialSortingOption.nextDirection,
             },
           }}
           asChild
@@ -72,7 +72,7 @@ export default function JobListSort({
             icon={
               sortBy === "salary"
                 ? sortingOption.icon
-                : defaultSortingOption.icon
+                : initialSortingOption.icon
             }
             size={"$3"}
             bw={0}
@@ -92,7 +92,7 @@ export default function JobListSort({
               direction:
                 sortBy === "expiration"
                   ? sortingOption.nextDirection
-                  : defaultSortingOption.nextDirection,
+                  : initialSortingOption.nextDirection,
             },
           }}
           asChild
@@ -102,7 +102,7 @@ export default function JobListSort({
             icon={
               sortBy === "expiration"
                 ? sortingOption.icon
-                : defaultSortingOption.icon
+                : initialSortingOption.icon
             }
             size={"$3"}
             bw={0}
