@@ -1,4 +1,7 @@
+import { useEffect } from "react";
+
 import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
 
 import { useAuth } from "@clerk/clerk-expo";
 import { useTheme } from "tamagui";
@@ -16,8 +19,14 @@ export default function AppLayout() {
 
   const { isSignedIn, isLoaded } = useAuth();
 
+  useEffect(() => {
+    if (isLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [isLoaded]);
+
   if (!isLoaded) {
-    return <ScreenLoader />;
+    return null;
   }
 
   const backgroundColor = background.get();
@@ -50,11 +59,6 @@ export default function AppLayout() {
         name="(tabs)"
         redirect={!isSignedIn}
         options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="applications/[id]"
-        redirect={!isSignedIn}
-        options={{ title: "application details" }}
       />
       <Stack.Screen name="jobs/[id]" options={{ title: "job details" }} />
       <Stack.Screen name="about-us" options={{ title: "about us" }} />
