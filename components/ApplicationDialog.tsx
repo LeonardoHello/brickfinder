@@ -1,17 +1,15 @@
 import { useState } from "react";
 
-import { Adapt, Dialog, ScrollView, Sheet } from "tamagui";
+import { Adapt, Button, Dialog, ScrollView, Sheet, Spinner } from "tamagui";
 
 import ApplicationForm from "./ApplicationForm";
 import { Application } from "@/db/schema";
 import { trpc } from "@/utils/trpc";
 
 export default function ApplicationDialog({
-  children,
   userId,
   jobId,
 }: {
-  children: React.ReactNode;
   userId: Application["userId"];
   jobId: Application["jobId"];
 }) {
@@ -23,7 +21,17 @@ export default function ApplicationDialog({
     trpc.application.getById.useQuery({ userId, jobId });
 
   if (isLoadingUser || isLoadingApplication) {
-    return children;
+    return (
+      <Button
+        theme={"blue"}
+        size={"$4.5"}
+        px={"$6"}
+        alignSelf="flex-start"
+        borderRadius="$10"
+      >
+        <Spinner />
+      </Button>
+    );
   }
 
   if (!user) {
@@ -38,7 +46,29 @@ export default function ApplicationDialog({
 
   return (
     <Dialog modal open={open} onOpenChange={setOpen}>
-      <Dialog.Trigger asChild>{children}</Dialog.Trigger>
+      <Dialog.Trigger asChild>
+        {application ? (
+          <Button
+            theme={"blue"}
+            size={"$4.5"}
+            px={"$6"}
+            alignSelf="flex-start"
+            borderRadius="$10"
+          >
+            Edit application
+          </Button>
+        ) : (
+          <Button
+            theme={"blue"}
+            size={"$4.5"}
+            px={"$6"}
+            alignSelf="flex-start"
+            borderRadius="$10"
+          >
+            Apply
+          </Button>
+        )}
+      </Dialog.Trigger>
 
       <Adapt when="sm" platform="touch">
         <Sheet animation="medium" zIndex={200000} modal dismissOnSnapToBottom>

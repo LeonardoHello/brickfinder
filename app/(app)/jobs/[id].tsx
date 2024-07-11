@@ -98,19 +98,7 @@ export default function JobScreen() {
               </XStack>
             </YStack>
 
-            {isSignedIn && (
-              <ApplicationDialog userId={userId} jobId={id}>
-                <Button
-                  theme={"blue"}
-                  size={"$4.5"}
-                  px={"$6"}
-                  alignSelf="flex-start"
-                  borderRadius="$10"
-                >
-                  Apply
-                </Button>
-              </ApplicationDialog>
-            )}
+            {isSignedIn && <ApplicationDialog userId={userId} jobId={id} />}
           </Card.Header>
 
           <Separator />
