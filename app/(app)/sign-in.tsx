@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { useEffect } from "react";
 
 import * as Linking from "expo-linking";
 import * as WebBrowser from "expo-web-browser";
@@ -15,8 +16,6 @@ import {
   useTheme,
 } from "tamagui";
 
-import { useWarmUpBrowser } from "@/hooks/useWarmUpBrowser";
-
 enum Strategy {
   Google = "oauth_google",
   Microsoft = "oauth_microsoft",
@@ -24,11 +23,20 @@ enum Strategy {
   Linkedin = "oauth_linkedin",
 }
 
+export const useWarmUpBrowser = () => {
+  useEffect(() => {
+    // Warm up the android browser to improve UX
+    // https://docs.expo.dev/guides/authentication/#improving-user-experience
+    void WebBrowser.warmUpAsync();
+    return () => {
+      void WebBrowser.coolDownAsync();
+    };
+  }, []);
+};
+
 WebBrowser.maybeCompleteAuthSession();
 
 export default function ModalScreen() {
-  // Warm up the android browser to improve UX
-  // https://docs.expo.dev/guides/authentication/#improving-user-experience
   useWarmUpBrowser();
 
   const { gray8 } = useTheme();
