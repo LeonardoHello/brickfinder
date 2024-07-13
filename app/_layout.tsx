@@ -4,10 +4,11 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { useFonts } from "expo-font";
 import { Slot } from "expo-router";
+import * as SecureStore from "expo-secure-store";
 import * as SplashScreen from "expo-splash-screen";
 import * as SystemUI from "expo-system-ui";
 
-import { ClerkProvider } from "@clerk/clerk-expo";
+import { ClerkLoaded, ClerkProvider } from "@clerk/clerk-expo";
 import {
   DarkTheme,
   DefaultTheme,
@@ -21,7 +22,6 @@ import { tamaguiConfig } from "../tamagui.config";
 import SafeToastViewport from "@/components/SafeToastViewport";
 import Toast from "@/components/Toast";
 import { TRPCProvider } from "@/lib/trpc/Provider";
-import { tokenCache } from "@/utils/cache";
 
 if (Platform.OS === "web") {
   // @ts-expect-error
@@ -32,6 +32,39 @@ export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from "expo-router";
+
+const tokenCache = {
+  async getToken(key: string) {
+    try {
+      const item = await SecureStore.getItemAsync(key);
+      if (item) {
+        console.log(`${key} was used 🔐 \n`);
+      } else {
+        console.log("No values stored under key: " + key);
+      }
+      return item;
+    } catch (error) {
+      console.error("SecureStore get item error: ", error);
+      await SecureStore.deleteItemAsync(key);
+      return null;
+    }
+  },
+  async saveToken(key: string, value: string) {
+    try {
+      return SecureStore.setItemAsync(key, value);
+    } catch (err) {
+      return;
+    }
+  },
+};
+
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
+
+if (!publishableKey) {
+  throw new Error(
+    "Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env",
+  );
+}
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -58,32 +91,31 @@ export default function RootLayout() {
   }
 
   return (
-    <ClerkProvider
-      tokenCache={tokenCache}
-      publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!}
-    >
-      <TRPCProvider>
-        <SafeAreaProvider>
-          <TamaguiProvider
-            config={tamaguiConfig}
-            defaultTheme={colorScheme as any}
-          >
-            <ThemeProvider
-              value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+    <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
+      <ClerkLoaded>
+        <TRPCProvider>
+          <SafeAreaProvider>
+            <TamaguiProvider
+              config={tamaguiConfig}
+              defaultTheme={colorScheme as any}
             >
-              <Theme name={"gray"}>
-                <ToastProvider native>
-                  <PortalProvider shouldAddRootHost>
-                    <Slot />
-                    <SafeToastViewport />
-                    <Toast />
-                  </PortalProvider>
-                </ToastProvider>
-              </Theme>
-            </ThemeProvider>
-          </TamaguiProvider>
-        </SafeAreaProvider>
-      </TRPCProvider>
+              <ThemeProvider
+                value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+              >
+                <Theme name={"gray"}>
+                  <ToastProvider native>
+                    <PortalProvider shouldAddRootHost>
+                      <Slot />
+                      <SafeToastViewport />
+                      <Toast />
+                    </PortalProvider>
+                  </ToastProvider>
+                </Theme>
+              </ThemeProvider>
+            </TamaguiProvider>
+          </SafeAreaProvider>
+        </TRPCProvider>
+      </ClerkLoaded>
     </ClerkProvider>
   );
 }
