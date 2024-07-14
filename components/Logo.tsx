@@ -4,19 +4,15 @@ import { BrickWall } from "@tamagui/lucide-icons";
 
 export default function Logo({
   isSignedIn,
-  isChecked,
+  isModerator,
 }: {
   isSignedIn?: boolean;
-  isChecked?: boolean;
+  isModerator?: "true" | undefined;
 }) {
-  const pathname = !isSignedIn
-    ? "/(app)/"
-    : isChecked
-      ? "/(app)/applicants"
-      : "/(app)/jobs";
+  const pathname = isSignedIn ? "/(app)/(tabs)/jobs" : "/(app)/";
 
   return (
-    <Link href={{ pathname }}>
+    <Link href={{ pathname, params: { isModerator } }}>
       <BrickWall strokeWidth={1.4} />
     </Link>
   );

@@ -8,7 +8,6 @@ import { useTheme } from "tamagui";
 
 import Logo from "@/components/Logo";
 import Menu from "@/components/Menu";
-import ScreenLoader from "@/components/ScreenLoader";
 
 export const unstable_settings = {
   initialRouteName: "(tabs)",
@@ -29,12 +28,10 @@ export default function AppLayout() {
     return null;
   }
 
-  const backgroundColor = background.get();
-
   return (
     <Stack
       screenOptions={{
-        headerStyle: { backgroundColor },
+        headerStyle: { backgroundColor: background.get() },
         headerTitleStyle: { fontFamily: "Silkscreen" },
       }}
     >
@@ -44,7 +41,7 @@ export default function AppLayout() {
         options={{
           title: "",
           headerLeft: () => <Logo />,
-          headerRight: () => <Menu isSignedIn={false} />,
+          headerRight: () => <Menu />,
         }}
       />
       <Stack.Screen
@@ -57,6 +54,7 @@ export default function AppLayout() {
       />
       <Stack.Screen
         name="(tabs)"
+        initialParams={{ participant: "user" }}
         redirect={!isSignedIn}
         options={{ headerShown: false }}
       />

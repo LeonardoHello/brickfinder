@@ -9,10 +9,12 @@ import { Button, XGroup } from "tamagui";
 
 export default function JobListSort({
   pathname,
+  participant,
   sortBy = "date",
   direction = "asc",
 }: {
   pathname: string;
+  participant: "user" | "moderator" | undefined;
   sortBy: "date" | "salary" | "expiration" | undefined;
   direction: "asc" | "desc" | undefined;
 }) {
@@ -30,6 +32,7 @@ export default function JobListSort({
           href={{
             pathname,
             params: {
+              participant,
               sortBy: "date",
               direction:
                 sortBy === "date"
@@ -58,6 +61,7 @@ export default function JobListSort({
           href={{
             pathname,
             params: {
+              participant,
               sortBy: "salary",
               direction:
                 sortBy === "salary"
@@ -88,6 +92,7 @@ export default function JobListSort({
           href={{
             pathname,
             params: {
+              participant,
               sortBy: "expiration",
               direction:
                 sortBy === "expiration"

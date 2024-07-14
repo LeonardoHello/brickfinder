@@ -1,45 +1,40 @@
 import { useEffect, useState } from "react";
 
-import { Tabs } from "expo-router";
+import {
+  Tabs,
+  useGlobalSearchParams,
+  useLocalSearchParams,
+  useRouter,
+} from "expo-router";
 
 import {
   Briefcase,
   Building,
   ClipboardCheck,
   Hammer,
-  User,
+  User as UserIcon,
   Users,
 } from "@tamagui/lucide-icons";
-import { XStack, useTheme } from "tamagui";
+import { Button, Spinner, XStack, useTheme } from "tamagui";
 
 import AuthenticatedHOC from "@/components/AuthenticatedHOC";
 import Logo from "@/components/Logo";
 import Menu from "@/components/Menu";
-import ScreenLoader from "@/components/ScreenLoader";
 import { Switch } from "@/components/Switch";
+import { User } from "@/db/schema";
 import { useClientOnlyValue } from "@/hooks/useClientOnlyValue";
 import { trpc } from "@/utils/trpc";
 
 export default AuthenticatedHOC(function TabsLayout({ userId }) {
-  const [checked, setChecked] = useState(false);
+  const searchParams = useGlobalSearchParams<{
+    isModerator: "true";
+  }>();
+  const isModerator = searchParams.isModerator === "true";
 
   const { background, purple10 } = useTheme();
 
-  const { data: moderator, isLoading } =
-    trpc.moderator.getById.useQuery(userId);
-
-  useEffect(() => {
-    if (!!moderator) {
-      setChecked(true);
-    }
-  }, [isLoading]);
-
-  if (isLoading) {
-    return <ScreenLoader />;
-  }
-
   const backgroundColor = background.get();
-  const tabBarActiveTintColor = purple10.get();
+  const tabBarActiveTintColor = isModerator ? purple10.get() : undefined;
 
   return (
     <Tabs
@@ -52,86 +47,108 @@ export default AuthenticatedHOC(function TabsLayout({ userId }) {
         headerTitleStyle: { fontFamily: "Silkscreen" },
         headerLeft: () => (
           <XStack ml={"$3.5"}>
-            <Logo isSignedIn isChecked={checked} />
+            <Logo isSignedIn isModerator={searchParams.isModerator} />
           </XStack>
         ),
-        tabBarHideOnKeyboard: true,
-        headerRight: () => (
-          <XStack mr={"$3.5"} gap={"$2"} alignItems="center">
-            {moderator && (
-              <Switch
-                size={"$3"}
-                checked={checked}
-                onCheckedChange={setChecked}
-              >
-                <Switch.Icon placement="left">
-                  <Building color="#fff" />
-                </Switch.Icon>
-                <Switch.Icon placement="right">
-                  <User color="#fff" />
-                </Switch.Icon>
-                <Switch.Thumb />
-              </Switch>
-            )}
-            <Menu isSignedIn={true} />
-          </XStack>
-        ),
+        headerRight: () => <HeaderRight userId={userId} />,
         tabBarStyle: {
           backgroundColor,
           borderTopWidth: 0,
         },
         tabBarLabelStyle: { fontFamily: "Silkscreen" },
         tabBarItemStyle: { padding: 2 },
+        tabBarHideOnKeyboard: true,
       }}
     >
       <Tabs.Screen
         name="jobs"
-        redirect={checked}
         options={{
-          tabBarIcon: ({ color }) => <Hammer color={color} />,
+          tabBarIcon: ({ color }) =>
+            isModerator ? (
+              <Briefcase color={color} />
+            ) : (
+              <Hammer color={color} />
+            ),
+          tabBarActiveTintColor,
         }}
       />
       <Tabs.Screen
         name="applications"
-        redirect={checked}
         options={{
-          tabBarIcon: ({ color }) => <ClipboardCheck color={color} />,
+          tabBarIcon: ({ color }) =>
+            isModerator ? (
+              <Users color={color} />
+            ) : (
+              <ClipboardCheck color={color} />
+            ),
+          tabBarActiveTintColor,
         }}
       />
       <Tabs.Screen
         name="profile"
-        redirect={checked}
         options={{
-          tabBarIcon: ({ color }) => <User color={color} />,
-        }}
-      />
-
-      {/* Moderator */}
-      <Tabs.Screen
-        name="company-jobs"
-        redirect={!checked}
-        options={{
-          title: "company jobs",
-          tabBarIcon: ({ color }) => <Briefcase color={color} />,
-          tabBarActiveTintColor,
-        }}
-      />
-      <Tabs.Screen
-        name="applicants"
-        redirect={!checked}
-        options={{
-          tabBarIcon: ({ color }) => <Users color={color} />,
-          tabBarActiveTintColor,
-        }}
-      />
-      <Tabs.Screen
-        name="company"
-        redirect={!checked}
-        options={{
-          tabBarIcon: ({ color }) => <Building color={color} />,
+          tabBarIcon: ({ color }) =>
+            isModerator ? (
+              <Building color={color} />
+            ) : (
+              <UserIcon color={color} />
+            ),
           tabBarActiveTintColor,
         }}
       />
     </Tabs>
   );
 });
+
+function HeaderRight({ userId }: { userId: User["id"] }) {
+  const [checked, setChecked] = useState(false);
+
+  const router = useRouter();
+
+  const { data: isModerator, isLoading } =
+    trpc.moderator.getExistanceById.useQuery(userId);
+
+  if (isLoading) {
+    return (
+      <XStack mr={"$3.5"} gap={"$2"} alignItems="center">
+        <Button
+          icon={Spinner}
+          height={"$3.5"}
+          borderWidth={"$1"}
+          borderRadius={100_000}
+          chromeless
+        />
+      </XStack>
+    );
+  }
+
+  return (
+    <XStack mr={"$3.5"} gap={"$2"} alignItems="center">
+      {!!isModerator && (
+        <Switch
+          size={"$3"}
+          checked={checked}
+          onCheckedChange={(checked) => {
+            if (checked) {
+              router.setParams({ participant: "moderator" });
+            } else {
+              router.setParams({ participant: "user" });
+            }
+
+            setChecked(checked);
+          }}
+        >
+          <Switch.Icon placement="left">
+            <Building color="#fff" />
+          </Switch.Icon>
+          <Switch.Icon placement="right">
+            <UserIcon color="#fff" />
+          </Switch.Icon>
+          <Switch.Thumb />
+        </Switch>
+      )}
+
+      <Menu isSignedIn />
+    </XStack>
+  );
+}

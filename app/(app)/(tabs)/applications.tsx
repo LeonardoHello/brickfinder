@@ -6,7 +6,7 @@ import { ChevronRight, Rat } from "@tamagui/lucide-icons";
 import { H4, ListItem, Separator, SizableText, YStack } from "tamagui";
 
 import AuthenticatedHOC from "@/components/AuthenticatedHOC";
-import ScreenLoader from "@/components/ScreenLoader";
+import Skeleton from "@/components/Skeleton";
 import { RouterOutputs } from "@/lib/trpc/router";
 import { ArrElement } from "@/types";
 import { trpc } from "@/utils/trpc";
@@ -16,7 +16,7 @@ export default AuthenticatedHOC(function ApplicationsScreen({ userId }) {
     trpc.application.getAllByUserId.useQuery(userId);
 
   if (isLoading) {
-    return <ScreenLoader />;
+    return <SkeletonLoader />;
   }
 
   if (!applications) {
@@ -109,5 +109,17 @@ function JobListItem({
         </YStack>
       </ListItem>
     </Link>
+  );
+}
+
+function SkeletonLoader() {
+  return (
+    <YStack flex={1} p={"$3"} backgroundColor={"$background075"} gap={"$2"}>
+      <Skeleton borderRadius={5} height={130} />
+      <Skeleton borderRadius={5} height={130} />
+      <Skeleton borderRadius={5} height={130} />
+      <Skeleton borderRadius={5} height={130} />
+      <Skeleton borderRadius={5} height={130} />
+    </YStack>
   );
 }

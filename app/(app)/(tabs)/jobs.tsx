@@ -9,13 +9,14 @@ import { Avatar, H4, ListItem, SizableText } from "tamagui";
 
 import AuthenticatedHOC from "@/components/AuthenticatedHOC";
 import JobListSort from "@/components/JobListSort";
-import ScreenLoader from "@/components/ScreenLoader";
+import Skeleton from "@/components/Skeleton";
 import { RouterOutputs } from "@/lib/trpc/router";
 import { ArrElement } from "@/types";
 import { trpc } from "@/utils/trpc";
 
 export default AuthenticatedHOC(function JobsScreen({ userId }) {
-  const { sortBy, direction } = useLocalSearchParams<{
+  const { participant, sortBy, direction } = useLocalSearchParams<{
+    participant: "user" | "moderator";
     sortBy: "date" | "salary" | "expiration";
     direction: "asc" | "desc";
   }>();
@@ -23,7 +24,16 @@ export default AuthenticatedHOC(function JobsScreen({ userId }) {
   const { data: jobs, isLoading } = trpc.job.getAllByUserId.useQuery(userId);
 
   if (isLoading) {
-    return <ScreenLoader />;
+    return (
+      <SkeletonLoader>
+        <JobListSort
+          pathname="/(app)/(tabs)/jobs"
+          participant={participant}
+          sortBy={sortBy}
+          direction={direction}
+        />
+      </SkeletonLoader>
+    );
   }
 
   if (!jobs) {
@@ -83,6 +93,7 @@ export default AuthenticatedHOC(function JobsScreen({ userId }) {
     <YStack flex={1} p={"$3"} backgroundColor={"$background075"} gap={"$3"}>
       <JobListSort
         pathname="/(app)/(tabs)/jobs"
+        participant={participant}
         sortBy={sortBy}
         direction={direction}
       />
@@ -124,7 +135,7 @@ function JobListItem({
   return (
     <Link
       href={{
-        pathname: "/(app)/jobs/[id]",
+        pathname: "/(app)/jobsd/[id]",
         params: { id },
       }}
       asChild
@@ -179,5 +190,20 @@ function JobListItem({
         </YStack>
       </ListItem>
     </Link>
+  );
+}
+
+function SkeletonLoader({ children }: { children: React.ReactNode }) {
+  return (
+    <YStack flex={1} p={"$3"} backgroundColor={"$background075"} gap={"$3"}>
+      {children}
+      <YStack gap={"$2"}>
+        <Skeleton borderRadius={5} height={130} />
+        <Skeleton borderRadius={5} height={130} />
+        <Skeleton borderRadius={5} height={130} />
+        <Skeleton borderRadius={5} height={130} />
+        <Skeleton borderRadius={5} height={130} />
+      </YStack>
+    </YStack>
   );
 }
