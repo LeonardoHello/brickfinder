@@ -10,7 +10,7 @@ export default function AuthenticatedHOC(
   return () => {
     const { session } = useSession();
 
-    if (!session) {
+    if (session === null) {
       throw new Error("Cannot access current screen without authentication.");
     }
 

@@ -6,7 +6,6 @@ import { BadgeInfo, Menu as MenuIcon, Settings } from "@tamagui/lucide-icons";
 import { Button, Separator, Sheet, XStack, YStack } from "tamagui";
 
 import { useSession } from "../context/session";
-import { supabase } from "../utils/supabase";
 
 export default function Menu({ isSignedIn }: { isSignedIn?: boolean }) {
   const [open, setOpen] = useState(false);

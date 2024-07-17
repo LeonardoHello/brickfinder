@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { Platform, useColorScheme } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import "react-native-url-polyfill/auto";
 
 import { useFonts } from "expo-font";
 import { Slot } from "expo-router";
