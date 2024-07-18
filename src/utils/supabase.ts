@@ -1,3 +1,4 @@
+import { Platform } from "react-native";
 import "react-native-url-polyfill/auto";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -20,7 +21,7 @@ export const supabase = createClient(
   process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
   {
     auth: {
-      storage: AsyncStorage,
+      ...(Platform.OS !== "web" ? { storage: AsyncStorage } : {}),
       autoRefreshToken: true,
       persistSession: true,
       detectSessionInUrl: false,
