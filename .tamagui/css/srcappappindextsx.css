@@ -18,7 +18,7 @@
 :root ._mr-0px{margin-right:0px;}
 :root ._mb-0px{margin-bottom:0px;}
 :root ._ml-0px{margin-left:0px;}
-:root ._col-791969495{color:var(--gray6);}
+:root ._col-791969557{color:var(--gray8);}
 :root ._ff-299667014{font-family:var(--f-fa);}
 :root ._maw-7537{max-width:75%;}
 :root ._ta-center{text-align:center;}
@@ -56,12 +56,15 @@
 :root ._fos-229441313{font-size:var(--f-si-7);}
 :root ._lh-222976666{line-height:var(--f-li-7);}
 :root ._whiteSpace-normal{white-space:normal;}
+:root ._mb-1481558276{margin-bottom:var(--space-5);}
 :root ._ussel-auto{user-select:auto;-webkit-user-select:auto;}
+:root ._fd-row{flex-direction:row;}
+:root ._fs-0{flex-shrink:0;}
+:root ._gap-1481558214{gap:var(--space-7);}
 :root ._col-darkgray{color:darkgray;}
 :root ._fow-233016109{font-weight:var(--f-we-3);}
 :root ._ls-167744028{letter-spacing:var(--f-21-3);}
 :root ._fos-229441189{font-size:var(--f-si-3);}
 :root ._lh-222976542{line-height:var(--f-li-3);}
-:root ._col-791969557{color:var(--gray8);}
 :root ._col-312414369{color:var(--red8);}
 :root ._fow-700{font-weight:700;}
