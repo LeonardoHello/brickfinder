@@ -19,7 +19,9 @@
     "androidNavigationBar": {
       "backgroundColor": "#161616"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -48,6 +50,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": "https://brickfinder-ten-rouge.vercel.app/"
+      },
+      "eas": {
+        "projectId": "0d545172-7571-4257-950d-69fedeca3251"
+      }
     }
   }
 }
