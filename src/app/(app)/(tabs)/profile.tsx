@@ -1,9 +1,9 @@
 import { ScrollView, SizableText, XStack, YStack } from "tamagui";
 
-import AuthenticatedHOC from "@/src/components/AuthenticatedHOC";
-import ProfileForm from "@/src/components/ProfileForm";
-import Skeleton from "@/src/components/Skeleton";
-import { trpc } from "@/src/utils/trpc";
+import AuthenticatedHOC from "@/components/AuthenticatedHOC";
+import ProfileForm from "@/components/ProfileForm";
+import Skeleton from "@/components/Skeleton";
+import { trpc } from "@/utils/trpc";
 
 export default AuthenticatedHOC(function ProfileScreen({ session }) {
   const { data: currentUser, isLoading } = trpc.user.getById.useQuery(

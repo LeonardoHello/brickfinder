@@ -18,9 +18,9 @@ import {
 import { z } from "zod";
 
 import ProfileFormFieldArray from "./ProfileFormFieldArray";
-import { JobSchema, UserSchema } from "@/src/db/schema";
-import { RouterOutputs } from "@/src/lib/trpc/router";
-import { trpc } from "@/src/utils/trpc";
+import { JobSchema, UserSchema } from "@/db/schema";
+import { RouterOutputs } from "@/lib/trpc/router";
+import { trpc } from "@/utils/trpc";
 
 const FormSchema = z.object({
   firstName: UserSchema.shape.firstName,

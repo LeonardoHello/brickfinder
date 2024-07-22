@@ -1,3 +1,4 @@
+import { Platform } from "react-native";
 import "react-native-get-random-values";
 import "react-native-url-polyfill/auto";
 
@@ -6,6 +7,8 @@ import * as SecureStore from "expo-secure-store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createClient } from "@supabase/supabase-js";
 import * as aesjs from "aes-js";
+
+import { Database } from "@/types/supabase";
 
 if (!process.env.EXPO_PUBLIC_SUPABASE_URL) {
   throw new Error(
@@ -42,6 +45,7 @@ class LargeSecureStore {
 
   private async _decrypt(key: string, value: string) {
     const encryptionKeyHex = await SecureStore.getItemAsync(key);
+
     if (!encryptionKeyHex) {
       return encryptionKeyHex;
     }
@@ -76,14 +80,14 @@ class LargeSecureStore {
   }
 }
 
-export const supabase = createClient(
+export const supabase = createClient<Database>(
   process.env.EXPO_PUBLIC_SUPABASE_URL,
   process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
   {
     auth: {
       storage: new LargeSecureStore(),
       autoRefreshToken: true,
-      persistSession: true,
+      persistSession: Platform.OS !== "web",
       detectSessionInUrl: false,
     },
   },

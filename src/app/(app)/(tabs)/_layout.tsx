@@ -12,13 +12,13 @@ import {
 } from "@tamagui/lucide-icons";
 import { Button, Spinner, XStack, useTheme } from "tamagui";
 
-import AuthenticatedHOC from "@/src/components/AuthenticatedHOC";
-import Logo from "@/src/components/Logo";
-import Menu from "@/src/components/Menu";
-import { Switch } from "@/src/components/Switch";
-import { User } from "@/src/db/schema";
-import { useClientOnlyValue } from "@/src/hooks/useClientOnlyValue";
-import { trpc } from "@/src/utils/trpc";
+import AuthenticatedHOC from "@/components/AuthenticatedHOC";
+import Logo from "@/components/Logo";
+import Menu from "@/components/Menu";
+import { Switch } from "@/components/Switch";
+import { User } from "@/db/schema";
+import { useClientOnlyValue } from "@/hooks/useClientOnlyValue";
+import { trpc } from "@/utils/trpc";
 
 export default AuthenticatedHOC(function TabsLayout({ session }) {
   const searchParams = useGlobalSearchParams<{

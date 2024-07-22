@@ -2,9 +2,9 @@ import { Stack } from "expo-router";
 
 import { useTheme } from "tamagui";
 
-import Logo from "@/src/components/Logo";
-import Menu from "@/src/components/Menu";
-import { useSession } from "@/src/context/session";
+import Logo from "@/components/Logo";
+import Menu from "@/components/Menu";
+import { useSession } from "@/context/session";
 
 export const unstable_settings = {
   initialRouteName: "(tabs)",

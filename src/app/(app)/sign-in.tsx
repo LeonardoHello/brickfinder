@@ -5,7 +5,7 @@ import * as WebBrowser from "expo-web-browser";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { H1, ListItem, SizableText, YGroup, YStack, useTheme } from "tamagui";
 
-import { useSession } from "@/src/context/session";
+import { useSession } from "@/context/session";
 
 export const useWarmUpBrowser = () => {
   useEffect(() => {

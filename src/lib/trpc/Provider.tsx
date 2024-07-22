@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink, loggerLink } from "@trpc/client";
 import SuperJSON from "superjson";
 
-import { trpc } from "@/src/utils/trpc";
+import { trpc } from "@/utils/trpc";
 
 /**
  * Extend this function when going to production by

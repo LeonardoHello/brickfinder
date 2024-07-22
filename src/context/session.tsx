@@ -6,7 +6,7 @@ import {
 } from "@react-native-google-signin/google-signin";
 import { Session } from "@supabase/supabase-js";
 
-import { supabase } from "@/src/utils/supabase";
+import { supabase } from "@/utils/supabase";
 
 const AuthContext = createContext<{
   signIn: () => Promise<void>;

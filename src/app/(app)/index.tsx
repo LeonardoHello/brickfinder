@@ -6,11 +6,11 @@ import { Bird, ChevronRight, EyeOff, Rat } from "@tamagui/lucide-icons";
 import { Separator, YStack } from "tamagui";
 import { Avatar, H4, ListItem, SizableText, XStack } from "tamagui";
 
-import JobListSort from "@/src/components/JobListSort";
-import ScreenLoader from "@/src/components/ScreenLoader";
-import { RouterOutputs } from "@/src/lib/trpc/router";
-import { trpc } from "@/src/utils/trpc";
+import JobListSort from "@/components/JobListSort";
+import ScreenLoader from "@/components/ScreenLoader";
+import { RouterOutputs } from "@/lib/trpc/router";
 import { ArrElement } from "@/types";
+import { trpc } from "@/utils/trpc";
 
 export default function JobsScreen() {
   const { isModerator, sortBy, direction } = useLocalSearchParams<{

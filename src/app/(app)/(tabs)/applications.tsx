@@ -5,11 +5,11 @@ import { Link } from "expo-router";
 import { ChevronRight, Rat } from "@tamagui/lucide-icons";
 import { H4, ListItem, Separator, SizableText, YStack } from "tamagui";
 
-import AuthenticatedHOC from "@/src/components/AuthenticatedHOC";
-import Skeleton from "@/src/components/Skeleton";
-import { RouterOutputs } from "@/src/lib/trpc/router";
-import { trpc } from "@/src/utils/trpc";
+import AuthenticatedHOC from "@/components/AuthenticatedHOC";
+import Skeleton from "@/components/Skeleton";
+import { RouterOutputs } from "@/lib/trpc/router";
 import { ArrElement } from "@/types";
+import { trpc } from "@/utils/trpc";
 
 export default AuthenticatedHOC(function ApplicationsScreen({ session }) {
   const { data: applications, isLoading } =

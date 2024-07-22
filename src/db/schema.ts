@@ -17,7 +17,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { createSelectSchema } from "drizzle-zod";
 
-import Jobs from "@/src/constants/Jobs";
+import Jobs from "@/constants/Jobs";
 
 const customJsonb = <TData>(name: string) =>
   customType<{ data: TData; driverData: string }>({

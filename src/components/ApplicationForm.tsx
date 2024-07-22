@@ -21,9 +21,9 @@ import {
   Application,
   ApplicationResumeSchema,
   ApplicationSchema,
-} from "@/src/db/schema";
-import { RouterOutputs } from "@/src/lib/trpc/router";
-import { trpc } from "@/src/utils/trpc";
+} from "@/db/schema";
+import { RouterOutputs } from "@/lib/trpc/router";
+import { trpc } from "@/utils/trpc";
 
 const FormSchema = z.object({
   firstName: ApplicationSchema.shape.firstName,

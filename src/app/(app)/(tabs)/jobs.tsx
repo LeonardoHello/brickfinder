@@ -7,12 +7,12 @@ import { Check, ChevronRight, Rat } from "@tamagui/lucide-icons";
 import { Separator, YStack } from "tamagui";
 import { Avatar, H4, ListItem, SizableText } from "tamagui";
 
-import AuthenticatedHOC from "@/src/components/AuthenticatedHOC";
-import JobListSort from "@/src/components/JobListSort";
-import Skeleton from "@/src/components/Skeleton";
-import { RouterOutputs } from "@/src/lib/trpc/router";
-import { trpc } from "@/src/utils/trpc";
+import AuthenticatedHOC from "@/components/AuthenticatedHOC";
+import JobListSort from "@/components/JobListSort";
+import Skeleton from "@/components/Skeleton";
+import { RouterOutputs } from "@/lib/trpc/router";
 import { ArrElement } from "@/types";
+import { trpc } from "@/utils/trpc";
 
 export default AuthenticatedHOC(function JobsScreen({ session }) {
   const { isModerator, sortBy, direction } = useLocalSearchParams<{

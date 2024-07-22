@@ -17,11 +17,11 @@ import {
   useTheme,
 } from "tamagui";
 
-import ApplicationDialog from "@/src/components/ApplicationDialog";
-import Skeleton from "@/src/components/Skeleton";
-import { useSession } from "@/src/context/session";
-import { Job } from "@/src/db/schema";
-import { trpc } from "@/src/utils/trpc";
+import ApplicationDialog from "@/components/ApplicationDialog";
+import Skeleton from "@/components/Skeleton";
+import { useSession } from "@/context/session";
+import { Job } from "@/db/schema";
+import { trpc } from "@/utils/trpc";
 
 export default function JobScreen() {
   const { id } = useLocalSearchParams<{ id: Job["id"] }>();

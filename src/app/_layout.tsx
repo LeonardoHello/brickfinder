@@ -19,8 +19,8 @@ import { TamaguiProvider, Theme } from "tamagui";
 import { tamaguiConfig } from "../../tamagui.config";
 import Toast from "../components/Toast";
 import { SessionProvider } from "../context/session";
-import SafeToastViewport from "@/src/components/SafeToastViewport";
-import { TRPCProvider } from "@/src/lib/trpc/Provider";
+import SafeToastViewport from "@/components/SafeToastViewport";
+import { TRPCProvider } from "@/lib/trpc/Provider";
 
 if (Platform.OS === "web") {
   // @ts-expect-error

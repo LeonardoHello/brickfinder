@@ -1,7 +1,7 @@
 import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 
-import { db } from "@/src/db";
+import { db } from "@/db";
 
 export const createContext = (opts: FetchCreateContextFnOptions) => {
-  return { db, req: opts.req };
+	return { db, req: opts.req };
 };

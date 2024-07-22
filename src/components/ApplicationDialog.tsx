@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Adapt, Button, Dialog, ScrollView, Sheet, Spinner } from "tamagui";
 
 import ApplicationForm from "./ApplicationForm";
-import { Application } from "@/src/db/schema";
-import { trpc } from "@/src/utils/trpc";
+import { Application } from "@/db/schema";
+import { trpc } from "@/utils/trpc";
 
 export default function ApplicationDialog({
   userId,
