@@ -1,13 +1,10 @@
 import "react-native-get-random-values";
-import "react-native-url-polyfill/auto";
 
 import * as SecureStore from "expo-secure-store";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createClient } from "@supabase/supabase-js";
 import * as aesjs from "aes-js";
-
-import { Database } from "@/types/supabase";
 
 if (!process.env.EXPO_PUBLIC_SUPABASE_URL) {
   throw new Error(
@@ -79,7 +76,7 @@ class LargeSecureStore {
   }
 }
 
-export const supabase = createClient<Database>(
+export const supabase = createClient(
   process.env.EXPO_PUBLIC_SUPABASE_URL,
   process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
   {

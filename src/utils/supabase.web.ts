@@ -1,7 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
 
-import { Database } from "@/types/supabase";
-
 if (!process.env.EXPO_PUBLIC_SUPABASE_URL) {
   throw new Error(
     "Missing EXPO_PUBLIC_SUPABASE_URL. Please set it in your .env",
@@ -14,7 +12,7 @@ if (!process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY) {
   );
 }
 
-export const supabase = createClient<Database>(
+export const supabase = createClient(
   process.env.EXPO_PUBLIC_SUPABASE_URL,
   process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
   {
