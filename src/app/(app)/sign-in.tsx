@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Platform } from "react-native";
 
 import * as WebBrowser from "expo-web-browser";
 
@@ -21,7 +22,9 @@ export const useWarmUpBrowser = () => {
 WebBrowser.maybeCompleteAuthSession();
 
 export default function ModalScreen() {
-  useWarmUpBrowser();
+  if (Platform.OS === "android") {
+    useWarmUpBrowser();
+  }
 
   const { signIn } = useSession();
 

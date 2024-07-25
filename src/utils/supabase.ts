@@ -1,4 +1,3 @@
-import { Platform } from "react-native";
 import "react-native-get-random-values";
 import "react-native-url-polyfill/auto";
 
@@ -87,7 +86,7 @@ export const supabase = createClient<Database>(
     auth: {
       storage: new LargeSecureStore(),
       autoRefreshToken: true,
-      persistSession: Platform.OS !== "web",
+      persistSession: true,
       detectSessionInUrl: false,
     },
   },
