@@ -1,5 +1,5 @@
 {
-  "id": "5012b116-68bf-4e3f-a82b-63f589c58860",
+  "id": "5374c660-639e-4b07-bca7-b3c3f49a4c6f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -711,6 +711,7 @@
     }
   },
   "schemas": {},
+  "sequences": {},
   "_meta": {
     "columns": {},
     "schemas": {},
