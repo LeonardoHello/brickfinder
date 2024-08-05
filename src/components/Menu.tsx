@@ -49,7 +49,7 @@ export default function Menu({ isSignedIn }: { isSignedIn?: boolean }) {
           <YStack gap={"$2"}>
             {!isSignedIn && (
               <>
-                <Link href={"/(app)/sign-in"} asChild>
+                <Link href={"/sign-in"} asChild>
                   <Button
                     justifyContent="flex-start"
                     borderWidth={0}
@@ -64,7 +64,7 @@ export default function Menu({ isSignedIn }: { isSignedIn?: boolean }) {
               </>
             )}
 
-            <Link href={"/(app)/about-us"} asChild>
+            <Link href={"/about-us"} asChild>
               <Button
                 iconAfter={BadgeInfo}
                 scaleIcon={1.5}
@@ -77,7 +77,7 @@ export default function Menu({ isSignedIn }: { isSignedIn?: boolean }) {
                 about us
               </Button>
             </Link>
-            <Link href={"/(app)/settings"} asChild>
+            <Link href={"/settings"} asChild>
               <Button
                 iconAfter={Settings}
                 scaleIcon={1.5}

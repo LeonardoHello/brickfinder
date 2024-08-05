@@ -68,7 +68,7 @@ function JobListItem({
   return (
     <Link
       href={{
-        pathname: "/(app)/jobs/[id]",
+        pathname: "/jobs/[id]",
         params: { id: jobId },
       }}
       asChild

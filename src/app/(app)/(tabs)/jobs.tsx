@@ -29,7 +29,7 @@ export default AuthenticatedHOC(function JobsScreen({ session }) {
     return (
       <SkeletonLoader>
         <JobListSort
-          pathname="/(app)/(tabs)/jobs"
+          pathname="/jobs"
           isModerator={isModerator}
           sortBy={sortBy}
           direction={direction}
@@ -94,7 +94,7 @@ export default AuthenticatedHOC(function JobsScreen({ session }) {
   return (
     <YStack flex={1} p={"$3"} backgroundColor={"$background075"} gap={"$3"}>
       <JobListSort
-        pathname="/(app)/(tabs)/jobs"
+        pathname="/jobs"
         isModerator={isModerator}
         sortBy={sortBy}
         direction={direction}
@@ -137,7 +137,7 @@ function JobListItem({
   return (
     <Link
       href={{
-        pathname: "/(app)/jobsd/[id]",
+        pathname: "/jobs/[id]",
         params: { id },
       }}
       asChild

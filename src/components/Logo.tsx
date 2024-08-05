@@ -9,7 +9,7 @@ export default function Logo({
   isSignedIn?: boolean;
   isModerator?: "true" | undefined;
 }) {
-  const pathname = isSignedIn ? "/(app)/(tabs)/jobs" : "/(app)/";
+  const pathname = isSignedIn ? "/jobs" : "/";
 
   return (
     <Link href={{ pathname, params: { isModerator } }}>

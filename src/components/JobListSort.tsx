@@ -13,7 +13,7 @@ export default function JobListSort({
   sortBy = "date",
   direction = "asc",
 }: {
-  pathname: string;
+  pathname: "/" | "/jobs";
   isModerator: "true" | undefined;
   sortBy: "date" | "salary" | "expiration" | undefined;
   direction: "asc" | "desc" | undefined;
@@ -59,7 +59,7 @@ export default function JobListSort({
       <XGroup.Item>
         <Link
           href={{
-            pathname,
+            pathname: "",
             params: {
               isModerator,
               sortBy: "salary",

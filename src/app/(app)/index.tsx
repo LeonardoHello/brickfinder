@@ -81,7 +81,7 @@ export default function JobsScreen() {
   return (
     <YStack flex={1} p={"$3"} gap={"$3"} backgroundColor={"$background075"}>
       <JobListSort
-        pathname="/(app)/"
+        pathname="/"
         sortBy={sortBy}
         direction={direction}
         isModerator={isModerator}
@@ -117,7 +117,7 @@ function JobListItem({
   return (
     <Link
       href={{
-        pathname: "/(app)/jobs/[id]",
+        pathname: "/jobs/[id]",
         params: { id },
       }}
       asChild
