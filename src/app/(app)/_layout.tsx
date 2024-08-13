@@ -42,7 +42,6 @@ export default function AppLayout() {
       />
       <Stack.Screen
         name="(tabs)"
-        initialParams={{ participant: "user" }}
         redirect={!isSignedIn}
         options={{ headerShown: false }}
       />

@@ -96,8 +96,6 @@ export default AuthenticatedHOC(function TabsLayout({ session }) {
 });
 
 function HeaderRight({ userId }: { userId: User["id"] }) {
-  const [checked, setChecked] = useState(false);
-
   const router = useRouter();
 
   const { data: isModerator, isLoading } =
@@ -122,15 +120,12 @@ function HeaderRight({ userId }: { userId: User["id"] }) {
       {!!isModerator && (
         <Switch
           size={"$3"}
-          checked={checked}
           onCheckedChange={(checked) => {
             if (checked) {
-              router.setParams({ participant: "moderator" });
+              router.setParams({ isModerator: "true" });
             } else {
-              router.setParams({ participant: "user" });
+              router.setParams({ isModerator: undefined });
             }
-
-            setChecked(checked);
           }}
         >
           <Switch.Icon placement="left">
