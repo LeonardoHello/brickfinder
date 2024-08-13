@@ -28,7 +28,7 @@ export default function AppLayout() {
         redirect={isSignedIn}
         options={{
           title: "",
-          headerLeft: () => <Logo />,
+          headerLeft: () => <Logo href={{ pathname: "/" }} />,
           headerRight: () => <Menu />,
         }}
       />

@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { Tabs, useGlobalSearchParams, useRouter } from "expo-router";
 
 import {
@@ -42,7 +40,7 @@ export default AuthenticatedHOC(function TabsLayout({ session }) {
         headerTitleStyle: { fontFamily: "Silkscreen" },
         headerLeft: () => (
           <XStack ml={"$3.5"}>
-            <Logo isSignedIn isModerator={searchParams.isModerator} />
+            <Logo href={{ pathname: "/jobs", params: searchParams }} />
           </XStack>
         ),
         headerRight: () => <HeaderRight userId={session.user.id} />,

@@ -1,18 +1,10 @@
-import { Link } from "expo-router";
+import { Href, Link } from "expo-router";
 
 import { BrickWall } from "@tamagui/lucide-icons";
 
-export default function Logo({
-  isSignedIn,
-  isModerator,
-}: {
-  isSignedIn?: boolean;
-  isModerator?: "true" | undefined;
-}) {
-  const pathname = isSignedIn ? "/jobs" : "/";
-
+export default function Logo({ href }: { href: Href }) {
   return (
-    <Link href={{ pathname, params: { isModerator } }}>
+    <Link href={href}>
       <BrickWall strokeWidth={1.4} />
     </Link>
   );
