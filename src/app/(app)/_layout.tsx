@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+import { Stack, useGlobalSearchParams } from "expo-router";
 
 import { useTheme } from "tamagui";
 
@@ -11,6 +11,7 @@ export const unstable_settings = {
 };
 
 export default function AppLayout() {
+  const searchParams = useGlobalSearchParams();
   const { background } = useTheme();
 
   const { session } = useSession();
@@ -28,8 +29,10 @@ export default function AppLayout() {
         redirect={isSignedIn}
         options={{
           title: "",
-          headerLeft: () => <Logo href={{ pathname: "/" }} />,
-          headerRight: () => <Menu />,
+          headerLeft: () => (
+            <Logo href={{ pathname: "/", params: searchParams }} />
+          ),
+          headerRight: () => <Menu searchParams={searchParams} />,
         }}
       />
       <Stack.Screen

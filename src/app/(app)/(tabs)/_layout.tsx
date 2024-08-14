@@ -44,7 +44,9 @@ export default AuthenticatedHOC(function TabsLayout({ session }) {
           </XStack>
         ),
         headerRight: () => (
-          <HeaderRight userId={session.user.id} isModerator={isModerator} />
+          <HeaderRight userId={session.user.id} isModerator={isModerator}>
+            <Menu isSignedIn searchParams={searchParams} />
+          </HeaderRight>
         ),
         tabBarStyle: {
           backgroundColor,
@@ -102,9 +104,11 @@ export default AuthenticatedHOC(function TabsLayout({ session }) {
 });
 
 function HeaderRight({
+  children,
   userId,
   isModerator,
 }: {
+  children: React.ReactNode;
   userId: User["id"];
   isModerator: boolean;
 }) {
@@ -151,7 +155,7 @@ function HeaderRight({
         </Switch>
       )}
 
-      <Menu isSignedIn />
+      {children}
     </XStack>
   );
 }

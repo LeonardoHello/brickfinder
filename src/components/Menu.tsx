@@ -1,13 +1,19 @@
 import { useState } from "react";
 
-import { Link } from "expo-router";
+import { Link, UnknownOutputParams } from "expo-router";
 
 import { BadgeInfo, Menu as MenuIcon, Settings } from "@tamagui/lucide-icons";
 import { Button, Separator, Sheet, XStack, YStack } from "tamagui";
 
 import { useSession } from "../context/session";
 
-export default function Menu({ isSignedIn }: { isSignedIn?: boolean }) {
+export default function Menu({
+  isSignedIn,
+  searchParams,
+}: {
+  isSignedIn?: boolean;
+  searchParams: UnknownOutputParams;
+}) {
   const [open, setOpen] = useState(false);
 
   const { signOut } = useSession();
@@ -49,7 +55,10 @@ export default function Menu({ isSignedIn }: { isSignedIn?: boolean }) {
           <YStack gap={"$2"}>
             {!isSignedIn && (
               <>
-                <Link href={"/sign-in"} asChild>
+                <Link
+                  href={{ pathname: "/sign-in", params: searchParams }}
+                  asChild
+                >
                   <Button
                     justifyContent="flex-start"
                     borderWidth={0}
@@ -64,7 +73,10 @@ export default function Menu({ isSignedIn }: { isSignedIn?: boolean }) {
               </>
             )}
 
-            <Link href={"/about-us"} asChild>
+            <Link
+              href={{ pathname: "/about-us", params: searchParams }}
+              asChild
+            >
               <Button
                 iconAfter={BadgeInfo}
                 scaleIcon={1.5}
@@ -77,7 +89,10 @@ export default function Menu({ isSignedIn }: { isSignedIn?: boolean }) {
                 about us
               </Button>
             </Link>
-            <Link href={"/settings"} asChild>
+            <Link
+              href={{ pathname: "/settings", params: searchParams }}
+              asChild
+            >
               <Button
                 iconAfter={Settings}
                 scaleIcon={1.5}
