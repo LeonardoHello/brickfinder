@@ -43,7 +43,9 @@ export default AuthenticatedHOC(function TabsLayout({ session }) {
             <Logo href={{ pathname: "/jobs", params: searchParams }} />
           </XStack>
         ),
-        headerRight: () => <HeaderRight userId={session.user.id} />,
+        headerRight: () => (
+          <HeaderRight userId={session.user.id} isModerator={isModerator} />
+        ),
         tabBarStyle: {
           backgroundColor,
           borderTopWidth: 0,
@@ -56,6 +58,7 @@ export default AuthenticatedHOC(function TabsLayout({ session }) {
       <Tabs.Screen
         name="jobs"
         options={{
+          href: { pathname: "/(app)/(tabs)/jobs", params: searchParams },
           tabBarIcon: ({ color }) =>
             isModerator ? (
               <Briefcase color={color} />
@@ -68,6 +71,10 @@ export default AuthenticatedHOC(function TabsLayout({ session }) {
       <Tabs.Screen
         name="applications"
         options={{
+          href: {
+            pathname: "/(app)/(tabs)/applications",
+            params: searchParams,
+          },
           tabBarIcon: ({ color }) =>
             isModerator ? (
               <Users color={color} />
@@ -80,6 +87,7 @@ export default AuthenticatedHOC(function TabsLayout({ session }) {
       <Tabs.Screen
         name="profile"
         options={{
+          href: { pathname: "/(app)/(tabs)/profile", params: searchParams },
           tabBarIcon: ({ color }) =>
             isModerator ? (
               <Building color={color} />
@@ -93,10 +101,16 @@ export default AuthenticatedHOC(function TabsLayout({ session }) {
   );
 });
 
-function HeaderRight({ userId }: { userId: User["id"] }) {
+function HeaderRight({
+  userId,
+  isModerator,
+}: {
+  userId: User["id"];
+  isModerator: boolean;
+}) {
   const router = useRouter();
 
-  const { data: isModerator, isLoading } =
+  const { data: moderator, isLoading } =
     trpc.moderator.getExistanceById.useQuery(userId);
 
   if (isLoading) {
@@ -115,9 +129,10 @@ function HeaderRight({ userId }: { userId: User["id"] }) {
 
   return (
     <XStack mr={"$3.5"} gap={"$2"} alignItems="center">
-      {!!isModerator && (
+      {!!moderator && (
         <Switch
           size={"$3"}
+          checked={isModerator}
           onCheckedChange={(checked) => {
             if (checked) {
               router.setParams({ isModerator: "true" });
