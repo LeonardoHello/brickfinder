@@ -1,10 +1,10 @@
 import { FlatList } from "react-native";
 
-import { Link, useLocalSearchParams } from "expo-router";
+import { Link, useGlobalSearchParams } from "expo-router";
 
-import { Bird, ChevronRight, EyeOff, Rat } from "@tamagui/lucide-icons";
+import { ChevronRight, EyeOff, Rat } from "@tamagui/lucide-icons";
 import { Separator, YStack } from "tamagui";
-import { Avatar, H4, ListItem, SizableText, XStack } from "tamagui";
+import { H4, ListItem, SizableText, XStack } from "tamagui";
 
 import JobListSort from "@/components/JobListSort";
 import ScreenLoader from "@/components/ScreenLoader";
@@ -13,10 +13,10 @@ import { ArrElement } from "@/types";
 import { trpc } from "@/utils/trpc";
 
 export default function JobsScreen() {
-  const { isModerator, sortBy, direction } = useLocalSearchParams<{
-    isModerator: "true";
-    sortBy: "date" | "salary" | "expiration";
-    direction: "asc" | "desc";
+  const searchParams = useGlobalSearchParams<{
+    sortBy?: "date" | "salary" | "expiration";
+    direction?: "asc" | "desc";
+    isModerator?: "true";
   }>();
 
   const { data: jobs, isLoading } = trpc.job.getAll.useQuery();
@@ -53,11 +53,11 @@ export default function JobsScreen() {
   }
 
   const sortJobs = () => {
-    switch (sortBy) {
+    switch (searchParams.sortBy) {
       case "salary":
         const sortedBySalary = jobs.sort((a, b) => a.salary - b.salary);
 
-        if (direction === "desc") return sortedBySalary.reverse();
+        if (searchParams.direction === "desc") return sortedBySalary.reverse();
         return sortedBySalary;
 
       case "expiration":
@@ -65,7 +65,8 @@ export default function JobsScreen() {
           (a, b) => b.expiresAt.getTime() - a.expiresAt.getTime(),
         );
 
-        if (direction === "desc") return sortedByExpiration.reverse();
+        if (searchParams.direction === "desc")
+          return sortedByExpiration.reverse();
         return sortedByExpiration;
 
       default:
@@ -73,19 +74,14 @@ export default function JobsScreen() {
           (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
         );
 
-        if (direction === "desc") return sortedByDate.reverse();
+        if (searchParams.direction === "desc") return sortedByDate.reverse();
         return sortedByDate;
     }
   };
 
   return (
     <YStack flex={1} p={"$3"} gap={"$3"} backgroundColor={"$background075"}>
-      <JobListSort
-        pathname="/"
-        sortBy={sortBy}
-        direction={direction}
-        isModerator={isModerator}
-      />
+      <JobListSort pathname="/" searchParams={searchParams} />
 
       <YStack f={1}>
         <FlatList

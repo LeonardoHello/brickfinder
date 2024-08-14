@@ -20,7 +20,7 @@ import { trpc } from "@/utils/trpc";
 
 export default AuthenticatedHOC(function TabsLayout({ session }) {
   const searchParams = useGlobalSearchParams<{
-    isModerator: "true";
+    isModerator?: "true";
   }>();
   const isModerator = searchParams.isModerator === "true";
 

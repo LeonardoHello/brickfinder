@@ -9,14 +9,14 @@ import { Button, XGroup } from "tamagui";
 
 export default function JobListSort({
   pathname,
-  isModerator,
-  sortBy = "date",
-  direction = "asc",
+  searchParams: { sortBy = "date", direction = "asc", isModerator },
 }: {
   pathname: "/" | "/jobs";
-  isModerator: "true" | undefined;
-  sortBy: "date" | "salary" | "expiration" | undefined;
-  direction: "asc" | "desc" | undefined;
+  searchParams: {
+    sortBy?: "date" | "salary" | "expiration";
+    direction?: "asc" | "desc";
+    isModerator?: "true";
+  };
 }) {
   const sortingOption = {
     asc: { nextDirection: "desc", icon: ArrowUpWideNarrow },
@@ -59,7 +59,7 @@ export default function JobListSort({
       <XGroup.Item>
         <Link
           href={{
-            pathname: "",
+            pathname,
             params: {
               isModerator,
               sortBy: "salary",

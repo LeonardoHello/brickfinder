@@ -1,11 +1,11 @@
 import { FlatList } from "react-native";
 
-import { useLocalSearchParams } from "expo-router";
+import { useGlobalSearchParams } from "expo-router";
 import { Link } from "expo-router";
 
 import { Check, ChevronRight, Rat } from "@tamagui/lucide-icons";
 import { Separator, YStack } from "tamagui";
-import { Avatar, H4, ListItem, SizableText } from "tamagui";
+import { H4, ListItem, SizableText } from "tamagui";
 
 import AuthenticatedHOC from "@/components/AuthenticatedHOC";
 import JobListSort from "@/components/JobListSort";
@@ -15,10 +15,10 @@ import { ArrElement } from "@/types";
 import { trpc } from "@/utils/trpc";
 
 export default AuthenticatedHOC(function JobsScreen({ session }) {
-  const { isModerator, sortBy, direction } = useLocalSearchParams<{
-    isModerator: "true";
-    sortBy: "date" | "salary" | "expiration";
-    direction: "asc" | "desc";
+  const searchParams = useGlobalSearchParams<{
+    isModerator?: "true";
+    sortBy?: "date" | "salary" | "expiration";
+    direction?: "asc" | "desc";
   }>();
 
   const { data: jobs, isLoading } = trpc.job.getAllByUserId.useQuery(
@@ -26,16 +26,7 @@ export default AuthenticatedHOC(function JobsScreen({ session }) {
   );
 
   if (isLoading) {
-    return (
-      <SkeletonLoader>
-        <JobListSort
-          pathname="/jobs"
-          isModerator={isModerator}
-          sortBy={sortBy}
-          direction={direction}
-        />
-      </SkeletonLoader>
-    );
+    return <SkeletonLoader />;
   }
 
   if (!jobs) {
@@ -66,11 +57,11 @@ export default AuthenticatedHOC(function JobsScreen({ session }) {
   }
 
   const sortJobs = () => {
-    switch (sortBy) {
+    switch (searchParams.sortBy) {
       case "salary":
         const sortedBySalary = jobs.sort((a, b) => a.salary - b.salary);
 
-        if (direction === "desc") return sortedBySalary.reverse();
+        if (searchParams.direction === "desc") return sortedBySalary.reverse();
         return sortedBySalary;
 
       case "expiration":
@@ -78,7 +69,8 @@ export default AuthenticatedHOC(function JobsScreen({ session }) {
           (a, b) => b.expiresAt.getTime() - a.expiresAt.getTime(),
         );
 
-        if (direction === "desc") return sortedByExpiration.reverse();
+        if (searchParams.direction === "desc")
+          return sortedByExpiration.reverse();
         return sortedByExpiration;
 
       default:
@@ -86,19 +78,14 @@ export default AuthenticatedHOC(function JobsScreen({ session }) {
           (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
         );
 
-        if (direction === "desc") return sortedByDate.reverse();
+        if (searchParams.direction === "desc") return sortedByDate.reverse();
         return sortedByDate;
     }
   };
 
   return (
     <YStack flex={1} p={"$3"} backgroundColor={"$background075"} gap={"$3"}>
-      <JobListSort
-        pathname="/jobs"
-        isModerator={isModerator}
-        sortBy={sortBy}
-        direction={direction}
-      />
+      <JobListSort pathname="/jobs" searchParams={searchParams} />
 
       <YStack f={1}>
         <FlatList
@@ -195,10 +182,9 @@ function JobListItem({
   );
 }
 
-function SkeletonLoader({ children }: { children: React.ReactNode }) {
+function SkeletonLoader() {
   return (
     <YStack flex={1} p={"$3"} backgroundColor={"$background075"} gap={"$3"}>
-      {children}
       <YStack gap={"$2"}>
         <Skeleton borderRadius={5} height={130} />
         <Skeleton borderRadius={5} height={130} />
