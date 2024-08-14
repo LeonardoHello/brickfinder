@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
+import * as SplashScreen from "expo-splash-screen";
+
 import {
   GoogleSignin,
   statusCodes,
@@ -86,6 +88,10 @@ export function SessionProvider(props: React.PropsWithChildren) {
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange(async (event, session) => {
       setSession(session);
+
+      if (event === "INITIAL_SESSION") {
+        SplashScreen.hideAsync();
+      }
     });
 
     return () => {
