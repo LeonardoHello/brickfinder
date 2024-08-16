@@ -16,7 +16,7 @@ export default function ApplicationDialog({
   const [open, setOpen] = useState(false);
 
   const { data: user, isLoading: isLoadingUser } =
-    trpc.user.getByApplicationId.useQuery(userId);
+    trpc.user.getApplicationById.useQuery(userId);
   const { data: application, isLoading: isLoadingApplication } =
     trpc.application.getById.useQuery({ userId, jobId });
 

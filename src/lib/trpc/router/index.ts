@@ -2,16 +2,18 @@ import { inferReactQueryProcedureOptions } from "@trpc/react-query";
 import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 
 import { router } from "../init";
+import { resumeRouter } from "./resumes";
 import { applicationRouter } from "@/lib/trpc/router/application";
 import { jobRouter } from "@/lib/trpc/router/job";
 import { moderatorRouter } from "@/lib/trpc/router/moderator";
 import { userRouter } from "@/lib/trpc/router/user";
 
 export const appRouter = router({
-	user: userRouter,
-	moderator: moderatorRouter,
-	job: jobRouter,
-	application: applicationRouter,
+  user: userRouter,
+  moderator: moderatorRouter,
+  job: jobRouter,
+  application: applicationRouter,
+  resume: resumeRouter,
 });
 
 export type TRPCRouter = typeof appRouter;

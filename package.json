@@ -36,6 +36,7 @@
     "@trpc/react-query": "^10.45.2",
     "@trpc/server": "^10.45.2",
     "aes-js": "^3.1.2",
+    "base64-arraybuffer": "^1.0.2",
     "burnt": "^0.12.2",
     "drizzle-orm": "^0.32.0",
     "drizzle-zod": "^0.5.1",

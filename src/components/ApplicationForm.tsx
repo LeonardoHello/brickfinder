@@ -17,11 +17,7 @@ import {
 import { z } from "zod";
 
 import FileUploadButton from "./FileUploadButton";
-import {
-  Application,
-  ApplicationResumeSchema,
-  ApplicationSchema,
-} from "@/db/schema";
+import { Application, ApplicationSchema, ResumeSchema } from "@/db/schema";
 import { RouterOutputs } from "@/lib/trpc/router";
 import { trpc } from "@/utils/trpc";
 
@@ -30,8 +26,8 @@ const FormSchema = z.object({
   lastName: ApplicationSchema.shape.lastName,
   email: ApplicationSchema.shape.lastName,
   phoneNumber: ApplicationSchema.shape.phoneNumber,
-  resume: ApplicationResumeSchema.pick({
-    key: true,
+  resume: ResumeSchema.pick({
+    fullPath: true,
     name: true,
     url: true,
   }),
@@ -55,9 +51,9 @@ export default function ApplicationForm({
   const toast = useToastController();
   const utils = trpc.useUtils();
 
-  const submitApplication = trpc.application.submit.useMutation({
+  const submitApplication = trpc.application.upsert.useMutation({
     onSuccess: (data) => {
-      const [[application], [resume]] = data;
+      const { application, resume } = data;
 
       utils.application.getById.setData({ userId, jobId }, (updater) => {
         if (!updater) {
@@ -65,7 +61,7 @@ export default function ApplicationForm({
             return { ...application, resume };
           }
 
-          return utils.user.getByApplicationId.getData();
+          return utils.user.getApplicationById.getData(userId);
         }
 
         return { ...application, resume };
@@ -269,8 +265,11 @@ export default function ApplicationForm({
 
             <YStack flexGrow={1} flexShrink={1}>
               <FileUploadButton
-                setIsUploading={setIsUploading}
+                userId={userId}
                 disabled={disabled}
+                setValue={setValue}
+                isUploading={isUploading}
+                setIsUploading={setIsUploading}
               />
               {field.value && <SizableText>{field.value}</SizableText>}
 
