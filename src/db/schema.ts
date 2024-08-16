@@ -78,7 +78,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
 export const userResumes = pgTable("user_resumes", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
-  key: text("key").unique().notNull(),
+  fullPath: text("fullPath").unique().notNull(),
   url: text("url").unique().notNull(),
   userId: uuid("user_id")
     .notNull()
@@ -94,7 +94,6 @@ export const moderators = pgTable("moderators", {
     mode: "date",
     withTimezone: true,
   }).$onUpdate(() => new Date()),
-  admin: boolean("admin").notNull(),
   userId: uuid("user_id")
     .notNull()
     .references(() => users.id),
@@ -112,7 +111,6 @@ export const moderatorsRelations = relations(moderators, ({ one, many }) => ({
     fields: [moderators.companyId],
     references: [companies.id],
   }),
-  jobs: many(jobs),
 }));
 
 export const companies = pgTable(
@@ -177,10 +175,6 @@ export const jobs = pgTable(
 );
 
 export const jobsRelations = relations(jobs, ({ one, many }) => ({
-  moderator: one(moderators, {
-    fields: [jobs.moderatorId],
-    references: [moderators.id],
-  }),
   company: one(companies, {
     fields: [jobs.companyId],
     references: [companies.id],
@@ -225,18 +219,18 @@ export const applicationsRelations = relations(applications, ({ one }) => ({
     fields: [applications.jobId],
     references: [jobs.id],
   }),
-  resume: one(applicationResumes, {
+  resume: one(resumes, {
     fields: [applications.userId, applications.jobId],
-    references: [applicationResumes.userId, applicationResumes.jobId],
+    references: [resumes.userId, resumes.jobId],
   }),
 }));
 
-export const applicationResumes = pgTable(
-  "application_resumes",
+export const resumes = pgTable(
+  "resumes",
   {
     id: uuid("id").primaryKey().defaultRandom(),
     name: text("name").notNull(),
-    key: text("key").unique().notNull(),
+    fullPath: text("fullPath").unique().notNull(),
     url: text("url").unique().notNull(),
     userId: uuid("user_id").notNull(),
     jobId: uuid("job_id").notNull(),
@@ -257,7 +251,7 @@ export type Moderator = InferSelectModel<typeof moderators>;
 export type Company = InferSelectModel<typeof companies>;
 export type Job = InferSelectModel<typeof jobs>;
 export type Application = InferSelectModel<typeof applications>;
-export type ApplicationResume = InferSelectModel<typeof applicationResumes>;
+export type Resume = InferSelectModel<typeof resumes>;
 
 export const UserSchema = createSelectSchema(users);
 export const UserResumeSchema = createSelectSchema(userResumes);
@@ -265,4 +259,4 @@ export const ModeratorSchema = createSelectSchema(moderators);
 export const CompanySchema = createSelectSchema(companies);
 export const JobSchema = createSelectSchema(jobs);
 export const ApplicationSchema = createSelectSchema(applications);
-export const ApplicationResumeSchema = createSelectSchema(applicationResumes);
+export const ResumeSchema = createSelectSchema(resumes);
