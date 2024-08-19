@@ -8,6 +8,7 @@ import { H4, ListItem, SizableText, XStack } from "tamagui";
 
 import JobListSort from "@/components/JobListSort";
 import ScreenLoader from "@/components/ScreenLoader";
+import Skeleton from "@/components/Skeleton";
 import { RouterOutputs } from "@/lib/trpc/router";
 import { ArrElement } from "@/types";
 import { trpc } from "@/utils/trpc";
@@ -22,7 +23,7 @@ export default function JobsScreen() {
   const { data: jobs, isLoading } = trpc.job.getAll.useQuery();
 
   if (isLoading) {
-    return <ScreenLoader />;
+    return <SkeletonLoader />;
   }
 
   if (!jobs) {
@@ -166,5 +167,19 @@ function JobListItem({
         </YStack>
       </ListItem>
     </Link>
+  );
+}
+
+function SkeletonLoader() {
+  return (
+    <YStack flex={1} p={"$3"} backgroundColor={"$background075"} gap={"$3"}>
+      <YStack gap={"$2"}>
+        <Skeleton borderRadius={5} height={130} />
+        <Skeleton borderRadius={5} height={130} />
+        <Skeleton borderRadius={5} height={130} />
+        <Skeleton borderRadius={5} height={130} />
+        <Skeleton borderRadius={5} height={130} />
+      </YStack>
+    </YStack>
   );
 }
