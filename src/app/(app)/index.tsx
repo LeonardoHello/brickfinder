@@ -7,7 +7,6 @@ import { Separator, YStack } from "tamagui";
 import { H4, ListItem, SizableText, XStack } from "tamagui";
 
 import JobListSort from "@/components/JobListSort";
-import ScreenLoader from "@/components/ScreenLoader";
 import Skeleton from "@/components/Skeleton";
 import { RouterOutputs } from "@/lib/trpc/router";
 import { ArrElement } from "@/types";
