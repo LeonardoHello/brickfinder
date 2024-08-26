@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from "expo-router";
+import { Link, useLocalSearchParams } from "expo-router";
 
 import { Calendar, EyeOff, MapPin } from "@tamagui/lucide-icons";
 import {
@@ -17,7 +17,6 @@ import {
   useTheme,
 } from "tamagui";
 
-import ApplicationDialog from "@/components/ApplicationDialog";
 import Skeleton from "@/components/Skeleton";
 import { useSession } from "@/context/session";
 import { Job } from "@/db/schema";
@@ -100,9 +99,20 @@ export default function JobScreen() {
               </XStack>
             </YStack>
 
-            {isSignedIn && (
-              <ApplicationDialog userId={session.user.id} jobId={id} />
-            )}
+            <Link
+              href={{ pathname: "/applications/[id]", params: { id } }}
+              asChild
+            >
+              <Button
+                theme={"blue"}
+                size={"$4.5"}
+                px={"$6"}
+                alignSelf="flex-start"
+                borderRadius="$10"
+              >
+                Apply
+              </Button>
+            </Link>
           </Card.Header>
 
           <Separator />

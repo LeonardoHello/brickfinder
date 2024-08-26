@@ -39,12 +39,10 @@ export default function ApplicationForm({
   userId,
   jobId,
   defaultValues,
-  closeDialog,
 }: {
   userId: Application["userId"];
   jobId: Application["jobId"];
   defaultValues: NonNullable<RouterOutputs["application"]["getById"]>;
-  closeDialog: () => void;
 }) {
   const [isUploading, setIsUploading] = useState(false);
 
@@ -61,7 +59,7 @@ export default function ApplicationForm({
             return { ...application, resume };
           }
 
-          return utils.user.getApplicationById.getData(userId);
+          return defaultValues;
         }
 
         return { ...application, resume };
@@ -78,8 +76,6 @@ export default function ApplicationForm({
           return { ...data, applications: [{ userId, jobId }] };
         });
       });
-
-      closeDialog();
 
       toast.show("Success!", {
         message: "Application successfully submitted!",
@@ -130,24 +126,22 @@ export default function ApplicationForm({
           required: true,
         }}
         render={({ field, fieldState: { error } }) => (
-          <Fieldset gap="$4" horizontal>
-            <Label disabled={field.disabled} width={160} alignSelf="flex-start">
+          <Fieldset>
+            <Label disabled={field.disabled}>
               First name
               <Asterisk scale={0.7} color={"$red10"} />
             </Label>
-
-            <YStack flexGrow={1} flexShrink={1}>
-              <Input
-                value={field.value}
-                onBlur={field.onBlur}
-                onChangeText={field.onChange}
-                disabled={field.disabled}
-                disabledStyle={{ opacity: 0.5 }}
-                h={50}
-                borderColor={error ? "$red5" : undefined}
-              />
-              {error && <SizableText color={"$red5"}>Required.</SizableText>}
-            </YStack>
+            <Input
+              value={field.value}
+              onBlur={field.onBlur}
+              onChangeText={field.onChange}
+              disabled={field.disabled}
+              disabledStyle={{ opacity: 0.5 }}
+              h={"$5"}
+              borderColor={error ? "$red5" : "$colorTransparent"}
+              focusStyle={{ bc: "$colorTransparent" }}
+            />
+            {error && <SizableText color={"$red5"}>Required.</SizableText>}
           </Fieldset>
         )}
       />
@@ -159,24 +153,22 @@ export default function ApplicationForm({
           required: true,
         }}
         render={({ field, fieldState: { error } }) => (
-          <Fieldset gap="$4" horizontal>
-            <Label disabled={field.disabled} width={160} alignSelf="flex-start">
+          <Fieldset>
+            <Label disabled={field.disabled}>
               Last name
               <Asterisk scale={0.7} color={"$red10"} />
             </Label>
-
-            <YStack flexGrow={1} flexShrink={1}>
-              <Input
-                value={field.value}
-                onBlur={field.onBlur}
-                onChangeText={field.onChange}
-                disabled={field.disabled}
-                disabledStyle={{ opacity: 0.5 }}
-                h={50}
-                borderColor={error ? "$red5" : undefined}
-              />
-              {error && <SizableText color={"$red5"}>Required.</SizableText>}
-            </YStack>
+            <Input
+              value={field.value}
+              onBlur={field.onBlur}
+              onChangeText={field.onChange}
+              disabled={field.disabled}
+              disabledStyle={{ opacity: 0.5 }}
+              h={"$5"}
+              borderColor={error ? "$red5" : "$colorTransparent"}
+              focusStyle={{ bc: "$colorTransparent" }}
+            />
+            {error && <SizableText color={"$red5"}>Required.</SizableText>}
           </Fieldset>
         )}
       />
@@ -189,28 +181,24 @@ export default function ApplicationForm({
           validate: (val) => z.string().email().safeParse(val).success,
         }}
         render={({ field, fieldState: { error } }) => (
-          <Fieldset gap="$4" horizontal>
-            <Label disabled={field.disabled} width={160} alignSelf="flex-start">
+          <Fieldset>
+            <Label disabled={field.disabled}>
               Email address
               <Asterisk scale={0.7} color={"$red10"} />
             </Label>
-
-            <YStack flexGrow={1} flexShrink={1}>
-              <Input
-                value={field.value}
-                onBlur={field.onBlur}
-                onChangeText={field.onChange}
-                disabled={field.disabled}
-                disabledStyle={{ opacity: 0.5 }}
-                h={50}
-                borderColor={error ? "$red5" : undefined}
-              />
-              {error && (
-                <SizableText color={"$red5"}>
-                  Invalid email address.
-                </SizableText>
-              )}
-            </YStack>
+            <Input
+              value={field.value}
+              onBlur={field.onBlur}
+              onChangeText={field.onChange}
+              disabled={field.disabled}
+              disabledStyle={{ opacity: 0.5 }}
+              h={"$5"}
+              borderColor={error ? "$red5" : "$colorTransparent"}
+              focusStyle={{ bc: "$colorTransparent" }}
+            />
+            {error && (
+              <SizableText color={"$red5"}>Invalid email address.</SizableText>
+            )}
           </Fieldset>
         )}
       />
@@ -227,25 +215,21 @@ export default function ApplicationForm({
           },
         }}
         render={({ field, fieldState: { error } }) => (
-          <Fieldset gap="$4" horizontal>
-            <Label disabled={field.disabled} width={160} alignSelf="flex-start">
-              Phone number
-            </Label>
-
-            <YStack flexGrow={1} flexShrink={1}>
-              <Input
-                value={field.value}
-                onBlur={field.onBlur}
-                onChangeText={field.onChange}
-                disabled={field.disabled}
-                disabledStyle={{ opacity: 0.5 }}
-                h={50}
-                borderColor={error ? "$red5" : undefined}
-              />
-              {error && (
-                <SizableText color={"$red5"}>Invalid phone number.</SizableText>
-              )}
-            </YStack>
+          <Fieldset>
+            <Label disabled={field.disabled}>Phone number</Label>
+            <Input
+              value={field.value}
+              onBlur={field.onBlur}
+              onChangeText={field.onChange}
+              disabled={field.disabled}
+              disabledStyle={{ opacity: 0.5 }}
+              h={"$5"}
+              borderColor={error ? "$red5" : "$colorTransparent"}
+              focusStyle={{ bc: "$colorTransparent" }}
+            />
+            {error && (
+              <SizableText color={"$red5"}>Invalid phone number.</SizableText>
+            )}
           </Fieldset>
         )}
       />
@@ -257,7 +241,7 @@ export default function ApplicationForm({
           required: true,
         }}
         render={({ field, fieldState: { error } }) => (
-          <Fieldset gap="$4" horizontal>
+          <Fieldset horizontal mt={"$2"}>
             <Label disabled={field.disabled} width={160} alignSelf="flex-start">
               Resume
               <Asterisk scale={0.7} color={"$red10"} />
@@ -285,7 +269,7 @@ export default function ApplicationForm({
           iconAfter={isMutating ? Spinner : undefined}
           disabledStyle={{ opacity: 0.5 }}
         >
-          {isMutating ? "Submitting" : "Submit"}
+          {isMutating ? "Applying" : "Apply"}
         </Button>
       </Form.Trigger>
     </Form>

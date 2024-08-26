@@ -32,7 +32,7 @@ export const applicationRouter = router({
     .query(({ input, ctx }) => {
       return ctx.db.query.applications.findMany({
         where: (application, { eq }) => eq(application.userId, input),
-        columns: { jobId: true, createdAt: true },
+        columns: { jobId: true, createdAt: true, updatedAt: true },
         with: {
           job: {
             columns: { title: true, location: true },

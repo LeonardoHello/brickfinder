@@ -1,6 +1,6 @@
 import { FlatList } from "react-native";
 
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 
 import { ChevronRight, Rat } from "@tamagui/lucide-icons";
 import { H4, ListItem, Separator, SizableText, YStack } from "tamagui";
@@ -51,30 +51,31 @@ export default AuthenticatedHOC(function ApplicationsScreen({ session }) {
       <FlatList
         data={applications}
         ItemSeparatorComponent={() => <Separator borderWidth={0} my={"$1.5"} />}
-        renderItem={({ item }) => <JobListItem item={item} />}
+        renderItem={({ item }) => <ApplicationListItem item={item} />}
         keyExtractor={(item) => item.jobId}
       />
     </YStack>
   );
 });
 
-function JobListItem({
+function ApplicationListItem({
   item,
 }: {
   item: ArrElement<RouterOutputs["application"]["getAllByUserId"]>;
 }) {
-  const { jobId, createdAt, job } = item;
+  const router = useRouter();
+
+  const { jobId, createdAt, updatedAt, job } = item;
 
   return (
     <Link
       href={{
-        pathname: "/jobs/[id]",
+        pathname: "/applications/[id]",
         params: { id: jobId },
       }}
       asChild
     >
       <ListItem
-        backgroundColor={"$background"}
         bordered
         iconAfter={<ChevronRight size={"$1.5"} />}
         borderRadius={"$4"}
@@ -84,7 +85,17 @@ function JobListItem({
         color={"$white025"}
       >
         <YStack f={1} gap={"$0.5"}>
-          <H4>{job.title}</H4>
+          <H4
+            onPress={(e) => {
+              e.stopPropagation();
+
+              router.push({ pathname: "/jobs/[id]", params: { id: jobId } });
+            }}
+            hoverStyle={{ textDecorationLine: "underline" }}
+            pressStyle={{ textDecorationLine: "underline" }}
+          >
+            {job.title}
+          </H4>
           <SizableText
             size={"$3"}
             fontFamily={"$silkscreen"}
@@ -95,17 +106,31 @@ function JobListItem({
           <SizableText size={"$3"} color={"$gray8"}>
             {job.location}
           </SizableText>
-          <SizableText size={"$3"} color={"greenyellow"} opacity={0.8}>
-            Application sent{" "}
-            <SizableText
-              size={"$3"}
-              fontWeight={700}
-              color={"greenyellow"}
-              opacity={0.8}
-            >
-              {createdAt.toLocaleDateString("hr")}
+          {updatedAt ? (
+            <SizableText size={"$3"} color={"greenyellow"} opacity={0.8}>
+              Application updated{" "}
+              <SizableText
+                size={"$3"}
+                fontWeight={700}
+                color={"greenyellow"}
+                opacity={0.8}
+              >
+                {updatedAt.toLocaleDateString("hr")}
+              </SizableText>
             </SizableText>
-          </SizableText>
+          ) : (
+            <SizableText size={"$3"} color={"greenyellow"} opacity={0.8}>
+              Application sent{" "}
+              <SizableText
+                size={"$3"}
+                fontWeight={700}
+                color={"greenyellow"}
+                opacity={0.8}
+              >
+                {createdAt.toLocaleDateString("hr")}
+              </SizableText>
+            </SizableText>
+          )}
         </YStack>
       </ListItem>
     </Link>

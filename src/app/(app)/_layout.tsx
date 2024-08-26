@@ -70,6 +70,10 @@ export default function AppLayout() {
         }}
       />
       <Stack.Screen name="jobs/[id]" options={{ title: "job details" }} />
+      <Stack.Screen
+        name="applications/[id]"
+        options={{ title: "application details", presentation: "modal" }}
+      />
       <Stack.Screen name="about-us" options={{ title: "about us" }} />
       <Stack.Screen name="settings" />
     </Stack>
