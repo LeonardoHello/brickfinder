@@ -58,6 +58,8 @@
 :root ._lh-222976666{line-height:var(--f-li-7);}
 :root ._whiteSpace-normal{white-space:normal;}
 :root ._ussel-auto{user-select:auto;-webkit-user-select:auto;}
+@media (hover) {:root  ._textDecorationLine-0hover-underline:hover{text-decoration-line:underline !important;}}
+:root:root  ._textDecorationLine-0active-underline:active{text-decoration-line:underline !important;}
 :root ._col-darkgray{color:darkgray;}
 :root ._fow-233016109{font-weight:var(--f-we-3);}
 :root ._ls-167744028{letter-spacing:var(--f-21-3);}
